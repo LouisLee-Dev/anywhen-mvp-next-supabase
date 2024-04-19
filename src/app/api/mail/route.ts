@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   }: { name: string; email: string; message: string } = await request.json();
   const msg = `Name: ${name}\r\n Email: ${email}\r\n Message: ${message}`;
   const data = {
-    to: "robkent1@me.com",
+    to: "rob@anywhen.com",
     from: "rob@anywhen.com",
     subject: `${name.toUpperCase()} sent you a message from Contact Form`,
     text: `Email => ${email}`,
