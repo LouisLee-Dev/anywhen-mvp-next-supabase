@@ -46,7 +46,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Log In</Button>
+          <Button type="submit" className="w-full">Log In</Button>
         </DialogFooter>
         <Separator />
         <div className="flex flex-col gap-1">

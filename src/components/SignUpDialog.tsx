@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { CalendarForm } from "./DatePicker";
 
 interface SignUpFormProps {
   open: boolean;
@@ -33,7 +32,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ open, onClose }) => {
               type="string"
               defaultValue=""
               className="col-span-4"
-              placeholder="Input Full Name"
+              placeholder="Full Name"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -55,19 +54,19 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ open, onClose }) => {
             />
           </div>
           <Separator />
-          <CalendarForm />
+          {/* <CalendarForm /> */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Input
               id="phoneNum"
               type="phone"
               defaultValue=""
               className="col-span-4"
-              placeholder="Input Phone Number"
+              placeholder="Phone Number"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Register</Button>
+          <Button type="submit" className="w-full">Register</Button>
         </DialogFooter>
         <Separator />
         <div className="flex flex-col gap-1">
