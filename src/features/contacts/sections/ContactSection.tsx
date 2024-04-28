@@ -66,7 +66,6 @@ export const ContactFormSection = () => {
   };
   return (
     <div>
-      <Header />
       <div className="flex justify-center">
         <form onSubmit={handleSubmit} className="lg:w-1/3">
           <Input

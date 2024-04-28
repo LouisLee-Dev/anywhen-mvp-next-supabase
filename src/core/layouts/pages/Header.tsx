@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import HeaderDropDownMenu from "@/components/HeaderDropMenu";
+import HeaderDropDownMenu from "@/core/layouts/pages/HeaderDropMenu";
 import Link from "next/link"; // Import Link from Next.js
-
+import { Tally1 } from "lucide-react";
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -16,7 +16,7 @@ export default function Header() {
       >
         <div className="flex lg:flex-1">
           <Link href="/">
-            <span className="sr-only">Your Company</span>
+            <span className="sr-only">Home</span>
             <img
               className="h-10 w-auto"
               src="/assets/images/header-logo.png"
@@ -34,21 +34,30 @@ export default function Header() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-12">
-          <Link href="/">
-            <span className="text-lg font-semibold leading-6 text-gray-900">
-              Home
-            </span>
+        <Popover.Group className="hidden lg:flex lg:gap-x-24">
+          <Link href="/renters">
+            <div className="flex">
+              <span className="text-lg font-semibold leading-6 text-gray-600">
+                Renters
+              </span>
+              {/* <Tally1 className="text-gray-400"/> */}
+            </div>
           </Link>
-          <Link href="/company">
-            <span className="text-lg font-semibold leading-6 text-gray-900">
-              Company
-            </span>
+          <Link href="/owners">
+            <div className="flex">
+              <span className="text-lg font-semibold leading-6 text-gray-600">
+                Property Managers
+              </span>
+              {/* <Tally1 className="text-gray-400"/> */}
+            </div>
           </Link>
           <Link href="/contact">
-            <span className="text-lg font-semibold leading-6 text-gray-900">
-              Contact
-            </span>
+            <div className="flex">
+              <span className="text-lg font-semibold leading-6 text-gray-600">
+                Contact
+              </span>
+              {/* <Tally1 className="text-gray-400"/> */}
+            </div>
           </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -87,17 +96,17 @@ export default function Header() {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 <Link href="/">
-                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Home
+                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
+                    Renters
                   </span>
                 </Link>
                 <Link href="/company">
-                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Company
+                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
+                    Property Managers
                   </span>
                 </Link>
                 <Link href="/contact">
-                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
                     Contact
                   </span>
                 </Link>

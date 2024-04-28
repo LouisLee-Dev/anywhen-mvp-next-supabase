@@ -2,7 +2,7 @@ import { ContactFormSection } from "@/features/contacts/sections/ContactSection"
 
 export default function Contact() {
   return (
-    <div>
+    <div className="py-24">
       <ContactFormSection />
     </div>
   );

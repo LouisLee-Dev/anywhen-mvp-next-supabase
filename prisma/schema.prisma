@@ -18,8 +18,53 @@ model profiles {
   email        String?
   phone_number String?
   address      String?
+  role         String    @default("renter")
   created_at   DateTime  @default(now()) @db.Timestamptz(6)
   updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+model category {
+  id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title String
+
+  @@schema("public")
+}
+
+model currency {
+  id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title String
+
+  @@schema("public")
+}
+
+model property {
+  id              String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title           String
+  description     String
+  category_id     String            @db.Uuid
+  owner_id        String            @db.Uuid
+  price_min       String?
+  price_max       String?
+  currency_id     String?           @db.Uuid
+  location        String?
+  available_begin DateTime?         @db.Timestamptz(6)
+  available_end   DateTime?         @db.Timestamptz(6)
+  created_at      DateTime          @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?         @default(now()) @db.Timestamptz(6)
+  images          property_images[]
+
+  @@schema("public")
+}
+
+model property_images {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  property_id String    @db.Uuid
+  path        String
+  property    property  @relation(fields: [property_id], references: [id])
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
 
   @@schema("public")
 }

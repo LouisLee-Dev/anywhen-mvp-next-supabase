@@ -10,44 +10,107 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { type SignInInput, signInSchema } from "../schema";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import supabase from "@/core/supabase/supabase-client";
+import { toast } from "sonner";
 
 interface SignInFormProps {
   open: boolean;
   onClose: () => void;
 }
 const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
-  return (
-    <Dialog open={open} onOpenChange={() => {
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSignIn(formData: SignInInput) {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (error) {
+      toast.error("User Sign in failed");
+    } else {
       onClose();
-    }}>
+      toast.success("You have been signed in.");
+    }
+  }
+
+  async function onFormSubmit(values: SignInInput) {
+    await onSignIn(values);
+  }
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={() => {
+        onClose();
+      }}
+    >
       <DialogContent className="sm:max-w-[425px] lg:max-w-lg xl:max-w-xl">
         <DialogHeader>
           <DialogTitle>Log In</DialogTitle>
           <DialogDescription>Welcome to anyWhen!</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Input
-              id="email"
-              type="email"
-              defaultValue=""
-              className="col-span-4"
-              placeholder="Email"
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onFormSubmit)}
+            className="space-y-3"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Email Address"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Input
-              id="password"
-              type="password"
-              defaultValue=""
-              className="col-span-4"
-              placeholder="Password"
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Password" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit" className="w-full">Log In</Button>
-        </DialogFooter>
+            <Button type="submit" className="w-full">
+              Log In
+            </Button>
+          </form>
+        </Form>
         <Separator />
         <div className="flex flex-col gap-1">
           <Button type="submit">
