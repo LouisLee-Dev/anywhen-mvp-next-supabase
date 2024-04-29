@@ -15,7 +15,7 @@ export default function LandingSection() {
           <div className="flex flex-col justify-stretch pt-10 lg:gap-28 lg:pt-72">
             <div className="flex justify-end">
               <p className="text-lg font-bold leading-6 text-gray-700">
-                It's time for something different.
+                It&#39;s time for something different.
               </p>
             </div>
             <div>

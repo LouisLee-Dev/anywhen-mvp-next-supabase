@@ -25,7 +25,7 @@ export default function RenterSignInSection() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col lg:px-[8rem] py-24 gap-7">
+      <div className="flex flex-col gap-7 py-24 lg:px-[8rem]">
         <span className="flex items-center text-2xl font-bold text-gray-600">
           What Renters win!
         </span>
@@ -49,7 +49,7 @@ export default function RenterSignInSection() {
             className="text-gray-500 hover:cursor-pointer"
             onClick={handleSignUp}
           >
-            If you don't have account, click here to{" "}
+            If you don&#39;t have account, click here to{" "}
             <span className="font-bold text-gray-600">Sign Up.</span>
           </span>
         </div>
