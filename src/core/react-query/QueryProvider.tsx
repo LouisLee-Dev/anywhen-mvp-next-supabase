@@ -4,7 +4,14 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function Providers({ children }: React.PropsWithChildren) {
-  const [client] = useState(() => new QueryClient());
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: false,
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={client}>

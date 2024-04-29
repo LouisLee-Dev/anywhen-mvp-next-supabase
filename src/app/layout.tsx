@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.scss";
 import { Toaster } from "@/components/ui/sonner";
+import Providers from "@/core/react-query/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={inter.className}>
-        {children}
+        <Providers>{children}</Providers>
         <Toaster richColors />
       </body>
     </html>
