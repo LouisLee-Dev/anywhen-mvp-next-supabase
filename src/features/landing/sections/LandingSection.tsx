@@ -10,7 +10,7 @@ import { CarouselDemo } from "../components/CaroseulDemo";
 export default function LandingSection() {
   return (
     <div className="w-full">
-      <div className="px-2 lg:px-[22rem]">
+      <div className="px-2 lg:px-[8rem]">
         <div className="grid grid-cols-2 gap-4 lg:gap-36">
           <div className="flex flex-col justify-stretch pt-10 lg:gap-28 lg:pt-72">
             <div className="flex justify-end">
@@ -56,7 +56,7 @@ export default function LandingSection() {
         </div>
       </div>
       <Separator />
-      <div className="px-2 pt-12 lg:px-[22rem]">
+      <div className="px-2 pt-12 lg:px-[8rem]">
         <div className="flex justify-between">
           <div className="flex flex-col items-center justify-center gap-6">
             <div className="h-16 w-16 rounded-2xl border bg-gray-200 p-5">
@@ -114,13 +114,13 @@ export default function LandingSection() {
         </div>
       </div>
       <Separator />
-      <div className="px-2 py-12 lg:px-[22rem]">
+      <div className="px-2 py-12 lg:px-[8rem]">
         <div className="flex justify-center">
           <CarouselDemo />
         </div>
       </div>
       <Separator />
-      <div className="px-2 py-12 lg:px-[22rem]">
+      <div className="px-2 py-12 lg:px-[8rem]">
         <div className="flex flex-col items-center justify-center gap-4">
           <span className="font-bold text-gray-500 lg:text-3xl">
             Download the mobile app for free

@@ -25,7 +25,7 @@ export default function RenterSignInSection() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col lg:px-[22rem] py-24 gap-7">
+      <div className="flex flex-col lg:px-[8rem] py-24 gap-7">
         <span className="flex items-center text-2xl font-bold text-gray-600">
           What Renters win!
         </span>

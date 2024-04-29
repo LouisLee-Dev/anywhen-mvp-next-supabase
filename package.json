@@ -38,6 +38,7 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.0.2",
     "lucide-react": "^0.368.0",
+    "moment": "^2.30.1",
     "next": "14.2.1",
     "next-safe-action": "^6.2.0",
     "next-themes": "^0.3.0",
@@ -49,6 +50,7 @@
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1",
     "zod": "^3.22.5",
     "zustand": "^4.5.2"
   },
@@ -57,6 +59,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.8",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",
     "postcss": "^8",

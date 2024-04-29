@@ -41,10 +41,10 @@ model currency {
 
 model property {
   id              String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  title           String
-  description     String
-  category_id     String            @db.Uuid
-  owner_id        String            @db.Uuid
+  title           String?
+  description     String?
+  category_id     String?           @db.Uuid
+  owner_id        String?           @db.Uuid
   price_min       String?
   price_max       String?
   currency_id     String?           @db.Uuid
