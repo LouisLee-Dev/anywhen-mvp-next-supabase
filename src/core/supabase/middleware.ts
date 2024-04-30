@@ -51,14 +51,18 @@ export async function updateSession(request: NextRequest) {
           });
         },
       },
-    }
+    },
   );
 
-  const user = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // console.log(user);
 
   if (!user) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/auth/";
+    redirectUrl.pathname = "/auth-required";
     redirectUrl.searchParams.set(`redirectTo`, request.nextUrl.pathname);
     return NextResponse.redirect(redirectUrl);
   }

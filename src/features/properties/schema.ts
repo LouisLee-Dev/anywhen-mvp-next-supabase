@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const propertyInputSchema = z.object({
   id: z.string().uuid().optional().nullable(),
-  title: z.string(),
+  title: z.string().min(6),
   description: z.string(),
   category_id: z.string().uuid(),
   owner_id: z.string().uuid().optional().nullable(),

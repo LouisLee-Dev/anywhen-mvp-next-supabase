@@ -12,6 +12,9 @@ export default async function PropertyDetailPage({
 
   const property = await prisma.property.findFirst({
     where: { id: propertyId },
+    include: {
+      images: true,
+    },
   });
 
   if (!property) {

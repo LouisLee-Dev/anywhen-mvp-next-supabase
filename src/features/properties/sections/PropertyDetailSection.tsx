@@ -63,7 +63,7 @@ export default function PropertyDetailSection({
 
   return (
     <div className="w-full">
-      <h1 className="text-lg font-semibold">{property.title}</h1>
+      <h1 className="mb-4">{property.title}</h1>
       <div className="grid grid-cols-5 gap-2">
         <div className="col-span-3">
           <Card className="w-full">

@@ -24,12 +24,16 @@ import {
 } from "@/components/ui/form";
 import supabase from "@/core/supabase/supabase-client";
 import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface SignInFormProps {
   open: boolean;
   onClose: () => void;
 }
 const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -52,6 +56,10 @@ const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
     } else {
       onClose();
       toast.success("You have been signed in.");
+
+      if (searchParams?.get("redirectTo")) {
+        router.push(searchParams?.get("redirectTo"));
+      }
     }
   }
 

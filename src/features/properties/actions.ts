@@ -4,6 +4,7 @@ import { action } from "@/lib/safe-action";
 import { prisma } from "@/db";
 import { Property, propertyInputSchema } from "./schema";
 import { z } from "zod";
+import { getCurrentUser } from "@/core/auth/server";
 
 export async function getProperty(propertyId: string): Promise<Property> {
   const property = await prisma.property.findFirst({
@@ -23,16 +24,37 @@ export async function getProperties(): Promise<Property[]> {
     orderBy: {
       id: "desc",
     },
+    include: { images: true },
   });
 
   return property;
 }
 
+export async function getMyProperties(): Promise<Property[]> {
+  const user = await getCurrentUser();
+
+  const properties = await prisma.property.findMany({
+    orderBy: {
+      id: "desc",
+    },
+    where: {
+      owner_id: user.id,
+    },
+    include: { images: true },
+  });
+
+  return properties;
+}
+
 export const createProperty = action(propertyInputSchema, async (data) => {
+  const user = await getCurrentUser();
   // Add the company to the database
   try {
     const property: Property = await prisma.property.create({
-      data,
+      data: {
+        ...data,
+        owner_id: user.id,
+      },
       include: {
         images: true,
       },

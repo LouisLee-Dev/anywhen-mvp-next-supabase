@@ -6,6 +6,7 @@ import {
   getProperties,
   updateProperty,
   uploadPropertyImage,
+  getMyProperties,
 } from "./actions";
 import { Property, PropertyInput } from "./schema";
 import { toast } from "sonner";
@@ -26,6 +27,17 @@ export const useProperties = () => {
     queryKey: ["properties"],
     queryFn: async () => {
       const properties: Property[] = await getProperties();
+      return properties;
+    },
+  });
+};
+
+export const useMyProperties = () => {
+  return useQuery({
+    initialData: [],
+    queryKey: ["properties", "me"],
+    queryFn: async () => {
+      const properties: Property[] = await getMyProperties();
       return properties;
     },
   });

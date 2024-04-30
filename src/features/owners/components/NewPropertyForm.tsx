@@ -21,7 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCategories, useCurrencies } from "@/features/categories/hooks";
+import { useCategories } from "@/features/categories/hooks";
+import { useCurrencies } from "@/features/currency/hooks";
 import { useCreateProperty } from "@/features/properties/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -37,12 +38,12 @@ export function NewPropertyForm() {
     resolver: zodResolver(propertyInputSchema),
     defaultValues: {
       category_id: undefined,
-      title: "",
-      description: "",
+      title: undefined,
+      description: undefined,
       price_max: "",
       price_min: "",
       currency_id: undefined,
-      location: "",
+      location: undefined,
     },
   });
 
@@ -69,47 +70,45 @@ export function NewPropertyForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex gap-2">
-          <FormField
-            control={form.control}
-            name={"category_id"}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Project Category</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name={"category_id"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <Input placeholder="Property Title" {...field} />
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
                 </FormControl>
-                {/* <FormDescription></FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Title" {...field} />
+              </FormControl>
+              {/* <FormDescription></FormDescription> */}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="location"
@@ -117,7 +116,7 @@ export function NewPropertyForm() {
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input placeholder="City/State/Coutntry" {...field} />
+                <Input placeholder="Location" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
@@ -131,7 +130,7 @@ export function NewPropertyForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Property Description" {...field} />
+                <Textarea placeholder="Description" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
@@ -139,58 +138,64 @@ export function NewPropertyForm() {
           )}
         />
         <div className="flex gap-2">
-          <FormField
-            control={form.control}
-            name="price_min"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Minimun Price</FormLabel>
-                <FormControl>
-                  <Input placeholder="Input Minimum Price" {...field} />
-                </FormControl>
-                {/* <FormDescription></FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="price_max"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Maximum Price</FormLabel>
-                <FormControl>
-                  <Input placeholder="Input Maximum Price" {...field} />
-                </FormControl>
-                {/* <FormDescription></FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name={"currency_id"}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Currency</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="price_min"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Minimun Price</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
+                    <Input placeholder="Minimum Price" {...field} />
                   </FormControl>
-                  <SelectContent>
-                    {currencies.map((currency) => (
-                      <SelectItem key={currency.id} value={currency.id}>
-                        {currency.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  {/* <FormDescription></FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="price_max"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Maximum Price</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Maximum Price" {...field} />
+                  </FormControl>
+                  {/* <FormDescription></FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name={"currency_id"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Currency</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {currencies.map((currency) => (
+                        <SelectItem key={currency.id} value={currency.id}>
+                          {currency.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
         <Button type="submit">New Property</Button>
       </form>

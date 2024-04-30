@@ -82,9 +82,8 @@ export const AuthProvider = ({
 
   const actionSignOut = useCallback(async () => {
     const redirectUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL);
-    redirectUrl.pathname = "/auth/";
+    redirectUrl.pathname = "/";
     redirectUrl.searchParams.set(`redirectTo`, pathName);
-
     await supabase.auth.signOut();
     router.replace(redirectUrl.toString());
     setUser(null);
