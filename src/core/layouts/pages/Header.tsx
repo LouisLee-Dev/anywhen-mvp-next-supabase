@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import HeaderDropDownMenu from "@/core/layouts/pages/HeaderDropMenu";
 import Link from "next/link"; // Import Link from Next.js
 import { Tally1 } from "lucide-react";
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

@@ -1,5 +1,7 @@
 "use Client";
-import Header from "@/components/header/Header";
+
+import Header from "@/core/layouts/pages/Header";
+
 export default function LandingSection() {
   return (
     <div>

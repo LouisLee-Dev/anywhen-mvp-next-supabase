@@ -6,13 +6,14 @@ import { validate } from "../../utils/validate";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/contactForm/Input";
 import TextArea from "@/components/contactForm/TextArea";
-import Header from "@/components/header/Header";
+import Header from "@/core/layouts/pages/Header";
+
 interface IValues {
   name: string;
   email: string;
   message: string;
 }
-interface IErrors extends Partial<IValues> {}
+interface IErrors extends Partial<IValues> { }
 export const ContactFormSection = () => {
   const [values, setValues] = useState({
     name: "",
