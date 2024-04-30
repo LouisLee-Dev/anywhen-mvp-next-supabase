@@ -1,4 +1,4 @@
-import RenterSignInSection from "@/features/get-start/RenterSignInSection";
+import RenterSignInSection from "@/features/get-start/sections/RenterSignInSection";
 export default function GetStartRenter() {
   return (
     <div className="w-full">

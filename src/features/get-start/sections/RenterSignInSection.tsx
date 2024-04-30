@@ -3,11 +3,9 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import SignUpForm from "@/features/auth/components/SignUpDialog";
 import SignInForm from "@/features/auth/components/SignInDialog";
-import { useAuth } from "@/core/auth/AuthProvider";
 
 export default function RenterSignInSection() {
-  // const [{ user }] = useAuth();
-  // const [, { actionSignOut }] = useAuth();
+
   const [openSignUpDialog, setOpenSignUpDialog] = useState(false);
   const handleSignUp = () => {
     setOpenSignUpDialog(true);
@@ -42,7 +40,7 @@ export default function RenterSignInSection() {
         <span className="text-xl font-bold text-gray-500">Useful Reviews</span>
         <span className="text-xl font-bold text-gray-500">No Search</span>
         <div className="flex flex-col items-center justify-center gap-2 py-2">
-          <Button className="w-[100%] text-xl" onClick={handleSignIn}>
+          <Button className="w-[30%] text-xl" onClick={handleSignIn}>
             Sign In As Renter
           </Button>
           <span

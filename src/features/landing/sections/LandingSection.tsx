@@ -24,8 +24,8 @@ export default function LandingSection() {
                 away (or you can scroll down and read more)
               </span>
             </div>
-            <div className="flex justify-between">
-              <Button className="w-full rounded-[1.7rem] bg-gray-700 lg:h-20 lg:w-56">
+            <div className="flex justify-between gap-2">
+              <Button className="w-full rounded-[1.7rem] bg-gray-700 lg:h-20">
                 <Link href="/get-start/renter">
                   <div className="flex flex-col">
                     <span className="lg:text-lg">GET STARTED AS A</span>
@@ -35,7 +35,7 @@ export default function LandingSection() {
               </Button>
               <Button
                 variant="secondary"
-                className="w-full rounded-[1.7rem] border-2 border-solid border-gray-800 bg-white lg:h-20 lg:w-56"
+                className="w-full rounded-[1.7rem] border-2 border-solid border-gray-800 bg-white lg:h-20"
               >
                 <Link href="/get-start/owner">
                   <div className="flex flex-col">

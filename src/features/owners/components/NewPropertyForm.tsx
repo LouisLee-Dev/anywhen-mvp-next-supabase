@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { type Property, propertyInputSchema } from "../../properties/schema";
 import {
   Select,
@@ -20,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCategories } from "@/features/categories/hooks";
+import { useCategories, useCurrencies } from "@/features/categories/hooks";
 import { useCreateProperty } from "@/features/properties/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -28,6 +29,7 @@ import { useRouter } from "next/navigation";
 export function NewPropertyForm() {
   const router = useRouter();
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
+  const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const createProperty = useCreateProperty();
 
@@ -37,6 +39,10 @@ export function NewPropertyForm() {
       category_id: undefined,
       title: "",
       description: "",
+      price_max: "",
+      price_min: "",
+      currency_id: undefined,
+      location: "",
     },
   });
 
@@ -64,38 +70,54 @@ export function NewPropertyForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name={"category_id"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Category</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+        <div className="flex gap-2">
+          <FormField
+            control={form.control}
+            name={"category_id"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project Category</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
+                  <Input placeholder="Property Title" {...field} />
                 </FormControl>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
-                      {category.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                {/* <FormDescription></FormDescription> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
-          name="title"
+          name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input placeholder="Property Title" {...field} />
+                <Input placeholder="City/State/Coutntry" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
@@ -109,90 +131,67 @@ export function NewPropertyForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder="Property Description" {...field} />
+                <Textarea placeholder="Property Description" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
         />
-        {/* <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Property Image</FormLabel>
-              <FormControl>
-                <Input id="picture" type="file" />
-              </FormControl>
-              <FormDescription>
-                Please select image for your property.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Property Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Your name" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is the name that will be displayed on your profile and in
-                emails.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Location</FormLabel>
-              <FormControl>
-                <Input placeholder="location" {...field} />
-              </FormControl>
-              <FormDescription>Where is it?</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input placeholder="Price" {...field} />
-              </FormControl>
-              <FormDescription>Type Price for your property.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Input placeholder="Description" {...field} />
-              </FormControl>
-              <FormDescription>
-                Type Description for your property
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
+        <div className="flex gap-2">
+          <FormField
+            control={form.control}
+            name="price_min"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Minimun Price</FormLabel>
+                <FormControl>
+                  <Input placeholder="Input Minimum Price" {...field} />
+                </FormControl>
+                {/* <FormDescription></FormDescription> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="price_max"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Maximum Price</FormLabel>
+                <FormControl>
+                  <Input placeholder="Input Maximum Price" {...field} />
+                </FormControl>
+                {/* <FormDescription></FormDescription> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"currency_id"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Currency</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency.id} value={currency.id}>
+                        {currency.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <Button type="submit">New Property</Button>
       </form>
     </Form>

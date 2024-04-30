@@ -12,8 +12,7 @@ export default function NewPropertySection() {
 
   return (
     <div className="w-full p-4">
-      <h1> New Property </h1>
-
+      <h1 className="font-semibold pb-2">Upload Your New Property here! </h1>
       <NewPropertyForm></NewPropertyForm>
     </div>
   );

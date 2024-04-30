@@ -14,3 +14,15 @@ export const getCategories = async () => {
 
   return categories;
 };
+export const getCurrencies = async () => {
+  const currencies = await prisma.currency.findMany({
+    select: {
+      id: true,
+      title: true,
+    },
+  });
+
+  console.log(currencies);
+
+  return currencies;
+};
