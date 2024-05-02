@@ -197,7 +197,11 @@ export function NewPropertyForm() {
             />
           </div>
         </div>
-        <Button type="submit">New Property</Button>
+        <div className="flex items-center justify-end">
+          <Button type="submit" disabled={isSubmitting}>
+            New Property
+          </Button>
+        </div>
       </form>
     </Form>
   );

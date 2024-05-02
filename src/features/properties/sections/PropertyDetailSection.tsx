@@ -32,6 +32,7 @@ interface IPropertyDetailSectionProps {
 export default function PropertyDetailSection({
   propertyId,
 }: IPropertyDetailSectionProps) {
+  const [isLoading, setLoading] = useState(false);
   const uploadPropertyImage = useUploadPropertyImage();
   const [{ user }] = useAuth();
   const { data: property, isLoading: isPropertyLoading } =
@@ -127,10 +128,12 @@ export default function PropertyDetailSection({
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex justify-end">
               <Button
+                loading={isLoading}
                 disabled={!avatarSrc || !file}
                 onClick={() => {
+                  setLoading(true);
                   uploadAvatarFile(file)
                     .then(async (fileName: string) => {
                       return await uploadPropertyImage.mutateAsync({
@@ -142,10 +145,11 @@ export default function PropertyDetailSection({
                     .then(() => {
                       setFile(null);
                       setAvatarSrc("");
+                      setLoading(false);
                     });
                 }}
               >
-                Upload
+                Upload Image
               </Button>
             </CardFooter>
           </Card>

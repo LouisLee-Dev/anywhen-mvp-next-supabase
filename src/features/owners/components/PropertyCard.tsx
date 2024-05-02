@@ -11,6 +11,7 @@ interface IPropertyCardProps {
 
 export default function PropertyCard({ property }: IPropertyCardProps) {
   const router = useRouter();
+
   return (
     <div className="relative w-full">
       <div className="absolute right-2 top-2 z-10 cursor-pointer hover:text-white">
@@ -22,29 +23,29 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
           router.push(`/owners/property/${property.id}`);
         }}
       >
-        <img
-          src={
-            property?.images?.length > 0
-              ? getPublicUrl("properties", property.images[0].path)
-              : "/assets/properties/1.webp"
-          }
-          className="h-full w-full rounded-xl object-cover"
-        ></img>
+        {property?.images?.length > 0 && (
+          <img
+            src={getPublicUrl("properties", property.images[0].path)}
+            className="h-full w-full rounded-xl object-cover"
+          ></img>
+        )}
+        {property?.images?.length == 0 && (
+          <div className="flex h-full w-full items-center justify-center bg-gray-200 rounded-xl text-2xl text-center">
+            No Preview Image Available
+          </div>
+        )}
       </div>
-      <div className="mt-3">
-        <div className="flex items-center justify-between">
+      <div className="mt-3 space-y-2">
+        <div className="flex justify-between">
           <span className="font-semibold">
             {property.title} ({property.location})
           </span>
           <span className="flex items-center text-sm">
-            <StarIcon className="mr-1"></StarIcon> 4.88
+            <StarIcon fill="#000000" className="mr-1"></StarIcon> 4.88
           </span>
         </div>
-        <div className="">Built in 1850</div>
-        <div className="">May 9-14</div>
-        <div className="flex items-center">
-          <span className="font-medium"> $249 CAD </span>
-          <span>night</span>
+        <div className="font-medium text-gray-600">
+          {property.price_min} - {property.price_max} CAD
         </div>
       </div>
     </div>

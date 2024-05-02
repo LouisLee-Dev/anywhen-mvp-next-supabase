@@ -36,29 +36,23 @@ export default function Header() {
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
-          <Link href="/renters">
-            <div className="flex">
-              <span className="text-lg font-semibold leading-6 text-gray-600">
-                Renters
-              </span>
-              {/* <Tally1 className="text-gray-400"/> */}
-            </div>
+          <Link
+            href="/renters"
+            className="text-lg font-semibold text-gray-600 hover:text-primary"
+          >
+            Renters
           </Link>
-          <Link href="/owners">
-            <div className="flex">
-              <span className="text-lg font-semibold leading-6 text-gray-600">
-                Property Managers
-              </span>
-              {/* <Tally1 className="text-gray-400"/> */}
-            </div>
+          <Link
+            href="/owners"
+            className="text-lg font-semibold text-gray-600 hover:text-primary"
+          >
+            Property Managers
           </Link>
-          <Link href="/contact">
-            <div className="flex">
-              <span className="text-lg font-semibold leading-6 text-gray-600">
-                Contact
-              </span>
-              {/* <Tally1 className="text-gray-400"/> */}
-            </div>
+          <Link
+            href="/contact"
+            className="text-lg font-semibold text-gray-600 hover:text-primary"
+          >
+            Contact
           </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
