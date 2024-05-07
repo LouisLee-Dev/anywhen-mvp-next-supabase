@@ -14,6 +14,7 @@ export const profileInputSchema = z.object({
   password: z.string().min(6),
   phone_number: z.string().optional(),
   address: z.string().optional(),
+  role: z.string().optional(),
 });
 
 export type ProfileInput = z.infer<typeof profileInputSchema>;

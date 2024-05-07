@@ -2,10 +2,23 @@ import React from "react";
 import { useAuth } from "@/core/auth/AuthProvider";
 import Link from "next/link"; // Import Link from Next.js
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ROLE_OPTIONS } from "@/features/profiles/types";
 
 export default function HeaderDropDownMenu() {
   const router = useRouter();
-  const [{ authenticated, user }] = useAuth();
+  const [{ authenticated, user, profile }] = useAuth();
   const [, { actionSignOut }] = useAuth();
 
   return (
@@ -23,7 +36,56 @@ export default function HeaderDropDownMenu() {
           Sign Up
         </Link>
       )}
-      {authenticated && <div className="">{user.email}</div>}
+      {authenticated && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="h-12 w-12 cursor-pointer rounded-full">
+              <AvatarImage src="/assets/avatars/01.png" alt="@shadcn" />
+              <AvatarFallback>SC</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-2">
+                <p className="text-lg font-medium leading-none">
+                  {profile.full_name}
+                </p>
+                <p className="text-base font-medium leading-none">
+                  {ROLE_OPTIONS[profile.role]}
+                </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {user.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                Profile
+                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                Billing
+                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                Settings
+                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem>New Team</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                actionSignOut();
+              }}
+            >
+              Log out
+              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 }

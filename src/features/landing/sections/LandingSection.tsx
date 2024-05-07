@@ -28,7 +28,7 @@ export default function LandingSection() {
       <div className="flex items-center justify-center space-x-[4rem] py-[4rem]">
         <div className="flex w-[640px] flex-col items-center justify-center space-y-8">
           <h3 className="text-2xl font-semibold">
-            It&39;s time for something different
+            It{"'"}s time for something different
           </h3>
           <div className="space-y-3">
             <div className="text-center text-lg text-gray-500">

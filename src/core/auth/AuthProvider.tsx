@@ -18,6 +18,9 @@ import type {
   RealtimePresenceState,
   User,
 } from "@supabase/supabase-js";
+import { ProfileInput } from "@/features/auth/schema";
+import { getCurrentProfile } from "./server";
+import { toast } from "sonner";
 
 type UserStatus = {
   user: string;
@@ -28,7 +31,7 @@ type State = {
   loading: boolean;
   authenticated: boolean;
   user: User;
-  // profile: Profile;
+  profile: ProfileInput;
   error: string;
   view: React.ReactNode;
 };
@@ -44,7 +47,7 @@ AuthContext.displayName = "AuthContext";
 
 interface AuthProviderProps {
   defaultUser: User;
-  // defaultProfile: Profile;
+  defaultProfile: ProfileInput;
   children: ReactNode;
 }
 
@@ -60,7 +63,7 @@ function reducer(
 
 export const AuthProvider = ({
   defaultUser,
-  //  defaultProfile,
+  defaultProfile,
   children,
 }: AuthProviderProps) => {
   const router = useRouter();
@@ -69,7 +72,7 @@ export const AuthProvider = ({
     loading: true,
     authenticated: Boolean(defaultUser?.id),
     user: defaultUser,
-    // profile: defaultProfile,
+    profile: defaultProfile,
     error: "",
     view: "",
   });
@@ -78,8 +81,8 @@ export const AuthProvider = ({
     dispatch({ type: "user", payload: value });
     dispatch({ type: "authenticated", payload: Boolean(value?.id) });
   };
-  // const setProfile = (value: Profile) =>
-  //   dispatch({ type: "profile", payload: value });
+  const setProfile = (value: ProfileInput) =>
+    dispatch({ type: "profile", payload: value });
   const setError = (value: string) =>
     dispatch({ type: "error", payload: value });
   const setView = (value: React.ReactNode) =>
@@ -92,7 +95,8 @@ export const AuthProvider = ({
     await supabase.auth.signOut();
     router.replace(redirectUrl.toString());
     setUser(null);
-    // setProfile(null);
+    setProfile(null);
+    toast.success("You have been signed out");
   }, [pathName, router]);
 
   useEffect(() => {
@@ -100,11 +104,13 @@ export const AuthProvider = ({
       data: { subscription: authListener },
     } = supabase.auth.onAuthStateChange(
       async (event: AuthChangeEvent, currentSession) => {
-        // console.log(currentSession);
         if (currentSession) {
           setUser(currentSession.user);
+          const profile = await getCurrentProfile();
+          setProfile(profile);
         } else {
           setUser(null);
+          setProfile(null);
         }
       },
     );
