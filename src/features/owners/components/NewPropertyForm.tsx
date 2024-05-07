@@ -102,7 +102,7 @@ export function NewPropertyForm() {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Title" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
@@ -116,7 +116,7 @@ export function NewPropertyForm() {
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input placeholder="Location" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
@@ -130,7 +130,7 @@ export function NewPropertyForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Description" {...field} />
+                <Textarea placeholder="" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
@@ -138,7 +138,7 @@ export function NewPropertyForm() {
           )}
         />
         <div className="flex gap-2">
-          <div className="flex-1">
+          <div className="flex-2">
             <FormField
               control={form.control}
               name="price_min"
@@ -146,7 +146,7 @@ export function NewPropertyForm() {
                 <FormItem>
                   <FormLabel>Minimun Price</FormLabel>
                   <FormControl>
-                    <Input placeholder="Minimum Price" {...field} />
+                    <Input placeholder="" {...field} />
                   </FormControl>
                   {/* <FormDescription></FormDescription> */}
                   <FormMessage />
@@ -154,7 +154,7 @@ export function NewPropertyForm() {
               )}
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-2">
             <FormField
               control={form.control}
               name="price_max"
@@ -162,7 +162,7 @@ export function NewPropertyForm() {
                 <FormItem>
                   <FormLabel>Maximum Price</FormLabel>
                   <FormControl>
-                    <Input placeholder="Maximum Price" {...field} />
+                    <Input placeholder="" {...field} />
                   </FormControl>
                   {/* <FormDescription></FormDescription> */}
                   <FormMessage />

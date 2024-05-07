@@ -1,7 +1,8 @@
+import NewBookFormSection from "@/features/renter/sections/NewBookFormSection";
 export default function Renters() {
     return (
       <div>
-        <div>This is Renters page!</div>
+        <NewBookFormSection />
       </div>
     );
   }

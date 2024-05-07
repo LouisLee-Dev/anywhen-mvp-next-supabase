@@ -1,11 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { ProfileInput, profileInputSchema } from "@/features/auth/schema";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
