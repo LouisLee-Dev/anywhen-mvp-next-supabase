@@ -26,7 +26,7 @@ export default function Header() {
         <div className="flex"></div>
         {isSignIn && (
           <div className="flex space-x-2">
-            <div className=""> Don't have an account? </div>
+            <div className=""> Don&39;t have an account? </div>
             <div className="">
               <Link
                 href="/auth/signup"
