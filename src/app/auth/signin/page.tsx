@@ -1,17 +1,9 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { type SignInInput, signInSchema } from "../schema";
+import { type SignInInput, signInSchema } from "@/features/auth/schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -26,15 +18,11 @@ import supabase from "@/core/supabase/supabase-client";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 
-interface SignInFormProps {
-  open: boolean;
-  onClose: () => void;
-}
-const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
+export default function SignInPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const form = useForm<z.infer<typeof signInSchema>>({
+  const form = useForm<SignInInput>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
@@ -54,11 +42,11 @@ const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
     if (error) {
       toast.error("User Sign in failed");
     } else {
-      onClose();
       toast.success("You have been signed in.");
-
       if (searchParams?.get("redirectTo")) {
         router.push(searchParams?.get("redirectTo"));
+      } else {
+        router.push("/");
       }
     }
   }
@@ -68,17 +56,9 @@ const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={() => {
-        onClose();
-      }}
-    >
-      <DialogContent className="sm:max-w-[425px] lg:max-w-lg xl:max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Log In</DialogTitle>
-          <DialogDescription>Welcome to anyWhen!</DialogDescription>
-        </DialogHeader>
+    <div className="auth-content-wrapper flex h-full flex-col items-center justify-center">
+      <div className="mx-auto w-[480px] rounded-md border p-6 shadow-md">
+        <h1 className="mb-6 w-full text-center"> Welcome back! </h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onFormSubmit)}
@@ -119,29 +99,9 @@ const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
             </Button>
           </form>
         </Form>
-        <Separator />
-        <div className="flex flex-col gap-1">
-          <Button type="submit">
-            Continue with
-            <svg
-              className="block h-5 w-5"
-              viewBox="0 0 32 32"
-              aria-hidden="true"
-              role="presentation"
-              focusable="false"
-            >
-              <path
-                className="fill-current text-blue-500"
-                d="M32 0v32H0V0z"
-              ></path>
-              <path
-                className="fill-current text-white"
-                d="M22.94 16H18.5v-3c0-1.27.62-2.5 2.6-2.5h2.02V6.56s-1.83-.31-3.58-.31c-3.65 0-6.04 2.21-6.04 6.22V16H9.44v4.63h4.06V32h5V20.62h3.73l.7-4.62z"
-              ></path>
-            </svg>{" "}
-            acebook
-          </Button>
-          <Button type="submit">
+        <Separator className="my-4" />
+        <div className="flex items-center space-x-4">
+          <Button type="submit" variant="outline" className="flex-1">
             Continue with{" "}
             <svg
               className="block h-5 w-5"
@@ -169,7 +129,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
             </svg>{" "}
             oogle
           </Button>
-          <Button type="submit">
+          <Button type="submit" variant="outline" className="flex-1">
             Continue with
             <svg
               className="block h-5 w-5 text-current"
@@ -184,8 +144,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ open, onClose }) => {
             pple
           </Button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
-};
-export default SignInForm;
+}

@@ -79,7 +79,11 @@
   }
 
   .page-content-wrapper {
-    @apply p-3;
+    @apply min-h-[70vh] w-full p-4;
+  }
+
+  .auth-content-wrapper {
+    @apply flex-1;
   }
 }
 

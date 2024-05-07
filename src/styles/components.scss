@@ -1,3 +1,13 @@
-.page-content-wrapper {
-  @apply min-h-[70vh] w-full p-4;
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #0003;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+::-webkit-scrollbar-track {
+  border-radius: 8px;
 }

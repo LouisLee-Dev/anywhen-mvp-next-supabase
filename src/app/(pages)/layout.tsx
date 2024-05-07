@@ -1,6 +1,6 @@
 import { AuthProvider } from "@/core/auth/AuthProvider";
 import Header from "@/core/layouts/pages/Header";
-import Footer from "@/core/layouts/pages/Footer";
+import Footer from "@/core/layouts/Footer";
 import { getCurrentUser } from "@/core/auth/server";
 
 export default async function PagesLayout({

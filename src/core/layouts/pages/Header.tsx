@@ -12,7 +12,7 @@ export default function Header() {
   return (
     <header className="shadow-md">
       <nav
-        className="mx-auto flex items-center justify-between p-3 lg:px-8"
+        className="mx-auto flex items-center justify-between p-4 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">

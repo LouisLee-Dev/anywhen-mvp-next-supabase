@@ -8,7 +8,7 @@ import {
 
 export default function Footer() {
   return (
-    <div className="w-full bg-[#1C2F4F] px-[8rem] py-[2rem] text-[#EAECF0]">
+    <div className="w-full bg-[#1C2F4F] px-[8rem] py-6 text-[#EAECF0]">
       <div className="grid grid-cols-5">
         <div className="space-y-4">
           <div className="text-2xl">anywhen</div>
@@ -64,24 +64,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      {/* <div className="flex h-5 items-center space-x-4 text-sm">
-        <div>
-          <span className="text-lg text-gray-500">Features</span>
-        </div>
-        <div>
-          <span className="text-lg text-gray-500">About</span>
-        </div>
-        <div>
-          <span className="text-lg text-gray-500">Testmonials</span>
-        </div>
-        <div>
-          <span className="text-lg text-gray-500">Contact</span>
-        </div>
-        <div>
-          <span className="text-lg text-gray-500">Download</span>
-        </div>
-      </div> */}
-      <div className="flex w-full flex-col items-center justify-center gap-2 pt-16">
+      <div className="flex w-full flex-col items-center justify-center gap-2 pt-8">
         <span className="text-gray-400">Toronto, Ontario, Canada</span>
         <span className="flex items-center text-gray-400">
           <Copyright size={16} />

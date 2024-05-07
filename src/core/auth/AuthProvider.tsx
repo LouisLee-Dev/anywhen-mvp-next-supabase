@@ -26,6 +26,7 @@ type UserStatus = {
 
 type State = {
   loading: boolean;
+  authenticated: boolean;
   user: User;
   // profile: Profile;
   error: string;
@@ -66,13 +67,17 @@ export const AuthProvider = ({
   const pathName = usePathname();
   const [state, dispatch] = useReducer(reducer, {
     loading: true,
+    authenticated: Boolean(defaultUser?.id),
     user: defaultUser,
     // profile: defaultProfile,
     error: "",
     view: "",
   });
 
-  const setUser = (value: User) => dispatch({ type: "user", payload: value });
+  const setUser = (value: User) => {
+    dispatch({ type: "user", payload: value });
+    dispatch({ type: "authenticated", payload: Boolean(value?.id) });
+  };
   // const setProfile = (value: Profile) =>
   //   dispatch({ type: "profile", payload: value });
   const setError = (value: string) =>
