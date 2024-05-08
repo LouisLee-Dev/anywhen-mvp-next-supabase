@@ -62,6 +62,9 @@ export default function HeaderDropDownMenu() {
             <DropdownMenuGroup>
               <DropdownMenuItem>Profile</DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuGroup>
+              <DropdownMenuItem>Setting</DropdownMenuItem>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
