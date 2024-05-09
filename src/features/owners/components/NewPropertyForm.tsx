@@ -40,8 +40,6 @@ export function NewPropertyForm() {
       category_id: undefined,
       title: undefined,
       description: undefined,
-      price_max: "",
-      price_min: "",
       currency_id: undefined,
       location: undefined,
     },
