@@ -75,7 +75,7 @@ export default function NewRequestSection() {
 
   return (
     <div className="page-content-wrapper">
-      <h1 className="w-full text-center">Rental Dashboard</h1>
+      <h1 className="w-full text-center">Your New Request</h1>
       <div className="mx-auto w-[640px] p-2">
         <Form {...form}>
           <form

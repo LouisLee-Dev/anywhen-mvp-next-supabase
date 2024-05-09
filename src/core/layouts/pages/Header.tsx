@@ -38,7 +38,7 @@ export default function Header() {
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
-          {profile?.role === "Property Manager" ? (
+          {profile?.role === "owner" ? (
             <NextLink
               href="/owners"
               className="text-lg font-semibold text-gray-600 hover:text-primary"
@@ -48,16 +48,16 @@ export default function Header() {
           ) : (
             <>
               <NextLink
-                href="/renter/request"
-                className="text-lg font-semibold text-gray-600 hover:text-primary"
-              >
-                New Request
-              </NextLink>
-              <NextLink
                 href="/renter/dashboard"
                 className="text-lg font-semibold text-gray-600 hover:text-primary"
               >
                 Renter Dashboard
+              </NextLink>
+              <NextLink
+                href="/renter/request"
+                className="text-lg font-semibold text-gray-600 hover:text-primary"
+              >
+                New Request
               </NextLink>
             </>
           )}
