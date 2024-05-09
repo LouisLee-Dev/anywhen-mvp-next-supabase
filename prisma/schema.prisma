@@ -13,47 +13,51 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model profiles {
-  id           String    @id @db.Uuid
+  id           String     @id @db.Uuid
   full_name    String?
   email        String?
   phone_number String?
   address      String?
-  role         String    @default("renter")
-  created_at   DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  role         String     @default("renter")
+  created_at   DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?  @default(now()) @db.Timestamptz(6)
+  requests     requests[]
 
   @@schema("public")
 }
 
 model category {
-  id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  title String
+  id       String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title    String
+  requests requests[]
 
   @@schema("public")
 }
 
 model currency {
-  id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  title String
+  id       String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title    String
+  requests requests[]
 
   @@schema("public")
 }
 
 model property {
-  id              String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title           String?
   description     String?
-  category_id     String?           @db.Uuid
-  owner_id        String?           @db.Uuid
-  price_min       String?
-  price_max       String?
-  currency_id     String?           @db.Uuid
+  category_id     String?   @db.Uuid
+  owner_id        String?   @db.Uuid
+  price_min       Float?
+  price_max       Float?
+  currency_id     String?   @db.Uuid
   location        String?
-  available_begin DateTime?         @db.Timestamptz(6)
-  available_end   DateTime?         @db.Timestamptz(6)
-  created_at      DateTime          @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime?         @default(now()) @db.Timestamptz(6)
-  images          property_images[]
+  available_begin DateTime? @db.Timestamptz(6)
+  available_end   DateTime? @db.Timestamptz(6)
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+
+  images property_images[]
 
   @@schema("public")
 }
@@ -62,9 +66,35 @@ model property_images {
   id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   property_id String    @db.Uuid
   path        String
-  property    property  @relation(fields: [property_id], references: [id])
   created_at  DateTime  @default(now()) @db.Timestamptz(6)
   updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  property property @relation(fields: [property_id], references: [id])
+
+  @@schema("public")
+}
+
+model requests {
+  id                  String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id          String    @db.Uuid
+  flexible_by_region  Boolean?  @default(false)
+  flexible_by_country Boolean?  @default(false)
+  location            String?
+  category_id         String    @db.Uuid
+  price_min           Float
+  price_max           Float
+  currency_id         String    @db.Uuid
+  start_date          String
+  end_date            String
+  num_guests          Int
+  amenities           Json      @db.Json
+  message             String
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime? @default(now()) @db.Timestamptz(6)
+
+  profile  profiles @relation(fields: [profile_id], references: [id])
+  currency currency @relation(fields: [currency_id], references: [id])
+  category category @relation(fields: [category_id], references: [id])
 
   @@schema("public")
 }

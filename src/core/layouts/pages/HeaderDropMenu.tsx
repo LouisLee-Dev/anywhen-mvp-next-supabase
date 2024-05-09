@@ -3,7 +3,6 @@ import { useAuth } from "@/core/auth/AuthProvider";
 import Link from "next/link"; // Import Link from Next.js
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ROLE_OPTIONS } from "@/features/profiles/types";
@@ -48,10 +46,10 @@ export default function HeaderDropDownMenu() {
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-2">
                 <p className="text-lg font-medium leading-none">
-                  {profile.full_name}
+                  {profile?.full_name}
                 </p>
                 <p className="text-base font-medium leading-none">
-                  {ROLE_OPTIONS[profile.role]}
+                  {ROLE_OPTIONS[profile?.role]}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">
                   {user.email}

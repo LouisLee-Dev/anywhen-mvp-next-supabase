@@ -1,4 +1,5 @@
 import { PrismaClient } from "@/db/prisma";
+import { type Prisma as PRismaa } from "@/db/prisma";
 export { type Prisma } from "@/db/prisma";
 
 (BigInt.prototype as any).toJSON = function () {

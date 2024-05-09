@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import HeaderDropDownMenu from "@/core/layouts/pages/HeaderDropMenu";
-import Link from "next/link"; // Import Link from Next.js
-import { Tally1 } from "lucide-react";
+import { useAuth } from "@/core/auth/AuthProvider";
+import NextLink from "@/components/common/NextLink"; // Import NextLink from Next.js
+import clsx from "clsx";
 
 export default function Header() {
+  const [{ authenticated, user, profile }] = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -16,14 +18,14 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="/">
+          <NextLink href="/">
             <span className="sr-only">Home</span>
             <img
               className="h-10 w-auto"
               src="/assets/images/header-logo.png"
               alt="header-logo"
             />
-          </Link>
+          </NextLink>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -36,24 +38,36 @@ export default function Header() {
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
-          <Link
-            href="/renters"
-            className="text-lg font-semibold text-gray-600 hover:text-primary"
-          >
-            Renters
-          </Link>
-          <Link
-            href="/owners"
-            className="text-lg font-semibold text-gray-600 hover:text-primary"
-          >
-            Property Managers
-          </Link>
-          <Link
+          {profile?.role === "Property Manager" ? (
+            <NextLink
+              href="/owners"
+              className="text-lg font-semibold text-gray-600 hover:text-primary"
+            >
+              Property Management
+            </NextLink>
+          ) : (
+            <>
+              <NextLink
+                href="/renter/request"
+                className="text-lg font-semibold text-gray-600 hover:text-primary"
+              >
+                New Request
+              </NextLink>
+              <NextLink
+                href="/renter/dashboard"
+                className="text-lg font-semibold text-gray-600 hover:text-primary"
+              >
+                Renter Dashboard
+              </NextLink>
+            </>
+          )}
+
+          <NextLink
             href="/contact"
             className="text-lg font-semibold text-gray-600 hover:text-primary"
           >
             Contact
-          </Link>
+          </NextLink>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <HeaderDropDownMenu></HeaderDropDownMenu>
@@ -68,7 +82,7 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <Link href="/">
+            <NextLink href="/">
               <span className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
                 <img
@@ -77,7 +91,7 @@ export default function Header() {
                   alt="header-logo"
                 />
               </span>
-            </Link>
+            </NextLink>
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -90,21 +104,21 @@ export default function Header() {
           <div className="flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <Link href="/">
+                {/* <NextLink href="/">
                   <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
                     Renters
                   </span>
-                </Link>
-                <Link href="/company">
+                </NextLink>
+                <NextLink href="/company">
                   <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
                     Property Managers
                   </span>
-                </Link>
-                <Link href="/contact">
+                </NextLink> */}
+                <NextLink href="/contact">
                   <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
                     Contact
                   </span>
-                </Link>
+                </NextLink>
               </div>
               <div className="py-6">
                 <HeaderDropDownMenu></HeaderDropDownMenu>

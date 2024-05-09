@@ -1,12 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarDays } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -14,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -24,127 +18,127 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import supabase from "@/core/supabase/supabase-client";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCurrencies } from "@/features/currency/hooks";
 import { useCategories } from "@/features/categories/hooks";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-export default function SignInPage() {
+import { RentalRequest, rentalRequestSchema } from "../schema";
+import { FormDatePickerAsText } from "@/components/form/FormDatePickerAsText";
+import { createRequestAction } from "../actions";
+import Toggle from "@/components/ui/toggle";
+import { QuillEditor } from "@/components/editor";
+
+export default function NewRequestSection() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [isLoading, setLoading] = useState(false);
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const form = useForm<any>({
-    // resolver: zodResolver(signInSchema),
+
+  const form = useForm<RentalRequest>({
+    resolver: zodResolver(rentalRequestSchema),
     defaultValues: {
-      location: undefined,
-      guest_num: "",
-      adult_num: "",
-      children_num: "",
-      start_date: "",
-      end_date: "",
-      bedRoom_num: "",
-      bed_num: "",
-      bath_num: "",
-      price_max: "",
-      price_min: "",
-      currency_id: undefined,
+      location: "",
       category_id: undefined,
+      flexible_by_region: false,
+      amenities: {},
+      message: "",
     },
   });
 
-  // async function onSignIn(formData: SignInInput) {
-  //   const {
-  //     data: { user },
-  //     error,
-  //   } = await supabase.auth.signInWithPassword({
-  //     email: formData.email,
-  //     password: formData.password,
-  //   });
-
-  //   if (error) {
-  //     toast.error("User Sign in failed");
-  //   } else {
-  //     toast.success("You have been signed in.");
-  //     if (searchParams?.get("redirectTo")) {
-  //       router.push(searchParams?.get("redirectTo"));
-  //     } else {
-  //       router.push("/");
-  //     }
-  //   }
-  // }
-
   async function onFormSubmit(values: any) {
-    console.log(values, "this is your request");
-    toast.success("You request has been sent successfully!");
-    form.reset();
+    setLoading(true);
+    createRequestAction(values)
+      .then((request) => {
+        console.log(request);
+        toast.success("You request has been sent successfully!");
+        form.reset();
+        router.push("/renter/dashboard");
+      })
+      .catch(() => {
+        toast.error("An error occurred while sending your request.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
+  const flexible_by_region = form.watch("flexible_by_region");
+
+  const {
+    formState: { errors },
+  } = form;
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
   return (
-    <div className="auth-content-wrapper flex h-full flex-col items-center justify-center">
-      <div className="mx-auto w-[540px] p-6">
-        <h1 className="mb-6 w-full text-center">
-          Choose your favorite location!
-        </h1>
+    <div className="page-content-wrapper">
+      <h1 className="w-full text-center">Rental Dashboard</h1>
+      <div className="mx-auto w-[640px] p-2">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onFormSubmit)}
-            className="space-y-3"
+            className="space-y-4"
           >
-            <div className="flex gap-2">
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name={"category_id"}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.title}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Location</FormLabel>
-                      <FormControl>
-                        <Input placeholder="" type="input" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            <div className="flex gap-2">
+            <FormField
+              control={form.control}
+              name={"category_id"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="flexible_by_region"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Toggle
+                      checked={field.value}
+                      onChange={(e) => {
+                        if (e) form.setValue("location", "");
+                        field.onChange(e);
+                      }}
+                      label="Any Region"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              disabled={flexible_by_region}
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" type="input" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <div className="flex gap-2">
               <div className="flex-1">
                 <FormField
                   control={form.control}
@@ -237,89 +231,35 @@ export default function SignInPage() {
                   )}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="flex gap-2">
               <div className="flex-1">
                 <FormField
                   control={form.control}
                   name="start_date"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">
+                    <FormItem>
                       <FormLabel>Start Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left flex justify-between",
-                                !field.value && "text-muted-foreground",
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a start date</span>
-                              )}
-                              <CalendarDays />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <FormDatePickerAsText
+                        onSelect={field.onChange}
+                        value={field.value}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
               <div className="flex-1">
-              <FormField
+                <FormField
                   control={form.control}
                   name="end_date"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">
+                    <FormItem>
                       <FormLabel>End Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left flex justify-between",
-                                !field.value && "text-muted-foreground",
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a end date</span>
-                              )}
-                              <CalendarDays />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <FormDatePickerAsText
+                        onSelect={field.onChange}
+                        value={field.value}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}
@@ -335,7 +275,14 @@ export default function SignInPage() {
                     <FormItem>
                       <FormLabel>Minimun Price</FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} />
+                        <Input
+                          placeholder=""
+                          {...field}
+                          type="number"
+                          onChange={(v) =>
+                            field.onChange(parseFloat(v.target.value))
+                          }
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -350,7 +297,14 @@ export default function SignInPage() {
                     <FormItem>
                       <FormLabel>Maximum Price</FormLabel>
                       <FormControl>
-                        <Input placeholder="" {...field} />
+                        <Input
+                          placeholder=""
+                          {...field}
+                          type="number"
+                          onChange={(v) =>
+                            field.onChange(parseFloat(v.target.value))
+                          }
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -387,7 +341,42 @@ export default function SignInPage() {
                 />
               </div>
             </div>
-            <Button type="submit" className="w-full">
+            <FormField
+              control={form.control}
+              name="num_guests"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Number of Guests</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder=""
+                      {...field}
+                      type="number"
+                      onChange={(v) => field.onChange(parseInt(v.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Message</FormLabel>
+                  <FormControl>
+                    <QuillEditor
+                      value={field.value}
+                      setValue={field.onChange}
+                      id="message"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" loading={isLoading}>
               Send your request
             </Button>
           </form>
