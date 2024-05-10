@@ -5,6 +5,7 @@ import {
   LocateIcon,
   MapPin,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -19,7 +20,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center">
               <MailIcon className="mr-2" size={18}></MailIcon>
-              <span>support@anywhen.com</span>
+              <Link href="/contact"><span>Contact Us</span></Link>
             </div>
             <div className="flex items-center">
               <MapPin className="mr-2" size={18}></MapPin>

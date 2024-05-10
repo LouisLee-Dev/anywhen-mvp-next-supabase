@@ -38,6 +38,7 @@ type State = {
 
 type Actions = {
   setError: (x: string) => void;
+  setProfile: (x: ProfileInput) => void;
   setView: (x: React.ReactNode) => void;
   actionSignOut: () => void;
 };
@@ -126,6 +127,7 @@ export const AuthProvider = ({
       {
         setError,
         setView,
+        setProfile,
         actionSignOut,
       },
     ];

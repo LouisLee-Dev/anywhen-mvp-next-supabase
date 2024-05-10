@@ -17,6 +17,7 @@ import {
 import supabase from "@/core/supabase/supabase-client";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import { getCurrentProfile } from "@/core/auth/server";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -43,9 +44,16 @@ export default function SignInPage() {
       toast.error("User Sign in failed");
     } else {
       toast.success("You have been signed in.");
+      const profile = await getCurrentProfile();
       if (searchParams?.get("redirectTo")) {
         router.push(searchParams?.get("redirectTo"));
       } else {
+        if (profile?.role === "renter") {
+          router.push("/renter/dashboard");
+          return;
+        } else if (profile?.role === "owner") {
+          router.push("/owners");
+        }
         router.push("/");
       }
     }

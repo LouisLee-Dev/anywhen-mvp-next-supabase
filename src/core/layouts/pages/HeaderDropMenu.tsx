@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NextLink from "@/components/common/NextLink"; // Import NextLink from Next.js
 import { ROLE_OPTIONS } from "@/features/profiles/types";
 
 export default function HeaderDropDownMenu() {
@@ -57,11 +58,11 @@ export default function HeaderDropDownMenu() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            {/* <DropdownMenuGroup>
+              <DropdownMenuItem><NextLink href="/profile">Profile</NextLink></DropdownMenuItem>
+            </DropdownMenuGroup> */}
             <DropdownMenuGroup>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuGroup>
-              <DropdownMenuItem>Setting</DropdownMenuItem>
+              <DropdownMenuItem><NextLink href="/setting">Setting</NextLink></DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem

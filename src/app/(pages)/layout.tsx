@@ -13,7 +13,7 @@ export default async function PagesLayout({
 
   return (
     <AuthProvider defaultUser={user} defaultProfile={profile}>
-      <div className="h-full w-full overflow-y-auto">
+      <div className="h-full w-full ">
         <Header></Header>
         {children}
         <Footer></Footer>

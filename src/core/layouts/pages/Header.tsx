@@ -38,36 +38,35 @@ export default function Header() {
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
-          {profile?.role === "owner" ? (
-            <NextLink
-              href="/owners"
-              className="text-lg font-semibold text-gray-600 hover:text-primary"
-            >
-              Property Management
-            </NextLink>
+          {authenticated ? (
+            profile?.role === "owner" ? (
+              <NextLink
+                href="/owners"
+                className="text-lg font-semibold text-gray-600 hover:text-primary"
+              >
+                Property Management
+              </NextLink>
+            ) : profile?.role === "renter" ? (
+              <>
+                <NextLink
+                  href="/renter/dashboard"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Renter Dashboard
+                </NextLink>
+                <NextLink
+                  href="/renter/request"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  New Request
+                </NextLink>
+              </>
+            ) : (
+              ""
+            )
           ) : (
-            <>
-              <NextLink
-                href="/renter/dashboard"
-                className="text-lg font-semibold text-gray-600 hover:text-primary"
-              >
-                Renter Dashboard
-              </NextLink>
-              <NextLink
-                href="/renter/request"
-                className="text-lg font-semibold text-gray-600 hover:text-primary"
-              >
-                New Request
-              </NextLink>
-            </>
+            ""
           )}
-
-          <NextLink
-            href="/contact"
-            className="text-lg font-semibold text-gray-600 hover:text-primary"
-          >
-            Contact
-          </NextLink>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <HeaderDropDownMenu></HeaderDropDownMenu>
@@ -114,11 +113,6 @@ export default function Header() {
                     Property Managers
                   </span>
                 </NextLink> */}
-                <NextLink href="/contact">
-                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
-                    Contact
-                  </span>
-                </NextLink>
               </div>
               <div className="py-6">
                 <HeaderDropDownMenu></HeaderDropDownMenu>
