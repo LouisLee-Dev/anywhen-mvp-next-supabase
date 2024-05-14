@@ -36,8 +36,10 @@ import {
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/core/auth/AuthProvider";
 import { updateProfileAction } from "@/features/profiles/actions";
+import supabase from "@/core/supabase/supabase-client";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { error } from "console";
 
 const profileFormSchema = z.object({
   full_name: z
@@ -60,6 +62,11 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 export function ProfileForm() {
   const [{ profile }, { setProfile }] = useAuth();
   const [isLoading, setLoading] = useState(false);
+  const [isChangePassword, setChangePassword] = useState(false);
+  const [isMatch, setMatch] = useState(false);
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const defaultValues: Partial<ProfileFormValues> = {
     full_name: profile?.full_name,
@@ -74,13 +81,34 @@ export function ProfileForm() {
 
   async function onSubmit(data: ProfileFormValues) {
     setLoading(true);
-    await updateProfileAction(data).then((res) => {
-      setLoading(false);
-      setProfile(data);
-      toast.success("Data submitted successfully!");
-    }).catch((err)=> {
-      toast.error("Something went wrong!");
-    });
+    await updateProfileAction(data)
+      .then((res) => {
+        setLoading(false);
+        setProfile(data);
+        toast.success("Data submitted successfully!");
+      })
+      .catch((err) => {
+        toast.error("Something went wrong!");
+        setLoading(false);
+      });
+  }
+
+  async function onChangePassword() {
+    if (newPassword !== confirmPassword) {
+      setMatch(true);
+    } else {
+      setMatch(false);
+      setChangePassword(true);
+      await supabase.auth
+        .updateUser({ password: newPassword })
+        .then((res) => {
+          toast.success("Password change successfully.");
+          setChangePassword(false);
+        })
+        .catch((err) => {
+          toast.error("Something went wrong!");
+        });
+    }
   }
 
   return (
@@ -129,7 +157,7 @@ export function ProfileForm() {
                 <DialogTitle>Change Password</DialogTitle>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
+                {/* <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="oldPassword">Old&nbsp;Password</Label>
                   <Input
                     id="oldPassword"
@@ -137,7 +165,7 @@ export function ProfileForm() {
                     type="password"
                     className="col-span-3"
                   />
-                </div>
+                </div> */}
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="newPassword">New&nbsp;Password</Label>
                   <Input
@@ -145,6 +173,8 @@ export function ProfileForm() {
                     name="newPassword"
                     type="password"
                     className="col-span-3"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -154,11 +184,21 @@ export function ProfileForm() {
                     type="password"
                     id="confirmPassword"
                     className="col-span-3"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
+                {isMatch && (
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <p className="col-span-1"></p>
+                    <p className="col-span-3 text-destructive">Password doesn't match</p>
+                  </div>
+                )}
               </div>
               <DialogFooter>
-                <Button>Save</Button>
+                <Button onClick={onChangePassword} loading={isChangePassword}>
+                  Save
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

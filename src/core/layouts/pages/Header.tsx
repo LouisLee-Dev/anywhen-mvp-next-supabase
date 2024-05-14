@@ -40,12 +40,20 @@ export default function Header() {
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
           {authenticated ? (
             profile?.role === "owner" ? (
-              <NextLink
-                href="/owners"
-                className="text-lg font-semibold text-gray-600 hover:text-primary"
-              >
-                Property Management
-              </NextLink>
+              <>
+                <NextLink
+                  href="/owners"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Property Management
+                </NextLink>
+                <NextLink
+                  href="/renter-request"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Renter Request
+                </NextLink>
+              </>
             ) : profile?.role === "renter" ? (
               <>
                 <NextLink

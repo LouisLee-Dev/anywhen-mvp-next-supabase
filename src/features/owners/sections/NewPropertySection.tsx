@@ -51,7 +51,7 @@ export default function NewPropertySection() {
               <CardDescription>Upload new property</CardDescription>
             </CardHeader>
             <CardContent>
-              <NewPropertyForm></NewPropertyForm>
+              <NewPropertyForm />
             </CardContent>
           </Card>
         </div>

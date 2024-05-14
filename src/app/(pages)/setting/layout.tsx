@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarNav } from "./components/sidebar-nav"
 
 export const metadata: Metadata = {
-  title: "Profile",
+  title: "Setting",
   description: "Account Profile setting.",
 }
 

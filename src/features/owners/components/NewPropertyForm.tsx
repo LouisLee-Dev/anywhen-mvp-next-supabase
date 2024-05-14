@@ -142,9 +142,16 @@ export function NewPropertyForm() {
               name="price_min"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Minimun Price</FormLabel>
+                  <FormLabel>Minimun&nbsp;Price</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input
+                      type="number"
+                      placeholder=""
+                      {...field}
+                      onChange={(v) =>
+                        field.onChange(parseFloat(v.target.value))
+                      }
+                    />
                   </FormControl>
                   {/* <FormDescription></FormDescription> */}
                   <FormMessage />
@@ -158,9 +165,16 @@ export function NewPropertyForm() {
               name="price_max"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Maximum Price</FormLabel>
+                  <FormLabel>Maximum&nbsp;Price</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input
+                      type="number"
+                      placeholder=""
+                      {...field}
+                      onChange={(v) =>
+                        field.onChange(parseFloat(v.target.value))
+                      }
+                    />
                   </FormControl>
                   {/* <FormDescription></FormDescription> */}
                   <FormMessage />

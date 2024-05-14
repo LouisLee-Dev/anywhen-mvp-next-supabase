@@ -89,6 +89,7 @@ model requests {
   num_guests          Int
   amenities           Json      @db.Json
   message             String
+  status              String    @default("pending")
   created_at          DateTime  @default(now()) @db.Timestamptz(6)
   updated_at          DateTime? @default(now()) @db.Timestamptz(6)
 
