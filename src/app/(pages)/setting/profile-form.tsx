@@ -191,7 +191,9 @@ export function ProfileForm() {
                 {isMatch && (
                   <div className="grid grid-cols-4 items-center gap-4">
                     <p className="col-span-1"></p>
-                    <p className="col-span-3 text-destructive">Password doesn't match</p>
+                    <p className="col-span-3 text-destructive">
+                      Password doesn&apos;t match
+                    </p>
                   </div>
                 )}
               </div>
