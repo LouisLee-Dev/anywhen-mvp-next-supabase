@@ -8,16 +8,19 @@ import {
   useAllRequests,
   useAvailableRequests,
   useAcceptedRequests,
+  useAcceptRequest,
 } from "@/features/renter-request/hooks";
 import DashboardSection from "@/features/order/sections/DashboardSection";
 import PropertyCard from "../components/PropertyCard";
 
 interface IAvailableRequestSectionProps {
   propertyId: string;
+  property: object;
 }
 
 export function AvailableRequestSection({
   propertyId,
+  property,
 }: IAvailableRequestSectionProps) {
   // const { data: properties, isLoading: isPropertiesLoading } =
   //   useMyProperties();
@@ -32,6 +35,16 @@ export function AvailableRequestSection({
   //   useAcceptedRequests();
 
   return (
-    <DashboardSection requests={availableRequests} propertyId={propertyId} />
+    <div className="grid grid-cols-4">
+      <div className="py-4">
+        <PropertyCard property={property} />
+      </div>
+      <div className="col-span-3">
+        <DashboardSection
+          requests={availableRequests}
+          propertyId={propertyId}
+        />
+      </div>
+    </div>
   );
 }

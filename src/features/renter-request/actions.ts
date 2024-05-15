@@ -1,8 +1,10 @@
 "use server";
 
+import { action } from "@/lib/safe-action";
 import { prisma } from "@/db";
 import { getMyProperties } from "@/features/properties/actions";
 import _ from "lodash";
+import { RentalRequest, rentalRequestSchema } from "./schema";
 
 export async function getAllRequest() {
   const acceptedRequests: any[] = await prisma.requests.findMany({
@@ -52,4 +54,18 @@ export async function getAcceptedRequest() {
   });
 
   return acceptedRequests;
+}
+
+export async function acceptRequest(id: string) {
+  try {
+    const request = await prisma.requests.update({
+      where: {
+        id,
+      },
+      data: { status: "accepted" },
+    });
+    return { success: true, request };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
 }

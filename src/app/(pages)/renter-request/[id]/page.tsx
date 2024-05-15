@@ -24,7 +24,7 @@ export default async function PropertyDetailPage({
   return (
     <div className="w-full">
       <div className="px-2 py-4 lg:px-[8rem]">
-        <AvailableRequestSection propertyId={propertyId} />
+        <AvailableRequestSection propertyId={propertyId} property={property} />
       </div>
     </div>
   );

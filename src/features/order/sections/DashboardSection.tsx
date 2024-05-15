@@ -1,6 +1,7 @@
 "use client";
 import { useCategories } from "@/features/categories/hooks";
 import { useCurrencies } from "@/features/currency/hooks";
+import { useAcceptRequest } from "@/features/renter-request/hooks";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,18 @@ export default function DashboardSection({
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
 
-  async function handleAccept(id: string) {}
+  const acceptRequest = useAcceptRequest();
+
+  async function handleAccept(id: string) {
+    await acceptRequest
+      .mutateAsync(id)
+      .then(({ data: { success, request } }) => {
+        if (success) {
+          console.log(request);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
 
   return (
     <div className="page-content-wrapper">
@@ -47,15 +59,24 @@ export default function DashboardSection({
                 ""
               )}
               <div className="grid grid-cols-4">
-                <div className="grid grid-cols-3">
-                  <div className="flex items-center">
-                    <Avatar className="h-12 w-12 cursor-pointer rounded-full">
-                      <AvatarImage src="/assets/avatars/01.png" alt="@shadcn" />
-                      <AvatarFallback>SC</AvatarFallback>
-                    </Avatar>
-                    <p className="whitespace-nowrap px-2 font-semibold">
-                      {t?.profile?.full_name}
-                    </p>
+                <div className="col-span-1">
+                  <div>
+                    <div className="flex items-center">
+                      <Avatar className="h-12 w-12 cursor-pointer rounded-full">
+                        <AvatarImage
+                          src="/assets/avatars/01.png"
+                          alt="@shadcn"
+                        />
+                        <AvatarFallback>SC</AvatarFallback>
+                      </Avatar>
+                      <p className="whitespace-nowrap px-2 font-semibold">
+                        {t?.profile?.full_name}
+                      </p>
+                    </div>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: `${t.message}` }}
+                      className="pt-1"
+                    />
                   </div>
                 </div>
                 <div key={t.id} className="gap-5">
