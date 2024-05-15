@@ -25,7 +25,7 @@ export default function DashboardSection({
   async function handleAccept(id: string) {
     await acceptRequest
       .mutateAsync(id)
-      .then(({ data: { success, request } }) => {
+      .then(({ success, request }) => {
         if (success) {
           console.log(request);
         }
