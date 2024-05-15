@@ -22,9 +22,15 @@ export default async function PropertyDetailPage({
   }
 
   return (
-    <div className="w-full">
-      <div className="px-2 py-4 lg:px-[8rem]">
-        <AvailableRequestSection propertyId={propertyId} property={property} />
+    <div className="page-content-wrapper">
+      <div className="px-[8rem]">
+        <h1 className="text-xl"> Available Offers </h1>
+        <div className="py-3">
+          <AvailableRequestSection
+            propertyId={propertyId}
+            property={property}
+          />
+        </div>
       </div>
     </div>
   );

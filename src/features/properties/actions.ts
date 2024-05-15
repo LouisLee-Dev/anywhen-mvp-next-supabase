@@ -43,7 +43,32 @@ export async function getMyProperties(): Promise<Property[]> {
     include: { images: true },
   });
 
-  return properties;
+  return await Promise.all(
+    properties.map(async (property) => {
+      const matchedRequests: any[] = await prisma.requests.findMany({
+        where: {
+          OR: [
+            {
+              location: property.location,
+            },
+            {
+              category_id: property.category_id,
+            },
+          ],
+          AND: [
+            {
+              status: { not: "accepted" },
+            },
+          ],
+        },
+      });
+
+      return {
+        ...property,
+        matchedRequests,
+      };
+    }),
+  );
 }
 
 export const createProperty = action(propertyInputSchema, async (data) => {

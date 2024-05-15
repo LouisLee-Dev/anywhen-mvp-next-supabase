@@ -15,22 +15,19 @@ export async function getAllRequest() {
 }
 
 export async function getAvailableRequest(propertyId: string) {
-  const myProperties = await getMyProperties();
-
-  const location = _.uniq(myProperties.filter((t) => t.id == propertyId))[0]
-    ?.location;
-
-  const category = _.uniq(myProperties.filter((t) => t.id == propertyId))[0]
-    ?.category_id;
-
+  const property = await prisma.property.findFirst({
+    where: {
+      id: propertyId,
+    },
+  });
   const availableRequests: any[] = await prisma.requests.findMany({
     where: {
       OR: [
         {
-          location,
+          location: property.location,
         },
         {
-          category_id: category,
+          category_id: property.category_id,
         },
       ],
       AND: [

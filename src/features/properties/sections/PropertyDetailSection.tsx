@@ -66,92 +66,96 @@ export default function PropertyDetailSection({
     <div className="w-full">
       <h1 className="mb-4">{property.title}</h1>
       <div className="grid grid-cols-5 gap-2">
+        <div className="col-span-2">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Details</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="text-lg font-semibold">
+                  {property.title} in {property.location}
+                </div>
+                <div className="font-medium text-gray-600">
+                  {property.price_min} - {property.price_max} CAD
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
         <div className="col-span-3">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Images</CardTitle>
-              <CardDescription>
-                Deploy your new project in one-click.
-              </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {property.images.map((t) => (
                   <div key={t.id} className="aspect-video w-full">
                     <img
                       src={getPublicUrl("properties", t.path)}
-                      className="h-full w-full rounded-md"
+                      className="h-full w-full rounded-md object-cover"
                       alt="Property Image"
                     />
                   </div>
                 ))}
+                <div className="w-full space-y-2">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-md border">
+                    <div className="h-full w-full">
+                      {avatarSrc && (
+                        <img
+                          src={avatarSrc}
+                          alt="Avatar"
+                          className="h-full w-full rounded-md object-cover"
+                        />
+                      )}
+                    </div>
+                    <div
+                      className="absolute bottom-0 z-10 flex w-full cursor-pointer items-center justify-center bg-[#333333aa]"
+                      onClick={() => {
+                        fileRef.current.click();
+                      }}
+                    >
+                      <div className="py-2">
+                        <CameraIcon color="#ffffff" size={24}></CameraIcon>
+                      </div>
+                      <input
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        onChange={handleOnChange}
+                        ref={fileRef}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-end">
+                    <Button
+                      loading={isLoading}
+                      disabled={!avatarSrc || !file}
+                      onClick={() => {
+                        setLoading(true);
+                        uploadAvatarFile(file)
+                          .then(async (fileName: string) => {
+                            return await uploadPropertyImage.mutateAsync({
+                              propertyId: property.id,
+                              imageUrl: fileName,
+                            });
+                          })
+                          .catch(() => {})
+                          .then(() => {
+                            setFile(null);
+                            setAvatarSrc("");
+                            setLoading(false);
+                          });
+                      }}
+                    >
+                      Upload Image
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
             <CardFooter className="flex justify-between"></CardFooter>
-          </Card>
-        </div>
-        <div className="col-span-2">
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Upload Property Image</CardTitle>
-              <CardDescription>
-                Deploy your new project in one-click.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="relative aspect-video w-full overflow-hidden rounded-md border">
-                <div className="h-full w-full">
-                  {avatarSrc && (
-                    <img
-                      src={avatarSrc}
-                      alt="Avatar"
-                      className="h-full w-full"
-                    />
-                  )}
-                </div>
-                <div
-                  className="absolute bottom-0 z-10 flex w-full cursor-pointer items-center justify-center bg-[#333333aa]"
-                  onClick={() => {
-                    fileRef.current.click();
-                  }}
-                >
-                  <div className="py-2">
-                    <CameraIcon color="#ffffff" size={24}></CameraIcon>
-                  </div>
-                  <input
-                    hidden
-                    accept="image/*"
-                    type="file"
-                    onChange={handleOnChange}
-                    ref={fileRef}
-                  />
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button
-                loading={isLoading}
-                disabled={!avatarSrc || !file}
-                onClick={() => {
-                  setLoading(true);
-                  uploadAvatarFile(file)
-                    .then(async (fileName: string) => {
-                      return await uploadPropertyImage.mutateAsync({
-                        propertyId: property.id,
-                        imageUrl: fileName,
-                      });
-                    })
-                    .catch(() => {})
-                    .then(() => {
-                      setFile(null);
-                      setAvatarSrc("");
-                      setLoading(false);
-                    });
-                }}
-              >
-                Upload Image
-              </Button>
-            </CardFooter>
           </Card>
         </div>
       </div>

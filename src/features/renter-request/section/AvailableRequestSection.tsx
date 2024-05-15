@@ -1,17 +1,7 @@
 "use client";
-
-import { getCurrentProfile } from "@/core/auth/server";
-import { prisma } from "@/db";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useMyProperties, useProperties } from "@/features/properties/hooks";
-import {
-  useAllRequests,
-  useAvailableRequests,
-  useAcceptedRequests,
-  useAcceptRequest,
-} from "@/features/renter-request/hooks";
-import DashboardSection from "@/features/order/sections/DashboardSection";
+import { useAvailableRequests } from "@/features/renter-request/hooks";
 import PropertyCard from "../components/PropertyCard";
+import AvailableRequests from "../components/AvailableRequests";
 
 interface IAvailableRequestSectionProps {
   propertyId: string;
@@ -35,12 +25,12 @@ export function AvailableRequestSection({
   //   useAcceptedRequests();
 
   return (
-    <div className="grid grid-cols-4">
-      <div className="py-4">
+    <div className="grid grid-cols-4 gap-3">
+      <div>
         <PropertyCard property={property} />
       </div>
       <div className="col-span-3">
-        <DashboardSection
+        <AvailableRequests
           requests={availableRequests}
           propertyId={propertyId}
         />

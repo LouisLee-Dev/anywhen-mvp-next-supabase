@@ -18,7 +18,7 @@ export default function NextLink({
   return (
     <Link
       href={href}
-      className={clsx(className, { "text-primary": path === href })}
+      className={clsx(className, { "text-primary": path.startsWith(href) })}
     >
       {children}
     </Link>

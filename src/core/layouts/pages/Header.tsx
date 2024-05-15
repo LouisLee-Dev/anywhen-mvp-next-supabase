@@ -45,13 +45,13 @@ export default function Header() {
                   href="/owners"
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
-                  Property Management
+                  My Properties
                 </NextLink>
                 <NextLink
                   href="/renter-request"
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
-                  Renter Request
+                  Offers
                 </NextLink>
               </>
             ) : profile?.role === "renter" ? (

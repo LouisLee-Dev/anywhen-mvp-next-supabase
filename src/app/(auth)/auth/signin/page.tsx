@@ -53,8 +53,7 @@ export default function SignInPage() {
           return;
         } else if (profile?.role === "owner") {
           router.push("/owners");
-        }
-        router.push("/");
+        } else router.push("/");
       }
     }
   }

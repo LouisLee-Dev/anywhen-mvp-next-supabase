@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { rentalRequestSchema } from "../renter-request/schema";
 
 export const propertyInputSchema = z.object({
   id: z.string().uuid().optional().nullable(),
@@ -17,6 +18,7 @@ export const propertyInputSchema = z.object({
 export type PropertyInput = z.infer<typeof propertyInputSchema>;
 
 export const propertySchema = propertyInputSchema.extend({
+  matchedRequests: z.array(rentalRequestSchema).optional(),
   images: z.array(
     z.object({
       id: z.string().uuid(),
