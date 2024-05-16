@@ -11,12 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
-import { ProfileInput } from "@/features/auth/schema";
 import { ClockIcon, HeartHandshakeIcon, StarIcon } from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
 
 interface IProfileDialogProps {
-  profile: ProfileInput;
+  profile: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -28,7 +27,6 @@ export default function ProfileDialog({
 }: IProfileDialogProps) {
   const router = useRouter();
 
-  console.log(profile);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[560px]">
@@ -53,7 +51,7 @@ export default function ProfileDialog({
               <ClockIcon size={20} className="mr-1" />
               Joined{" "}
               {dayjs
-                .duration(-dayjs().diff(dayjs(profile.created_at)))
+                .duration(-dayjs().diff(dayjs(profile?.created_at)))
                 .humanize(true)}
               <div className="grid grid-cols-4 items-center gap-4"></div>
             </div>
