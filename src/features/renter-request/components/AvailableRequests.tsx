@@ -24,6 +24,8 @@ export default function AvailableRequests({
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
 
   const [open, setOpen] = useState(false);
+  const [profile, setProfile] = useState<any>({});
+  const [create_at, setCreateAt] = useState<string>("");
 
   const acceptRequest = useAcceptRequest();
 
@@ -40,21 +42,26 @@ export default function AvailableRequests({
 
   return (
     <div className="w-full space-y-2">
+      <ProfileDialog
+        profile={profile}
+        open={open}
+        create_at={create_at}
+        onOpenChange={setOpen}
+      />
       {requests.map((t: any) => (
         <Card className="w-full" key={t.id}>
           <CardContent className="relative p-3">
-            <ProfileDialog
-              profile={t.profile}
-              open={open}
-              onOpenChange={setOpen}
-            />
             <div className="grid grid-cols-4">
               <div className="col-span-1">
                 <div className="space-y-2">
                   <div className="flex items-center">
                     <Avatar
                       className="h-12 w-12 cursor-pointer rounded-full"
-                      onClick={() => setOpen(true)}
+                      onClick={() => {
+                        setOpen(true);
+                        setProfile(t?.profile);
+                        setCreateAt(t?.profile?.created_at);
+                      }}
                     >
                       <AvatarImage src="/assets/avatars/01.png" alt="@shadcn" />
                       <AvatarFallback>SC</AvatarFallback>
