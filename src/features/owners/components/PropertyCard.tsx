@@ -35,7 +35,7 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
           </div>
         )}
         {property?.matchedRequests?.length && (
-          <div className="absolute bottom-2 right-2">
+          <div className="absolute bottom-2 right-[-8px]">
             <div className="text-xs rounded-md bg-red-500 px-2 py-1 text-white">
               {property?.matchedRequests?.length} Available Offers
             </div>

@@ -4,6 +4,7 @@ import { action } from "@/lib/safe-action";
 import { prisma } from "@/db";
 import { getMyProperties } from "@/features/properties/actions";
 import _ from "lodash";
+import { omit } from "lodash";
 import { RentalRequest, rentalRequestSchema } from "./schema";
 
 export async function getAllRequest() {
@@ -36,7 +37,7 @@ export async function getAvailableRequest(propertyId: string) {
         },
       ],
     },
-    include: { profile: { select: { full_name: true } } },
+    include: { profile: true },
   });
 
   return availableRequests;

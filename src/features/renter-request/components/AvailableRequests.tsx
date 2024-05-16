@@ -1,10 +1,12 @@
 "use client";
+import { useState } from "react";
 import { useCategories } from "@/features/categories/hooks";
 import { useCurrencies } from "@/features/currency/hooks";
 import { useAcceptRequest } from "@/features/renter-request/hooks";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import ProfileDialog from "./ProfileDialog";
 import { RentalRequest } from "../schema";
 import { ClockIcon, HeartHandshakeIcon, StarIcon } from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
@@ -20,6 +22,8 @@ export default function AvailableRequests({
 }: IAvailableRequestsProps) {
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
+
+  const [open, setOpen] = useState(false);
 
   const acceptRequest = useAcceptRequest();
 
@@ -39,11 +43,19 @@ export default function AvailableRequests({
       {requests.map((t: any) => (
         <Card className="w-full" key={t.id}>
           <CardContent className="relative p-3">
+            <ProfileDialog
+              profile={t.profile}
+              open={open}
+              onOpenChange={setOpen}
+            />
             <div className="grid grid-cols-4">
               <div className="col-span-1">
                 <div className="space-y-2">
                   <div className="flex items-center">
-                    <Avatar className="h-12 w-12 cursor-pointer rounded-full">
+                    <Avatar
+                      className="h-12 w-12 cursor-pointer rounded-full"
+                      onClick={() => setOpen(true)}
+                    >
                       <AvatarImage src="/assets/avatars/01.png" alt="@shadcn" />
                       <AvatarFallback>SC</AvatarFallback>
                     </Avatar>
@@ -53,7 +65,7 @@ export default function AvailableRequests({
                   </div>
                   <div className="flex items-center text-base font-medium text-gray-500">
                     <ClockIcon size={20} className="mr-1" />
-                    Joined{" "}
+                    Posted{" "}
                     {dayjs
                       .duration(-dayjs().diff(dayjs(t.created_at)))
                       .humanize(true)}
