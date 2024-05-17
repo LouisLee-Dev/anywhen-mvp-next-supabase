@@ -2,7 +2,8 @@
 
 import { Property } from "@/features/properties/schema";
 import { getPublicUrl } from "@/lib/client";
-import { HeartHandshakeIcon, StarIcon } from "lucide-react";
+import { EyeIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface IPropertyCardProps {
@@ -14,15 +15,15 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
 
   return (
     <div className="relative w-full">
-      <div className="absolute right-2 top-2 z-10 cursor-pointer text-white hover:text-red-500">
-        <HeartHandshakeIcon size={24}></HeartHandshakeIcon>
-      </div>
       <div
-        className="relative aspect-square w-full cursor-pointer rounded-md"
+        className="absolute right-2 top-[-8px] z-10 cursor-pointer rounded bg-green-600 p-2 text-white transition-all duration-500 hover:bg-green-400"
         onClick={() => {
-          router.push(`/owners/property/${property.id}`);
+          router.push(`/pm/properties/${property.id}`);
         }}
       >
+        <EyeIcon size={24} />
+      </div>
+      <div className="relative aspect-square w-full cursor-pointer rounded-md">
         {property?.images?.length > 0 && (
           <img
             src={getPublicUrl("properties", property.images[0].path)}
@@ -36,9 +37,12 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
         )}
         {property?.matchedRequests?.length && (
           <div className="absolute bottom-2 right-[-8px]">
-            <div className="text-xs rounded-md bg-red-500 px-2 py-1 text-white">
-              {property?.matchedRequests?.length} Available Offers
-            </div>
+            <Link
+              href={`/pm/properties/${property.id}/requests`}
+              className="text-xs rounded-md bg-red-600 px-2 py-1 text-white transition-all duration-500 hover:bg-red-400"
+            >
+              {property?.matchedRequests?.length} Matched Requests
+            </Link>
           </div>
         )}
       </div>

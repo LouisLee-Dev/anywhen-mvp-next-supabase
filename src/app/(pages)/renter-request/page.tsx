@@ -1,4 +1,4 @@
-import { RenterRequestSection } from "@/features/renter-request/section/RenterRequestSection";
+import { RenterRequestSection } from "@/features/requests/section/RenterRequestSection";
 
 export default function Renters() {
   return <RenterRequestSection />;

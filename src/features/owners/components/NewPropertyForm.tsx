@@ -57,7 +57,7 @@ export function NewPropertyForm() {
       .mutateAsync(values)
       .then(({ data: { success, property } }) => {
         if (success) {
-          router.push(`/owners/property/${property.id}`);
+          router.push(`/pm/properties/property/${property.id}`);
         }
       })
       .catch((err) => console.log(err))

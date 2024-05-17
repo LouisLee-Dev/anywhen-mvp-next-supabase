@@ -26,3 +26,19 @@ export async function getCurrentProfile() {
 
   return profile;
 }
+
+export async function getNotifications() {
+  const user = await getCurrentUser();
+
+  if (!user) return null;
+  const notifications = await prisma.notifications.findMany({
+    where: {
+      to: user.id,
+    },
+    orderBy: {
+      created_at: "desc",
+    },
+  });
+
+  return notifications;
+}

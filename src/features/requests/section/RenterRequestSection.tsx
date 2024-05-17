@@ -6,9 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMyProperties, useProperties } from "@/features/properties/hooks";
 import {
   useAllRequests,
-  useAvailableRequests,
+  useMatchedRequestsOfProperty,
   useAcceptedRequests,
-} from "@/features/renter-request/hooks";
+} from "@/features/requests/hooks";
 import DashboardSection from "@/features/order/sections/DashboardSection";
 import PropertyCard from "../components/PropertyCard";
 

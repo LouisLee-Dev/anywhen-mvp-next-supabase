@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { offerSchema } from "../offers/schema";
 
 export const rentalRequestSchema = z.object({
   id: z.string().optional(),
@@ -16,6 +17,10 @@ export const rentalRequestSchema = z.object({
     bedroom: z.number().optional(),
   }),
   message: z.string(),
+  offer_ids: z.array(z.string().uuid()).optional(),
+  offers: z.array(offerSchema).optional(),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional(),
 });
 
 export type RentalRequest = z.infer<typeof rentalRequestSchema>;

@@ -2,24 +2,26 @@
 import { useState } from "react";
 import { useCategories } from "@/features/categories/hooks";
 import { useCurrencies } from "@/features/currency/hooks";
-import { useAcceptRequest } from "@/features/renter-request/hooks";
+import { useAcceptRentalRequestForProperty } from "@/features/requests/hooks";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import ProfileDialog from "./ProfileDialog";
 import { RentalRequest } from "../schema";
-import { ClockIcon, HeartHandshakeIcon, StarIcon } from "lucide-react";
+import { ClockIcon } from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
+import { useConfirm } from "@/components/confirm";
 
-interface IAvailableRequestsProps {
+interface IRequestsSectionProps {
   requests: RentalRequest[];
   propertyId: string;
 }
 
-export default function AvailableRequests({
+export default function RequestsSection({
   requests,
   propertyId,
-}: IAvailableRequestsProps) {
+}: IRequestsSectionProps) {
+  const confirm = useConfirm();
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
 
@@ -27,11 +29,11 @@ export default function AvailableRequests({
   const [profile, setProfile] = useState<any>({});
   const [create_at, setCreateAt] = useState<string>("");
 
-  const acceptRequest = useAcceptRequest();
+  const acceptRequest = useAcceptRentalRequestForProperty(propertyId);
 
   async function handleAccept(id: string) {
     await acceptRequest
-      .mutateAsync(id)
+      .mutateAsync({ requestId: id })
       .then(({ success, request }) => {
         if (success) {
           console.log(request);
@@ -51,6 +53,11 @@ export default function AvailableRequests({
       {requests.map((t: any) => (
         <Card className="w-full" key={t.id}>
           <CardContent className="relative p-3">
+            {t.offers.length > 0 && (
+              <div className="absolute right-[-8px] top-2 rounded bg-blue-500 px-2 py-1 text-white">
+                Offer Sent
+              </div>
+            )}
             <div className="grid grid-cols-4">
               <div className="col-span-1">
                 <div className="space-y-2">
@@ -113,15 +120,43 @@ export default function AvailableRequests({
               </div>
             </div>
             <div className="flex items-center justify-end">
-              <Button
-                type="button"
-                size="sm"
-                className="mt-2"
-                color="primary"
-                onClick={() => handleAccept(t.id)}
-              >
-                Accept Request
-              </Button>
+              {t.offers.length == 0 ? (
+                <Button
+                  type="button"
+                  size="sm"
+                  className="mt-2"
+                  variant="default"
+                  onClick={() => {
+                    confirm({
+                      title: "Accept Request",
+                      description:
+                        "Are you sure you want to accept this request?",
+                    }).then(() => {
+                      handleAccept(t.id);
+                    });
+                  }}
+                >
+                  Accept Request
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  size="sm"
+                  className="mt-2"
+                  variant="danger"
+                  onClick={() => {
+                    confirm({
+                      title: "Cancel Request",
+                      description:
+                        "Are you sure you want to cancel this request?",
+                    }).then(() => {
+                      // handleAccept(t.id);
+                    });
+                  }}
+                >
+                  Cancel Request
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>

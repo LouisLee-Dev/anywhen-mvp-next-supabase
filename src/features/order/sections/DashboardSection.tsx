@@ -1,7 +1,7 @@
 "use client";
 import { useCategories } from "@/features/categories/hooks";
 import { useCurrencies } from "@/features/currency/hooks";
-import { useAcceptRequest } from "@/features/renter-request/hooks";
+import { useAcceptRentalRequestForProperty } from "@/features/requests/hooks";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ export default function DashboardSection({
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
 
-  const acceptRequest = useAcceptRequest();
+  const acceptRequest = useAcceptRentalRequestForProperty();
 
   async function handleAccept(id: string) {
     await acceptRequest

@@ -19,12 +19,17 @@ import type {
   User,
 } from "@supabase/supabase-js";
 import { ProfileInput } from "@/features/auth/schema";
-import { getCurrentProfile } from "./server";
+import { getCurrentProfile, getNotifications } from "./server";
 import { toast } from "sonner";
 
-type UserStatus = {
-  user: string;
-  online_at: string;
+export type Notification = {
+  id: string;
+  from: string;
+  to: string;
+  body: any;
+  viewed: boolean;
+  created_at: Date;
+  updated_at: Date;
 };
 
 type State = {
@@ -34,12 +39,14 @@ type State = {
   profile: ProfileInput;
   error: string;
   view: React.ReactNode;
+  notifications: Notification[];
 };
 
 type Actions = {
   setError: (x: string) => void;
   setProfile: (x: ProfileInput) => void;
   setView: (x: React.ReactNode) => void;
+  setNotifications: (x: Notification[]) => void;
   actionSignOut: () => void;
 };
 
@@ -50,6 +57,7 @@ interface AuthProviderProps {
   defaultUser: User;
   defaultProfile: ProfileInput;
   children: ReactNode;
+  notifications: Notification[];
 }
 
 function reducer(
@@ -66,9 +74,11 @@ export const AuthProvider = ({
   defaultUser,
   defaultProfile,
   children,
+  notifications,
 }: AuthProviderProps) => {
   const router = useRouter();
   const pathName = usePathname();
+
   const [state, dispatch] = useReducer(reducer, {
     loading: true,
     authenticated: Boolean(defaultUser?.id),
@@ -76,6 +86,7 @@ export const AuthProvider = ({
     profile: defaultProfile,
     error: "",
     view: "",
+    notifications,
   });
 
   const setUser = (value: User) => {
@@ -88,6 +99,8 @@ export const AuthProvider = ({
     dispatch({ type: "error", payload: value });
   const setView = (value: React.ReactNode) =>
     dispatch({ type: "view", payload: value });
+  const setNotifications = (value: Notification[]) =>
+    dispatch({ type: "notifications", payload: value });
 
   const actionSignOut = useCallback(async () => {
     const redirectUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL);
@@ -108,10 +121,14 @@ export const AuthProvider = ({
         if (currentSession) {
           setUser(currentSession.user);
           const profile = await getCurrentProfile();
+          const notifications = await getNotifications();
+
           setProfile(profile);
+          setNotifications(notifications);
         } else {
           setUser(null);
           setProfile(null);
+          setNotifications([]);
         }
       },
     );
@@ -121,6 +138,40 @@ export const AuthProvider = ({
     };
   }, []);
 
+  useEffect(() => {
+    const channel = supabase.channel("notifications").on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "notifications",
+        // filter: `to=eq.${state.user.id}`,
+      },
+      (payload: any) => {
+        console.log(payload);
+        if (payload.type === "INSERT") {
+          setNotifications([...notifications, payload]);
+          toast.success(payload.new.body.message);
+        } else if (payload.type === "UPDATE") {
+          setNotifications(
+            notifications.map((notification) =>
+              notification.id === payload.new.id ? payload.new : notification,
+            ),
+          );
+          toast.success(payload.new.body.message);
+        } else if (payload.type === "DELETE") {
+          setNotifications(
+            notifications.filter((t) => t.id !== payload.old.id),
+          );
+        }
+      },
+    );
+
+    return () => {
+      channel?.unsubscribe();
+    };
+  }, [state.user.id]);
+
   const value = useMemo((): [State, Actions] => {
     return [
       state as State,
@@ -128,6 +179,7 @@ export const AuthProvider = ({
         setError,
         setView,
         setProfile,
+        setNotifications,
         actionSignOut,
       },
     ];
@@ -137,7 +189,7 @@ export const AuthProvider = ({
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = useContext<[State, Actions]>(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }

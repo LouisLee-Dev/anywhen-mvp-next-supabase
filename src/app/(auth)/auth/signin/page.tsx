@@ -52,7 +52,7 @@ export default function SignInPage() {
           router.push("/renter/dashboard");
           return;
         } else if (profile?.role === "owner") {
-          router.push("/owners");
+          router.push("/pm/properties");
         } else router.push("/");
       }
     }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCategories } from "@/features/categories/hooks";
-import { NewPropertyForm } from "../components/NewPropertyForm";
+import { NewPropertyForm } from "../../owners/components/NewPropertyForm";
 import {
   Card,
   CardContent,
@@ -10,13 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useMyProperties, useProperties } from "@/features/properties/hooks";
-import PropertyCard from "../components/PropertyCard";
+import PropertyCard from "../../owners/components/PropertyCard";
 
-// interface INewPropertySectionProps {
-
-// }
-
-export default function NewPropertySection() {
+export default function PropertiesSection() {
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: properties, isLoading: isPropertiesLoading } =
     useMyProperties();

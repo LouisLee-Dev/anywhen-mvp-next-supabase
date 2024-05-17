@@ -4,12 +4,30 @@ import { prisma } from "@/db";
 import { RentalRequest } from "./schema";
 import { getCurrentProfile } from "@/core/auth/server";
 
-export async function getRequests() {
+export async function getMatchedRequests() {
   const profile = await getCurrentProfile();
 
   const requests = await prisma.requests.findMany({
     where: {
       profile_id: profile.id,
+    },
+  });
+
+  return requests;
+}
+
+export async function getMyRequests() {
+  const profile = await getCurrentProfile();
+
+  const requests = await prisma.requests.findMany({
+    where: {
+      profile_id: profile.id,
+    },
+    orderBy: {
+      created_at: "desc",
+    },
+    include: {
+      offers: true,
     },
   });
 

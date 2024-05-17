@@ -6,9 +6,10 @@ import HeaderDropDownMenu from "@/core/layouts/pages/HeaderDropMenu";
 import { useAuth } from "@/core/auth/AuthProvider";
 import NextLink from "@/components/common/NextLink"; // Import NextLink from Next.js
 import clsx from "clsx";
+import { BellDotIcon } from "lucide-react";
 
 export default function Header() {
-  const [{ authenticated, user, profile }] = useAuth();
+  const [{ authenticated, user, profile, notifications }] = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -42,7 +43,7 @@ export default function Header() {
             profile?.role === "owner" ? (
               <>
                 <NextLink
-                  href="/owners"
+                  href="/pm/properties"
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
                   My Properties
@@ -68,6 +69,12 @@ export default function Header() {
                 >
                   New Request
                 </NextLink>
+                <NextLink
+                  href="/renter/pricing"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Pricing
+                </NextLink>
               </>
             ) : (
               ""
@@ -76,7 +83,15 @@ export default function Header() {
             ""
           )}
         </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden space-x-8 lg:flex lg:flex-1 lg:items-center lg:justify-end">
+          <div className="relative cursor-pointer text-gray-600 hover:text-gray-900">
+            <BellDotIcon className="h-8 w-8 " />
+            {notifications?.length > 0 && (
+              <div className="absolute right-[-8px] top-[-8px] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white">
+                {notifications?.length}
+              </div>
+            )}
+          </div>
           <HeaderDropDownMenu></HeaderDropDownMenu>
         </div>
       </nav>

@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  getAvailableRequest,
+  getMatchedRequests,
   getAcceptedRequest,
   getAllRequest,
-  acceptRequest,
+  acceptRentalRequestForProperty,
 } from "./actions";
 import { RentalRequest } from "./schema";
 import { toast } from "sonner";
@@ -19,13 +19,13 @@ export const useAllRequests = () => {
   });
 };
 
-export const useAvailableRequests = (propertyId: string) => {
+export const useMatchedRequestsOfProperty = (propertyId: string) => {
   return useQuery({
     initialData: [],
-    queryKey: ["owner", "availableRequests"],
+    queryKey: ["property", propertyId, "requests"],
     queryFn: async () => {
-      const availableRequests: any[] = await getAvailableRequest(propertyId);
-      return availableRequests;
+      const matchedRequests: any[] = await getMatchedRequests(propertyId);
+      return matchedRequests;
     },
   });
 };
@@ -41,26 +41,34 @@ export const useAcceptedRequests = () => {
   });
 };
 
-export const useAcceptRequest = () => {
+export const useAcceptRentalRequestForProperty = (propertyId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => {
-      return acceptRequest(id);
+    mutationFn: ({ requestId }: { requestId: string }) => {
+      return acceptRentalRequestForProperty(propertyId, requestId).catch(
+        (e) => {
+          console.log(e);
+          return { success: false, request: null };
+        },
+      );
     },
     onSuccess: async ({ success, request }, variables, context) => {
       if (success) {
         queryClient.setQueryData(
-          ["owner", "availableRequests"],
+          ["property", propertyId, "requests"],
           (requests: RentalRequest[]) => {
-            return requests?.filter((t) => request.id != t.id);
+            return requests.map((t) => (t.id === request.id ? request : t));
           },
         );
-        toast.success(`Request accepted successfully`);
+        toast.success(
+          `You accpeted a request. Renter will get notification soon.`,
+        );
       } else {
         toast.error("Request failed");
       }
     },
     onError: (error, variables, context) => {
+      console.log(error);
       toast.error("Request failed");
     },
   });

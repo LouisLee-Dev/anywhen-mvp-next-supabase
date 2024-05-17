@@ -55,11 +55,6 @@ export async function getMyProperties(): Promise<Property[]> {
               category_id: property.category_id,
             },
           ],
-          AND: [
-            {
-              status: { not: "accepted" },
-            },
-          ],
         },
       });
 

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { rentalRequestSchema } from "../renter-request/schema";
+import { rentalRequestSchema } from "../requests/schema";
 
 export const propertyInputSchema = z.object({
   id: z.string().uuid().optional().nullable(),
