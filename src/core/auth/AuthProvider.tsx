@@ -143,41 +143,45 @@ export const AuthProvider = ({
   }, []);
 
   useEffect(() => {
-    const channel = supabase
-      .channel("notifications")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "notifications",
-          filter: `to=eq.${state.user.id}`,
-        },
-        (payload: any) => {
-          console.log(payload);
-          if (payload.eventType === "INSERT") {
-            setNotifications([...notifications, payload.new]);
-            toast.success(payload.new.message);
-          } else if (payload.eventType === "UPDATE") {
-            setNotifications(
-              notifications.map((notification) =>
-                notification.id === payload.new.id ? payload.new : notification,
-              ),
-            );
-            toast.success(payload.new.message);
-          } else if (payload.eventType === "DELETE") {
-            setNotifications(
-              notifications.filter((t) => t.id !== payload.old.id),
-            );
-          }
-        },
-      )
-      .subscribe();
+    if (state?.user) {
+      const channel = supabase
+        .channel("notifications")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "notifications",
+            filter: `to=eq.${state.user.id}`,
+          },
+          (payload: any) => {
+            console.log(payload);
+            if (payload.eventType === "INSERT") {
+              setNotifications([...notifications, payload.new]);
+              toast.success(payload.new.message);
+            } else if (payload.eventType === "UPDATE") {
+              setNotifications(
+                notifications.map((notification) =>
+                  notification.id === payload.new.id
+                    ? payload.new
+                    : notification,
+                ),
+              );
+              toast.success(payload.new.message);
+            } else if (payload.eventType === "DELETE") {
+              setNotifications(
+                notifications.filter((t) => t.id !== payload.old.id),
+              );
+            }
+          },
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [state.user.id, notifications]);
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [state.user?.id, notifications]);
 
   const value = useMemo((): [State, Actions] => {
     return [

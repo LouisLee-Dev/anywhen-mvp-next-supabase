@@ -20,11 +20,11 @@ export default function DashboardSection({
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
 
-  const acceptRequest = useAcceptRentalRequestForProperty();
+  const acceptRequest = useAcceptRentalRequestForProperty(propertyId);
 
   async function handleAccept(id: string) {
     await acceptRequest
-      .mutateAsync(id)
+      .mutateAsync({ requestId: id })
       .then(({ success, request }) => {
         if (success) {
           console.log(request);

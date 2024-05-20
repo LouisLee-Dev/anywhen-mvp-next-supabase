@@ -54,6 +54,12 @@ export default function Header() {
                 >
                   Offers
                 </NextLink>
+                <NextLink
+                  href="/renter/pricing"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Pricing
+                </NextLink>
               </>
             ) : profile?.role === "renter" ? (
               <>
@@ -68,12 +74,6 @@ export default function Header() {
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
                   New Request
-                </NextLink>
-                <NextLink
-                  href="/renter/pricing"
-                  className="text-lg font-semibold text-gray-600 hover:text-primary"
-                >
-                  Pricing
                 </NextLink>
               </>
             ) : (
