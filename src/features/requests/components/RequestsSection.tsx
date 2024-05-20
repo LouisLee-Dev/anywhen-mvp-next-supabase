@@ -11,7 +11,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import ProfileDialog from "./ProfileDialog";
 import { RentalRequest } from "../schema";
-import { ClockIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  CircleDollarSignIcon,
+  ClockIcon,
+  DollarSignIcon,
+  HotelIcon,
+  MapPinIcon,
+} from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
 import { useConfirm } from "@/components/confirm";
 
@@ -25,9 +32,6 @@ export default function RequestsSection({
   propertyId,
 }: IRequestsSectionProps) {
   const confirm = useConfirm();
-  const { data: categories, isLoading: isCategoriesLoading } = useCategories();
-  const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
-
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState<any>({});
   const [create_at, setCreateAt] = useState<string>("");
@@ -109,38 +113,37 @@ export default function RequestsSection({
                     </div>
                   </div>
                 </div>
-                <div className="col-span-3 space-y-1">
-                  <div className="text-lg font-semibold">
-                    {
-                      categories.find(
-                        (category) => category.id === t.category_id,
-                      )?.title
-                    }
+                <div className="col-span-3 space-y-2">
+                  <div className="font-semibold text-gray-600">
+                    Request Details
                   </div>
-                  <div className="font-semibold">{t.location} </div>
-                  <div className="flex items-center font-medium text-gray-500">
-                    <div>
-                      {t.price_min}{" "}
-                      {
-                        currencies.find(
-                          (currency) => currency.id === t.currency_id,
-                        )?.title
-                      }{" "}
-                      ~ {t.price_max}{" "}
-                      {
-                        currencies.find(
-                          (currency) => currency.id === t.currency_id,
-                        )?.title
-                      }
+                  <div className="space-y-3 px-2">
+                    <div className="flex items-center space-x-1 text-lg font-semibold">
+                      <HotelIcon></HotelIcon>
+                      <span>{t.category.title}</span>
                     </div>
+                    <div className="flex items-center space-x-1 font-medium text-gray-500">
+                      <MapPinIcon size={20}></MapPinIcon>
+                      <span>{t.location}</span>
+                    </div>
+                    <div className="flex items-center space-x-1  text-gray-500">
+                      <CircleDollarSignIcon size={20}></CircleDollarSignIcon>
+                      <span>
+                        {t.price_min} {t.currency.title} ~ {t.price_max}{" "}
+                        {t.currency.title}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-1  text-gray-500">
+                      <CalendarIcon size={20}></CalendarIcon>
+                      <span>
+                        {t.start_date} ~ {t.end_date}
+                      </span>
+                    </div>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: `${t.message}` }}
+                      className="w-full rounded-md border p-2"
+                    />
                   </div>
-                  <div className="font-medium text-gray-500">
-                    {t.start_date} ~ {t.end_date}
-                  </div>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: `${t.message}` }}
-                    className="w-full rounded-md border p-2"
-                  />
                 </div>
               </div>
               <div className="flex items-center justify-end">
@@ -152,15 +155,15 @@ export default function RequestsSection({
                     variant="default"
                     onClick={() => {
                       confirm({
-                        title: "Accept Request",
+                        title: "Send an offer",
                         description:
-                          "Are you sure you want to accept this request?",
+                          "Are you sure you want to accept this request and send an offer?",
                       }).then(() => {
                         handleAcceptRequest(t.id);
                       });
                     }}
                   >
-                    Accept Request
+                    Send Offer
                   </Button>
                 ) : (
                   <Button
@@ -170,9 +173,9 @@ export default function RequestsSection({
                     variant="danger"
                     onClick={() => {
                       confirm({
-                        title: "Cancel Request",
+                        title: "Cancel offer",
                         description:
-                          "Are you sure you want to cancel this request?",
+                          "Are you sure you want to cancel this offer?",
                       }).then(() => {
                         handleCancelRequest(t.id);
                       });

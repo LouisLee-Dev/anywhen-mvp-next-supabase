@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const rentalRequestSchema = z.object({
+export const requestInputSchema = z.object({
   id: z.string().optional(),
   profile_id: z.string().uuid().optional(),
   flexible_by_region: z.boolean(),
@@ -18,4 +18,4 @@ export const rentalRequestSchema = z.object({
   message: z.string(),
 });
 
-export type RentalRequest = z.infer<typeof rentalRequestSchema>;
+export type RentalRequest = z.infer<typeof requestInputSchema>;

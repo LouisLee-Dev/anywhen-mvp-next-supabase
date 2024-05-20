@@ -2,7 +2,12 @@
 
 import { getCurrentProfile } from "@/core/auth/server";
 import { prisma } from "@/db";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useMyProperties, useProperties } from "@/features/properties/hooks";
 import {
   useAllRequests,
@@ -19,31 +24,27 @@ export function RenterRequestSection() {
     useAcceptedRequests();
 
   return (
-    <div className="page-content-wrapper">
-      <Tabs defaultValue="available" className="w-full px-5 py-5">
-        <TabsList className="w-full">
-          <TabsTrigger value="available" className="w-1/2">
-            Available
-          </TabsTrigger>
-          <TabsTrigger value="accepted" className="w-1/2">
-            Accepted
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="available">
-          {isPropertiesLoading ? (
-            <p>Loading...</p>
-          ) : (
-            <div className="grid grid-cols-6 gap-4 p-3">
-              {properties.map((property: any) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
-            </div>
-          )}
-        </TabsContent>
-        <TabsContent value="accepted">
-          <DashboardSection requests={acceptedRequests} propertyId="null" />
-        </TabsContent>
-      </Tabs>
+    <div className="page-content-wrapper px-8">
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="active">
+          <AccordionTrigger className="hover:no-underline">
+            Active Offers
+          </AccordionTrigger>
+          <AccordionContent>This is Active Offer Section</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="sent">
+          <AccordionTrigger className="hover:no-underline">
+            Sent Offers
+          </AccordionTrigger>
+          <AccordionContent>This is Sent Offer Section</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="declined">
+          <AccordionTrigger className="hover:no-underline">
+            Declined Offers
+          </AccordionTrigger>
+          <AccordionContent>This is Declined Offer Section</AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }

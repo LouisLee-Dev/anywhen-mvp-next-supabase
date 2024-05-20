@@ -1,8 +1,8 @@
 "use server";
 
 import { prisma } from "@/db";
-import { RentalRequest } from "./schema";
 import { getCurrentProfile } from "@/core/auth/server";
+import { RentalRequest } from "../requests/schema";
 
 export async function getMatchedRequests() {
   const profile = await getCurrentProfile();
@@ -27,6 +27,8 @@ export async function getMyRequests() {
       created_at: "desc",
     },
     include: {
+      category: true,
+      currency: true,
       offers: true,
     },
   });
@@ -53,6 +55,11 @@ export async function createRequestAction(data: RentalRequest) {
         },
         num_guests: data.num_guests,
         message: data.message,
+      },
+      include: {
+        category: true,
+        currency: true,
+        offers: true,
       },
     });
     return request;

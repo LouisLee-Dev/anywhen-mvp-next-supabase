@@ -5,15 +5,14 @@ import { prisma } from "@/db";
 import { Property, propertyInputSchema } from "./schema";
 import { z } from "zod";
 import { getCurrentUser } from "@/core/auth/server";
+import { getMatchedRequestsOfProperty } from "../requests/actions";
 
 export async function getProperty(propertyId: string): Promise<Property> {
   const property = await prisma.property.findFirst({
     where: {
       id: propertyId,
     },
-    include: {
-      images: true,
-    },
+    include: { category: true, owner: true, images: true },
   });
 
   return property;
@@ -40,24 +39,12 @@ export async function getMyProperties(): Promise<Property[]> {
     where: {
       owner_id: user.id,
     },
-    include: { images: true },
+    include: { category: true, owner: true, images: true },
   });
 
   return await Promise.all(
     properties.map(async (property) => {
-      const matchedRequests: any[] = await prisma.requests.findMany({
-        where: {
-          OR: [
-            {
-              location: property.location,
-            },
-            {
-              category_id: property.category_id,
-            },
-          ],
-        },
-      });
-
+      const matchedRequests = await getMatchedRequestsOfProperty(property);
       return {
         ...property,
         matchedRequests,

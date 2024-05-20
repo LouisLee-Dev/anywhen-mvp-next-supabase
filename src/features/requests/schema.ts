@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { offerSchema } from "../offers/schema";
+import { profileInputSchema } from "../auth/schema";
+import { categorySchema } from "../categories/schema";
+import { currencySchema } from "../currency/schema";
 
-export const rentalRequestSchema = z.object({
+export const requestInputSchema = z.object({
   id: z.string().optional(),
   profile_id: z.string().uuid().optional(),
   flexible_by_region: z.boolean(),
@@ -17,7 +20,15 @@ export const rentalRequestSchema = z.object({
     bedroom: z.number().optional(),
   }),
   message: z.string(),
-  offers: z.array(offerSchema).optional(),
 });
 
-export type RentalRequest = z.infer<typeof rentalRequestSchema>;
+export const requestSchema = requestInputSchema.extend({
+  category: categorySchema,
+  currency: currencySchema,
+  offers: z.array(offerSchema).optional(),
+  profile: profileInputSchema,
+  created_at: z.date(),
+  updated_at: z.date(),
+});
+
+export type RentalRequest = z.infer<typeof requestSchema>;

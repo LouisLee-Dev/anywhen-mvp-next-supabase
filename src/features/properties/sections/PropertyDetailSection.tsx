@@ -22,8 +22,15 @@ import supabase from "@/core/supabase/supabase-client";
 import { v4 as uuid_v4 } from "uuid";
 import { getFileExt } from "@/lib/helpers";
 import { useAuth } from "@/core/auth/AuthProvider";
-import { CameraIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  CameraIcon,
+  CircleDollarSign,
+  MapPinIcon,
+  MessageSquareTextIcon,
+} from "lucide-react";
 import { getPublicUrl } from "@/lib/client";
+import Link from "next/link";
 
 interface IPropertyDetailSectionProps {
   propertyId: string;
@@ -63,33 +70,42 @@ export default function PropertyDetailSection({
   if (isPropertyLoading) return <Loading></Loading>;
 
   return (
-    <div className="w-full">
-      <h1 className="mb-4">{property.title}</h1>
-      <div className="grid grid-cols-5 gap-2">
-        <div className="col-span-2">
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Details</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="text-lg font-semibold">
-                  {property.title} in {property.location}
-                </div>
-                <div className="font-medium text-gray-600">
-                  {property.price_min} - {property.price_max} CAD
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    <div className="lg:px-[8rem]">
+      <h1 className="mb-4 flex items-center space-x-2">
+        <Link
+          className="cursor-pointer rounded border bg-gray-50 p-2 transition-all duration-500 hover:text-gray-500"
+          href="/pm/properties"
+        >
+          <ArrowLeftIcon size={24}></ArrowLeftIcon>
+        </Link>
+        <span>{property.title}</span>
+      </h1>
+      <div className="grid grid-cols-5 items-stretch gap-2">
+        <div className="col-span-2 space-y-3 rounded-md  border p-3">
+          <div className="flex items-center text-lg font-semibold text-gray-800">
+            <MapPinIcon size={24} className="mr-1" />
+            {property.location}
+          </div>
+          <div className="flex items-center text-lg font-semibold text-gray-600">
+            <MessageSquareTextIcon size={24} className="mr-1" />
+            Description
+          </div>
+          <div
+            className="px-4 text-gray-600"
+            dangerouslySetInnerHTML={{ __html: property.description }}
+          ></div>
+          <div className="flex items-center font-medium text-gray-600">
+            <CircleDollarSign size={22} className="mr-1" />
+            {property.price_min} - {property.price_max} CAD
+          </div>
         </div>
         <div className="col-span-3">
           <Card className="w-full">
             <CardHeader>
-              <CardTitle>Images</CardTitle>
+              <CardTitle>Photos</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {property.images.map((t) => (
                   <div key={t.id} className="aspect-video w-full">
                     <img
@@ -101,35 +117,9 @@ export default function PropertyDetailSection({
                 ))}
                 <div className="w-full space-y-2">
                   <div className="relative aspect-video w-full overflow-hidden rounded-md border">
-                    <div className="h-full w-full">
-                      {avatarSrc && (
-                        <img
-                          src={avatarSrc}
-                          alt="Avatar"
-                          className="h-full w-full rounded-md object-cover"
-                        />
-                      )}
-                    </div>
-                    <div
-                      className="absolute bottom-0 z-10 flex w-full cursor-pointer items-center justify-center bg-[#333333aa]"
-                      onClick={() => {
-                        fileRef.current.click();
-                      }}
-                    >
-                      <div className="py-2">
-                        <CameraIcon color="#ffffff" size={24}></CameraIcon>
-                      </div>
-                      <input
-                        hidden
-                        accept="image/*"
-                        type="file"
-                        onChange={handleOnChange}
-                        ref={fileRef}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-end">
                     <Button
+                      className="absolute right-2 top-2"
+                      size="sm"
                       loading={isLoading}
                       disabled={!avatarSrc || !file}
                       onClick={() => {
@@ -149,8 +139,39 @@ export default function PropertyDetailSection({
                           });
                       }}
                     >
-                      Upload Image
+                      Upload
                     </Button>
+                    <div className="h-full w-full bg-gray-100">
+                      {avatarSrc && (
+                        <img
+                          src={avatarSrc}
+                          alt="Avatar"
+                          className="h-full w-full rounded-md object-cover"
+                        />
+                      )}
+                      {!avatarSrc && (
+                        <div className="flex h-full w-full items-center justify-center text-lg font-semibold text-gray-600">
+                          Drag & Drop or Select Image
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      className="absolute bottom-0 z-10 flex w-full cursor-pointer items-center justify-center bg-[#333333aa]"
+                      onClick={() => {
+                        fileRef.current.click();
+                      }}
+                    >
+                      <div className="py-2">
+                        <CameraIcon color="#ffffff" size={24}></CameraIcon>
+                      </div>
+                      <input
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        onChange={handleOnChange}
+                        ref={fileRef}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

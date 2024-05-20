@@ -1,11 +1,14 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RentalRequest } from "../schema";
 import { ClockIcon } from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
 import { useOffersOfRequest } from "../hooks";
 import { getHumanizedDate } from "@/lib/client";
 import { Button } from "@/components/ui/button";
+import { useConfirm } from "@/components/confirm";
+import { acceptOffer, declineOffer } from "@/features/offers/actions";
+import { toast } from "sonner";
+import { RentalRequest } from "@/features/requests/schema";
 
 interface IOffersOfRequestSectionProps {
   request: RentalRequest;
@@ -15,6 +18,25 @@ export default function OffersOfRequestSection({
   request,
 }: IOffersOfRequestSectionProps) {
   const { data: offers, isLoading } = useOffersOfRequest(request.id);
+  const confirm = useConfirm();
+
+  const handleAcceptOffer = async (id: string) => {
+    await acceptOffer(id)
+      .then((offer) => {
+        console.log("Offer Accepted", offer);
+        toast.success("Offer Accepted");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
+
+  const handleDeclineOffer = async (id: string) => {
+    await declineOffer(id).then((offer) => {
+      console.log("Offer Declined", offer);
+      toast.success("Offer Declined");
+    });
+  };
 
   return (
     <div className="px-[8rem]">
@@ -106,8 +128,37 @@ export default function OffersOfRequestSection({
                   <div className="">
                     Sent {getHumanizedDate(offer.created_at)}
                   </div>
-                  <div className="">
-                    <Button variant="default">Accept Offer</Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="default"
+                      onClick={() => {
+                        confirm({
+                          title: "Accept Offer",
+                          description:
+                            "Are you sure you want to accept this offer?",
+                        }).then(() => {
+                          handleAcceptOffer(offer?.id);
+                        });
+                      }}
+                    >
+                      Accept Offer
+                    </Button>
+
+                    <Button
+                      variant="default"
+                      className="bg-red-500 hover:bg-red-400"
+                      onClick={() => {
+                        confirm({
+                          title: "Decline Offer",
+                          description:
+                            "Are you sure you want to decline this offer?",
+                        }).then(() => {
+                          handleDeclineOffer(offer?.id);
+                        });
+                      }}
+                    >
+                      Decline Offer
+                    </Button>
                   </div>
                 </div>
               </div>

@@ -14,8 +14,8 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
 
   return (
     <div className="relative w-full">
-      <div className="absolute right-2 top-2 z-10 cursor-pointer text-white hover:text-red-500">
-        <HeartHandshakeIcon size={24}></HeartHandshakeIcon>
+      <div className="absolute left-2 top-2 z-10 cursor-pointer rounded px-2 py-1 font-semibold text-white transition-all duration-500">
+        {property.category.title}
       </div>
       <div
         className="relative flex aspect-square w-full cursor-pointer items-center justify-center rounded-md"
@@ -39,17 +39,14 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
         {property?.matchedRequests?.length && (
           <div className="absolute bottom-3 right-[-8px]">
             <div className="text-xs rounded-md bg-blue-500 px-2 py-1 text-white">
-              {property?.matchedRequests?.length} Matched Requests
+              {property?.matchedRequests?.length} Requests
             </div>
           </div>
         )}
       </div>
       <div className="mt-3 space-y-2">
-        <div className="flex justify-between">
-          <span className="font-semibold">
-            {property.title} in {property.location}
-          </span>
-        </div>
+        <div className="text-lg font-semibold">{property.title}</div>
+        <div className="font-medium text-gray-600">{property.location}</div>
         <div className="font-medium text-gray-600">
           {property.price_min} - {property.price_max} CAD
         </div>

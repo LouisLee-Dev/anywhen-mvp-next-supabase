@@ -1,7 +1,7 @@
 "use client";
 
 import { useCategories } from "@/features/categories/hooks";
-import { NewPropertyForm } from "../../owners/components/NewPropertyForm";
+import { NewPropertyForm } from "../../pm/components/NewPropertyForm";
 import {
   Card,
   CardContent,
@@ -10,10 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useMyProperties, useProperties } from "@/features/properties/hooks";
-import PropertyCard from "../../owners/components/PropertyCard";
+import PropertyCard from "../../pm/components/PropertyCard";
 
 export default function PropertiesSection() {
-  const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const { data: properties, isLoading: isPropertiesLoading } =
     useMyProperties();
 
@@ -31,7 +30,7 @@ export default function PropertiesSection() {
               {isPropertiesLoading ? (
                 <p>Loading...</p>
               ) : (
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-4">
                   {properties.map((property) => (
                     <PropertyCard key={property.id} property={property} />
                   ))}

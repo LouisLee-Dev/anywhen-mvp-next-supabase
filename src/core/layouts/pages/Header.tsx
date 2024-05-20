@@ -49,10 +49,16 @@ export default function Header() {
                   My Properties
                 </NextLink>
                 <NextLink
-                  href="/renter-request"
+                  href="/pm/offers"
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
                   Offers
+                </NextLink>
+                <NextLink
+                  href="/pm/trips"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Trips
                 </NextLink>
                 <NextLink
                   href="/renter/pricing"
@@ -74,6 +80,18 @@ export default function Header() {
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
                   New Request
+                </NextLink>
+                <NextLink
+                  href="/renter/offers"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Offers
+                </NextLink>
+                <NextLink
+                  href="/renter/trips"
+                  className="text-lg font-semibold text-gray-600 hover:text-primary"
+                >
+                  Trips
                 </NextLink>
               </>
             ) : (

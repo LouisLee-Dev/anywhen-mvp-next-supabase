@@ -23,11 +23,11 @@ import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCurrencies } from "@/features/currency/hooks";
 import { useCategories } from "@/features/categories/hooks";
-import { RentalRequest, rentalRequestSchema } from "../schema";
 import { FormDatePickerAsText } from "@/components/form/FormDatePickerAsText";
 import { createRequestAction } from "../actions";
 import Toggle from "@/components/ui/toggle";
 import { QuillEditor } from "@/components/editor";
+import { RentalRequest, requestInputSchema } from "@/features/requests/schema";
 
 export default function NewRequestSection() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function NewRequestSection() {
   const { data: currencies, isLoading: isCurrenciesLoading } = useCurrencies();
 
   const form = useForm<RentalRequest>({
-    resolver: zodResolver(rentalRequestSchema),
+    resolver: zodResolver(requestInputSchema),
     defaultValues: {
       location: "",
       category_id: undefined,
@@ -74,8 +74,8 @@ export default function NewRequestSection() {
   }, [errors]);
 
   return (
-    <div className="page-content-wrapper">
-      <h1 className="w-full text-center">Your New Request</h1>
+    <div className="px-[8rem]">
+      <h1 className="w-full text-center">Talking about your wishes!</h1>
       <div className="mx-auto w-[640px] p-2">
         <Form {...form}>
           <form

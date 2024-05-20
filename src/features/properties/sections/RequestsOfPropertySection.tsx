@@ -2,16 +2,17 @@
 import { useMatchedRequestsOfProperty } from "@/features/requests/hooks";
 import PropertyCard from "../../requests/components/PropertyCard";
 import RequestsSection from "../../requests/components/RequestsSection";
+import { Property } from "../schema";
 
-interface IRenterRequestForPropertySectionProps {
+interface IRequestsOfPropertySectionProps {
   propertyId: string;
-  property: object;
+  property: Property;
 }
 
-export default function RenterRequestForPropertySection({
+export default function RequestsOfPropertySection({
   propertyId,
   property,
-}: IRenterRequestForPropertySectionProps) {
+}: IRequestsOfPropertySectionProps) {
   const { data: requests, isLoading: isRequestsLoading } =
     useMatchedRequestsOfProperty(propertyId);
 

@@ -22,10 +22,8 @@ export default async function PropertyDetailPage({
   }
 
   return (
-    <div className="w-full">
-      <div className="px-2 py-4 lg:px-[8rem]">
-        <PropertyDetailSection propertyId={propertyId} />
-      </div>
+    <div className="page-content-wrapper">
+      <PropertyDetailSection propertyId={propertyId} />
     </div>
   );
 }

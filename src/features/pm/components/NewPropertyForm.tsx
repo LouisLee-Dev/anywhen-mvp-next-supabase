@@ -57,7 +57,7 @@ export function NewPropertyForm() {
       .mutateAsync(values)
       .then(({ data: { success, property } }) => {
         if (success) {
-          router.push(`/pm/properties/property/${property.id}`);
+          router.push(`/pm/properties/${property.id}`);
         }
       })
       .catch((err) => console.log(err))
@@ -128,7 +128,7 @@ export function NewPropertyForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="" {...field} />
+                <Textarea rows={10} placeholder="" {...field} />
               </FormControl>
               {/* <FormDescription></FormDescription> */}
               <FormMessage />
@@ -136,7 +136,7 @@ export function NewPropertyForm() {
           )}
         />
         <div className="flex gap-2">
-          <div className="flex-2">
+          <div className="flex-1">
             <FormField
               control={form.control}
               name="price_min"
@@ -159,7 +159,7 @@ export function NewPropertyForm() {
               )}
             />
           </div>
-          <div className="flex-2">
+          <div className="flex-1">
             <FormField
               control={form.control}
               name="price_max"
@@ -192,7 +192,7 @@ export function NewPropertyForm() {
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue />
+                        <SelectValue placeholder="Select Currency" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -211,7 +211,7 @@ export function NewPropertyForm() {
         </div>
         <div className="flex items-center justify-end">
           <Button type="submit" disabled={isSubmitting}>
-            New Property
+            Add Property
           </Button>
         </div>
       </form>

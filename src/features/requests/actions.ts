@@ -5,8 +5,9 @@ import { prisma } from "@/db";
 import { getMyProperties } from "@/features/properties/actions";
 import _ from "lodash";
 import { omit } from "lodash";
-import { RentalRequest, rentalRequestSchema } from "./schema";
+import { RentalRequest, requestInputSchema } from "./schema";
 import { getCurrentProfile, getCurrentUser } from "@/core/auth/server";
+import { Property } from "../properties/schema";
 
 export async function upsertOffer(
   propertyId: string,
@@ -50,6 +51,23 @@ export async function getAllRequest() {
   return acceptedRequests;
 }
 
+export async function getMatchedRequestsOfProperty(property: Property) {
+  const matchedRequests: any[] = await prisma.requests.findMany({
+    where: {
+      OR: [
+        {
+          location: property.location,
+        },
+        {
+          category_id: property.category_id,
+        },
+      ],
+    },
+  });
+
+  return matchedRequests;
+}
+
 export async function getMatchedRequests(propertyId: string) {
   const property = await prisma.property.findFirst({
     where: {
@@ -68,6 +86,8 @@ export async function getMatchedRequests(propertyId: string) {
       ],
     },
     include: {
+      category: true,
+      currency: true,
       profile: true,
       offers: {
         where: {
@@ -121,6 +141,8 @@ export async function acceptRentalRequestForProperty(
         id: requestId,
       },
       include: {
+        category: true,
+        currency: true,
         profile: true,
         offers: {
           where: {
@@ -168,6 +190,8 @@ export async function cancelRentalRequestForProperty(
         id: requestId,
       },
       include: {
+        category: true,
+        currency: true,
         profile: true,
         offers: {
           where: {

@@ -4,22 +4,22 @@
 
 @layer base {
   h1 {
-    @apply text-3xl font-bold;
+    @apply text-2xl font-semibold;
   }
   h2 {
-    @apply text-2xl;
+    @apply text-xl font-medium;
   }
   h3 {
-    @apply text-xl;
+    @apply text-xl font-medium;
   }
   h4 {
-    @apply text-lg;
+    @apply text-lg font-medium;
   }
   h5 {
-    @apply text-base;
+    @apply text-base font-medium;
   }
   h6 {
-    @apply text-sm;
+    @apply text-sm font-medium;
   }
 }
 
