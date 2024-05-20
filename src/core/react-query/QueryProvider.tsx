@@ -4,16 +4,16 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ConfirmProvider } from "@/components/confirm";
 
-function Providers({ children }: React.PropsWithChildren) {
-  const client = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        retry: false,
-      },
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
     },
-  });
+  },
+});
 
+function Providers({ children }: React.PropsWithChildren) {
   return (
     <ConfirmProvider>
       <QueryClientProvider client={client}>

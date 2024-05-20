@@ -22,6 +22,7 @@ model profiles {
   created_at   DateTime   @default(now()) @db.Timestamptz(6)
   updated_at   DateTime?  @default(now()) @db.Timestamptz(6)
   requests     requests[]
+  property     property[]
 
   @@schema("public")
 }
@@ -30,6 +31,7 @@ model category {
   id       String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title    String
   requests requests[]
+  property property[]
 
   @@schema("public")
 }
@@ -38,6 +40,7 @@ model currency {
   id       String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title    String
   requests requests[]
+  property property[]
 
   @@schema("public")
 }
@@ -47,7 +50,7 @@ model property {
   title           String?
   description     String?
   category_id     String?   @db.Uuid
-  owner_id        String?   @db.Uuid
+  owner_id        String    @db.Uuid
   price_min       Float?
   price_max       Float?
   currency_id     String?   @db.Uuid
@@ -57,8 +60,11 @@ model property {
   created_at      DateTime  @default(now()) @db.Timestamptz(6)
   updated_at      DateTime? @default(now()) @db.Timestamptz(6)
 
-  images property_images[]
-  offers offers[]
+  images   property_images[]
+  offers   offers[]
+  owner    profiles          @relation(fields: [owner_id], references: [id])
+  category category?         @relation(fields: [category_id], references: [id])
+  currency currency?         @relation(fields: [currency_id], references: [id])
 
   @@schema("public")
 }
@@ -120,7 +126,11 @@ model notifications {
   id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   from       String?  @db.Uuid
   to         String?  @db.Uuid
-  body       Json     @db.Json
+  collection String?
+  type       String?
+  message    String?
+  data       Json?    @db.Json
+  link       String?
   viewed     Boolean  @default(false)
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)

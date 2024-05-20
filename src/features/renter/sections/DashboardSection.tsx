@@ -2,12 +2,12 @@
 import { useCategories } from "@/features/categories/hooks";
 import { useCurrencies } from "@/features/currency/hooks";
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RentalRequest } from "../schema";
-import { ClockIcon, HeartHandshakeIcon, StarIcon } from "lucide-react";
+import { ClockIcon } from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
 import { useMyRequests } from "../hooks";
 import clsx from "clsx";
+import Link from "next/link";
 
 interface IDashboardSectionProps {}
 
@@ -22,9 +22,12 @@ const RentalRequestCard = ({ request }: { request: RentalRequest }) => {
           "bg-green-100": request.offers.length > 0,
         })}
       >
-        <div className="absolute right-[-8px] top-2 rounded bg-primary px-3 py-1 text-white">
+        <Link
+          className="absolute right-[-8px] top-2 rounded bg-primary px-3 py-1 text-white transition-all duration-300 hover:bg-primary/75"
+          href={`/renter/requests/${request.id}/offers`}
+        >
           {request.offers.length ? request.offers.length : "No"} Offers
-        </div>
+        </Link>
         <div className="flex items-center justify-between">
           <div className="text-lg font-semibold">
             {
@@ -73,17 +76,15 @@ export default function DashboardSection() {
   const { data: requests, isLoading: isRequestsLoading } = useMyRequests();
 
   return (
-    <div className="page-content-wrapper">
-      <div className="px-[8rem]">
-        <h1 className="w-full">Your Requests</h1>
-        <div className="grid w-full grid-cols-3">
-          <div className="col-span-3 ">
-            {requests.map((t: any) => (
-              <RentalRequestCard key={t.id} request={t} />
-            ))}
-          </div>
-          <div className="col-span-2"></div>
+    <div className="px-[8rem]">
+      <h1 className="w-full">Your Requests</h1>
+      <div className="grid w-full grid-cols-3">
+        <div className="col-span-3 ">
+          {requests.map((t: any) => (
+            <RentalRequestCard key={t.id} request={t} />
+          ))}
         </div>
+        <div className="col-span-2"></div>
       </div>
     </div>
   );

@@ -8,6 +8,40 @@ import { omit } from "lodash";
 import { RentalRequest, rentalRequestSchema } from "./schema";
 import { getCurrentProfile, getCurrentUser } from "@/core/auth/server";
 
+export async function upsertOffer(
+  propertyId: string,
+  requestId: string,
+  status: string,
+) {
+  const profile = await getCurrentProfile();
+  const offer = await prisma.offers.findFirst({
+    where: {
+      property_id: propertyId,
+      request_id: requestId,
+    },
+  });
+
+  if (offer) {
+    await prisma.offers.update({
+      where: {
+        id: offer.id,
+      },
+      data: {
+        status,
+      },
+    });
+  } else {
+    await prisma.offers.create({
+      data: {
+        property_id: propertyId,
+        request_id: requestId,
+        status,
+        comment: `${profile.full_name} ${status} an request`,
+      },
+    });
+  }
+}
+
 export async function getAllRequest() {
   const acceptedRequests: any[] = await prisma.requests.findMany({
     include: { profile: { select: { full_name: true } } },
@@ -69,23 +103,16 @@ export async function acceptRentalRequestForProperty(
         profile: true,
       },
     });
-    await prisma.offers.create({
-      data: {
-        property_id: propertyId,
-        request_id: request.id,
-        status: "accepted",
-        comment: `${profile.full_name} accepted your request`,
-      },
-    });
+    await upsertOffer(propertyId, requestId, "accepted");
     await prisma.notifications.create({
       data: {
         from: profile.id,
         to: request.profile_id,
-        body: {
-          type: "accept",
-          message: `Your request has been accepted by ${profile.full_name}`,
-          data: request,
-        },
+        collection: "offers",
+        type: "accept",
+        message: `Your request has been accepted by ${profile.full_name}`,
+        data: request,
+        link: "",
         viewed: false,
       },
     });
@@ -94,6 +121,54 @@ export async function acceptRentalRequestForProperty(
         id: requestId,
       },
       include: {
+        profile: true,
+        offers: {
+          where: {
+            property_id: propertyId,
+          },
+        },
+      },
+    });
+    return { success: true, request: updatedRequest };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+}
+
+export async function cancelRentalRequestForProperty(
+  propertyId: string,
+  requestId: string,
+) {
+  const profile = await getCurrentProfile();
+
+  try {
+    const request = await prisma.requests.findFirst({
+      where: {
+        id: requestId,
+      },
+      include: {
+        profile: true,
+      },
+    });
+    await upsertOffer(propertyId, requestId, "cancelled");
+    await prisma.notifications.create({
+      data: {
+        from: profile.id,
+        to: request.profile_id,
+        collection: "offers",
+        type: "cancel",
+        message: `Your request has been cancelled by ${profile.full_name}`,
+        data: request,
+        link: "",
+        viewed: false,
+      },
+    });
+    const updatedRequest = await prisma.requests.findFirst({
+      where: {
+        id: requestId,
+      },
+      include: {
+        profile: true,
         offers: {
           where: {
             property_id: propertyId,

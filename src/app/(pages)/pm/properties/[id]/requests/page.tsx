@@ -15,12 +15,13 @@ export default async function PropertyDetailPage({
       images: true,
     },
   });
+
   if (!property) {
     return <div> 404 Not Found </div>;
   }
   return (
     <div className="page-content-wrapper">
-      <div className="space-y-2 px-[8rem]">
+      <div className="px-[8rem]">
         <h1 className="text-xl font-semibold"> Available Offers </h1>
         <div className="py-2">
           <RenterRequestForPropertySection

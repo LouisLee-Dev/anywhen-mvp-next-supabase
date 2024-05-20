@@ -29,8 +29,6 @@ export default function ProfileDialog({
   onOpenChange,
 }: IProfileDialogProps) {
   const router = useRouter();
-
-  console.log(profile);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[560px]">
