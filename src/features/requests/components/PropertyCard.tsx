@@ -26,6 +26,7 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
         {property?.images?.length > 0 && (
           <div className="h-full w-full overflow-hidden rounded-md">
             <img
+              alt="No Image"
               src={getPublicUrl("properties", property.images[0].path)}
               className="h-full w-full rounded-xl object-cover transition-all duration-500 ease-in-out hover:h-[110%] hover:w-[110%] hover:opacity-90"
             ></img>

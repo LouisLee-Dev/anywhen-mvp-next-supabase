@@ -30,7 +30,7 @@ export default async function PropertyDetailPage({
           <h1 className="text-xl font-semibold"> Available Requests </h1>
           <p className="text-sm text-gray-500">
             Shows matched requests from renters. You can accept request what you
-            want and reject what you don't want.
+            want and reject what you don&apos;t want.
           </p>
         </div>
         <RequestsOfPropertySection

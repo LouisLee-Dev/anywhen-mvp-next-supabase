@@ -143,7 +143,7 @@ export const AuthProvider = ({
   }, []);
 
   useEffect(() => {
-    if (state?.user) {
+    if (state?.user?.id) {
       const channel = supabase
         .channel("notifications")
         .on(
