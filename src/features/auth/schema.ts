@@ -18,3 +18,14 @@ export const profileInputSchema = z.object({
 });
 
 export type ProfileInput = z.infer<typeof profileInputSchema>;
+
+export const changePasswordSchema = z
+  .object({
+    password: z.string().min(6),
+    new_password: z.string().min(6),
+    confirm_password: z.string().min(6),
+  })
+  .refine((data) => data.new_password === data.confirm_password, {
+    message: "new_password and confirm_password must match",
+    path: ["confirm_password"],
+  });

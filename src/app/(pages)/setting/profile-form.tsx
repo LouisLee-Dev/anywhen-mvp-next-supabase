@@ -33,6 +33,7 @@ import supabase from "@/core/supabase/supabase-client";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { error } from "console";
+import { isEmpty } from "lodash";
 
 const profileFormSchema = z.object({
   full_name: z
@@ -56,10 +57,10 @@ export function ProfileForm() {
   const [{ profile }, { setProfile }] = useAuth();
   const [isLoading, setLoading] = useState(false);
   const [isChangePassword, setChangePassword] = useState(false);
-  const [isMatch, setMatch] = useState(false);
-
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPasswordError, setNewPasswordError] = useState(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
   const defaultValues: Partial<ProfileFormValues> = {
     full_name: profile?.full_name,
@@ -87,19 +88,50 @@ export function ProfileForm() {
   }
 
   async function onChangePassword() {
-    if (newPassword !== confirmPassword) {
-      setMatch(true);
+    let isValid = true;
+
+    if (!newPassword) {
+      setNewPasswordError("New Password is required");
+      isValid = false;
+    } else if (newPassword.length < 6) {
+      setNewPasswordError("New Password must be at least 6 characters");
+      isValid = false;
     } else {
-      setMatch(false);
+      setNewPasswordError(null);
+    }
+
+    if (!confirmPassword) {
+      setConfirmPasswordError("Confirm Password is required");
+      isValid = false;
+    } else if (confirmPassword.length < 6) {
+      setConfirmPasswordError("Confirm Password must be at least 6 characters");
+      isValid = false;
+    } else {
+      setConfirmPasswordError(null);
+    }
+
+    if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+      setConfirmPasswordError("New Password and Confirm Password must match");
+      isValid = false;
+    }
+    if (isValid) {
       setChangePassword(true);
       await supabase.auth
         .updateUser({ password: newPassword })
         .then((res) => {
-          toast.success("Password change successfully.");
-          setChangePassword(false);
+          console.log(res);
+          if (res.data?.user) {
+            toast.success("Password change successfully.");
+            setChangePassword(false);
+          } else {
+            toast.error(res.error?.message || "Something went wrong!");
+          }
         })
         .catch((err) => {
           toast.error("Something went wrong!");
+        })
+        .finally(() => {
+          setChangePassword(false);
         });
     }
   }
@@ -149,45 +181,44 @@ export function ProfileForm() {
               <DialogHeader>
                 <DialogTitle>Change Password</DialogTitle>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                {/* <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="oldPassword">Old&nbsp;Password</Label>
-                  <Input
-                    id="oldPassword"
-                    name="oldPassword"
-                    type="password"
-                    className="col-span-3"
-                  />
-                </div> */}
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="newPassword">New&nbsp;Password</Label>
-                  <Input
-                    id="newPassword"
-                    name="newPassword"
-                    type="password"
-                    className="col-span-3"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="confirmPassword">Confirm&nbsp;Password</Label>
-                  <Input
-                    name="confirmPassword"
-                    type="password"
-                    id="confirmPassword"
-                    className="col-span-3"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </div>
-                {isMatch && (
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <p className="col-span-1"></p>
-                    <p className="col-span-3 text-destructive">
-                      Password doesn&apos;t match
-                    </p>
-                  </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="newPassword">New&nbsp;Password</Label>
+                <Input
+                  id="newPassword"
+                  name="newPassword"
+                  type="password"
+                  required
+                  className="col-span-3"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                {newPasswordError && (
+                  <>
+                    <div className="col-span-1"></div>
+                    <div className="col-span-3 text-red-500">
+                      {newPasswordError}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="confirmPassword">Confirm&nbsp;Password</Label>
+                <Input
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  id="confirmPassword"
+                  className="col-span-3"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                {confirmPasswordError && (
+                  <>
+                    <div className="col-span-1"></div>
+                    <div className="col-span-3 text-red-500">
+                      {confirmPasswordError}
+                    </div>
+                  </>
                 )}
               </div>
               <DialogFooter>
