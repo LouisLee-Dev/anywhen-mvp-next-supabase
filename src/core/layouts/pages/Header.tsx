@@ -79,7 +79,7 @@ export default function Header() {
                   href="/renter/request"
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
-                  New Request
+                  Requests
                 </NextLink>
                 <NextLink
                   href="/renter/offers"

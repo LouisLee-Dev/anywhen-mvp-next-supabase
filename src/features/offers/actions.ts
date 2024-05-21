@@ -24,8 +24,6 @@ export const getOffersOfRequest = async (requestId: string) => {
     },
   });
 
-  console.log(offers);
-
   return offers;
 };
 

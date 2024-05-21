@@ -9,26 +9,22 @@ import { useConfirm } from "@/components/confirm";
 import { acceptOffer, declineOffer } from "@/features/offers/actions";
 import { toast } from "sonner";
 import { RentalRequest } from "@/features/requests/schema";
-import { useRouter } from "next/navigation";
 
-interface IOffersOfRequestSectionProps {
+interface IPaymentOfRequestSectionProps {
   request: RentalRequest;
 }
 
-export default function OffersOfRequestSection({
+export default function PaymentOfRequestSection({
   request,
-}: IOffersOfRequestSectionProps) {
+}: IPaymentOfRequestSectionProps) {
   const { data: offers, isLoading } = useOffersOfRequest(request.id);
   const confirm = useConfirm();
-
-  const router = useRouter();
 
   const handleAcceptOffer = async (id: string) => {
     await acceptOffer(id)
       .then((offer) => {
         console.log("Offer Accepted", offer);
         toast.success("Offer Accepted");
-        router.push(`/renter/requests/${request.id}/payment`);
       })
       .catch((error) => {
         console.log("Error", error);
