@@ -16,7 +16,7 @@ export async function OrderTab() {
   });
 
   const activeRequests: any[] = allRequests.filter(
-    (request) => request.status === "active",
+    (request) => request.status === "booking",
   );
 
   const pendingRequests: any[] = allRequests.filter(
@@ -37,14 +37,14 @@ export async function OrderTab() {
         <TabsTrigger value="all" className="w-[20%]">
           All
         </TabsTrigger>
-        <TabsTrigger value="active" className="w-[20%]">
+        <TabsTrigger value="booking" className="w-[20%]">
           Active
         </TabsTrigger>
         <TabsTrigger value="pending" className="w-[20%]">
           Pending
         </TabsTrigger>
         <TabsTrigger value="accepted" className="w-[20%]">
-          Accepted
+          Booking
         </TabsTrigger>
         <TabsTrigger value="declined" className="w-[20%]">
           Declined
@@ -53,7 +53,7 @@ export async function OrderTab() {
       <TabsContent value="all">
         <DashboardSection requests={allRequests} propertyId="null" />
       </TabsContent>
-      <TabsContent value="active">
+      <TabsContent value="booking">
         <DashboardSection requests={activeRequests} propertyId="null" />
       </TabsContent>
       <TabsContent value="pending">

@@ -21,7 +21,7 @@ export const useMyRequests = () => {
 export const useOffersOfRequest = (requestId: string) => {
   return useQuery({
     initialData: [],
-    queryKey: ["renter", "offers", requestId],
+    queryKey: ["renter", "requests", requestId, "offers"],
     queryFn: () => getOffersOfRequest(requestId),
   });
 };

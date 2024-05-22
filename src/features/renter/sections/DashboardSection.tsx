@@ -38,7 +38,7 @@ const RentalRequestCard = ({ request }: { request: RentalRequest }) => {
               className="absolute right-[-8px] top-2 rounded bg-primary px-3 py-1 text-white transition-all duration-300 hover:bg-primary/75"
               href={`/renter/requests/${request.id}/offers`}
             >
-              Accepted
+              Booking
             </Link>
           )
         )}

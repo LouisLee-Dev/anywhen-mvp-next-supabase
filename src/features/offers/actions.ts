@@ -52,6 +52,14 @@ export const acceptOffer = async (offerId: string) => {
       },
     },
   });
+  const request = await prisma.requests.update({
+    where: {
+      id: offer.request_id,
+    },
+    data: {
+      status: "booking",
+    },
+  });
 
   return offer;
 };

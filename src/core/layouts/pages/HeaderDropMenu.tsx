@@ -58,9 +58,6 @@ export default function HeaderDropDownMenu() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuGroup>
-              <DropdownMenuItem><NextLink href="/profile">Profile</NextLink></DropdownMenuItem>
-            </DropdownMenuGroup> */}
             <DropdownMenuGroup>
               <NextLink href="/setting">
                 <DropdownMenuItem>Setting</DropdownMenuItem>

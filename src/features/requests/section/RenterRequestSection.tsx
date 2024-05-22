@@ -12,7 +12,7 @@ import { useMyProperties, useProperties } from "@/features/properties/hooks";
 import {
   useAllRequests,
   useMatchedRequestsOfProperty,
-  useAcceptedRequests,
+  useBookingRequests,
 } from "@/features/requests/hooks";
 import DashboardSection from "@/features/order/sections/DashboardSection";
 import PropertyCard from "../components/PropertyCard";
@@ -20,13 +20,13 @@ import PropertyCard from "../components/PropertyCard";
 export function RenterRequestSection() {
   const { data: properties, isLoading: isPropertiesLoading } =
     useMyProperties();
-  const { data: acceptedRequests, isLoading: isAcceptedRequestLoading } =
-    useAcceptedRequests();
+  const { data: acceptedRequests, isLoading: isBookingRequestLoading } =
+    useBookingRequests();
 
   return (
     <div className="page-content-wrapper px-8">
       <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="active">
+        <AccordionItem value="booking">
           <AccordionTrigger className="hover:no-underline">
             Active Offers
           </AccordionTrigger>

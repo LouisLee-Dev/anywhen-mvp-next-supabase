@@ -1,17 +1,18 @@
-import { Separator } from "@/components/ui/separator";
-import { NotificationsForm } from "./notifications-form";
+import { getCurrentProfile } from "@/core/auth/server";
+import { prisma } from "@/db";
+import NotificationsSection from "@/features/settings/sections/NotificationsSection";
 
-export default function SettingsNotificationsPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Notifications</h3>
-        <p className="text-sm text-muted-foreground">
-          Configure how you receive notifications.
-        </p>
-      </div>
-      <Separator />
-      <NotificationsForm />
-    </div>
-  );
+export default async function SettingNotifications() {
+  const profile = await getCurrentProfile();
+  await prisma.notifications.updateMany({
+    where: {
+      to: profile.id,
+      viewed: false,
+    },
+    data: {
+      viewed: true,
+    },
+  });
+
+  return <NotificationsSection />;
 }

@@ -28,6 +28,7 @@ export type Notification = {
   to: string;
   collection: string;
   type: string;
+  title: string;
   message: string;
   data: any;
   link: string;
@@ -157,7 +158,7 @@ export const AuthProvider = ({
           (payload: any) => {
             console.log(payload);
             if (payload.eventType === "INSERT") {
-              setNotifications([...notifications, payload.new]);
+              setNotifications([payload.new, ...notifications]);
               toast.success(payload.new.message);
             } else if (payload.eventType === "UPDATE") {
               setNotifications(
@@ -166,11 +167,6 @@ export const AuthProvider = ({
                     ? payload.new
                     : notification,
                 ),
-              );
-              toast.success(payload.new.message);
-            } else if (payload.eventType === "DELETE") {
-              setNotifications(
-                notifications.filter((t) => t.id !== payload.old.id),
               );
             }
           },

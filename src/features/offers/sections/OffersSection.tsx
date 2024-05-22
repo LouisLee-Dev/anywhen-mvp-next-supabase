@@ -114,9 +114,9 @@ export default function OffersSection({ offers }: IOffersSectionProps) {
         type="single"
         collapsible
         className="w-full"
-        defaultValue="active"
+        defaultValue="booking"
       >
-        <AccordionItem value="active">
+        <AccordionItem value="booking">
           <AccordionTrigger className="hover:no-underline">
             Active Offers
           </AccordionTrigger>

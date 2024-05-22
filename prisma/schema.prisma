@@ -129,6 +129,7 @@ model notifications {
   to         String?  @db.Uuid
   collection String?
   type       String?
+  title      String?
   message    String?
   data       Json?    @db.Json
   link       String?

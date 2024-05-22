@@ -27,7 +27,7 @@ export default function RootLayout({
         <Toaster
           richColors
           position="top-right"
-          toastOptions={{ duration: 2000 }}
+          toastOptions={{ duration: 3000 }}
         />
       </body>
     </html>

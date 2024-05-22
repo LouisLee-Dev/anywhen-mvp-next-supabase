@@ -1,16 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import HeaderDropDownMenu from "@/core/layouts/pages/HeaderDropMenu";
 import { useAuth } from "@/core/auth/AuthProvider";
 import NextLink from "@/components/common/NextLink"; // Import NextLink from Next.js
-import clsx from "clsx";
 import { BellDotIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
   const [{ authenticated, user, profile, notifications }] = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const unreadNotifications = useMemo(
+    () => notifications?.filter((notification) => !notification.viewed),
+    [notifications],
+  );
+  const unreadNotificationCount = unreadNotifications.length;
 
   return (
     <header className="shadow-md">
@@ -102,14 +116,36 @@ export default function Header() {
           )}
         </Popover.Group>
         <div className="hidden space-x-8 lg:flex lg:flex-1 lg:items-center lg:justify-end">
-          <div className="relative cursor-pointer text-gray-600 hover:text-gray-900">
-            <BellDotIcon className="h-8 w-8 " />
-            {notifications?.length > 0 && (
-              <div className="absolute right-[-8px] top-[-8px] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white">
-                {notifications?.length}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="relative cursor-pointer text-gray-600 hover:text-gray-900">
+                <BellDotIcon className="h-8 w-8 " />
+                {unreadNotificationCount > 0 && (
+                  <div className="absolute right-[-8px] top-[-8px] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white">
+                    {unreadNotificationCount}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[320px]" align="end" forceMount>
+              {unreadNotifications.slice(0, 5).map((notification) => (
+                <DropdownMenuItem key={notification.id}>
+                  <div className="space-y-1">
+                    <div className="font-semibold">{notification.title}</div>
+                    <div className="pl-2">{notification.message}</div>
+                  </div>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  router.push("/setting/notifications");
+                }}
+              >
+                See all notifications
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <HeaderDropDownMenu></HeaderDropDownMenu>
         </div>
       </nav>

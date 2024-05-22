@@ -72,14 +72,14 @@ export default function RequestsSection({
         onOpenChange={setOpen}
       />
       {requests.map((t: any) => {
-        const isAccepted =
+        const isBooking =
           t.offers.filter((t: any) => t.status !== "cancelled").length > 0
             ? true
             : false;
         return (
           <Card className="w-full" key={t.id}>
             <CardContent className="relative p-3">
-              {isAccepted && (
+              {isBooking && (
                 <div className="absolute right-[-8px] top-2 rounded bg-blue-500 px-2 py-1 text-white">
                   Offer Sent
                 </div>
@@ -149,7 +149,7 @@ export default function RequestsSection({
                 </div>
               </div>
               <div className="flex items-center justify-end">
-                {!isAccepted ? (
+                {!isBooking ? (
                   <Button
                     type="button"
                     size="sm"

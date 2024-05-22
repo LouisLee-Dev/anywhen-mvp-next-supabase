@@ -27,12 +27,7 @@ export default function OffersOfRequestSection({
   const handleAcceptOffer = async (id: string) => {
     await acceptOffer(id)
       .then(async (offer) => {
-        console.log("Offer Accepted", offer);
-        toast.success("Offer Accepted");
-        await acceptedRequest(request.id).then((request) => {
-          console.log("Request Accepted", request);
-          toast.success("request Accepted");
-        });
+        toast.success("Offer Booking");
         router.push(`/renter/requests/${request.id}/payment`);
       })
       .catch((error) => {
@@ -98,7 +93,7 @@ export default function OffersOfRequestSection({
               >
                 {offer.status === "booking" && (
                   <div className="absolute right-[-8px] top-2 rounded-md bg-primary px-3 py-2 text-white">
-                    Accepted
+                    Booking
                   </div>
                 )}
                 <div className="grid grid-cols-4">

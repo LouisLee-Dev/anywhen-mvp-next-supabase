@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getMatchedRequests,
-  getAcceptedRequest,
+  getBookingRequest,
   getAllRequest,
   acceptRentalRequestForProperty,
   cancelRentalRequestForProperty,
@@ -31,12 +31,12 @@ export const useMatchedRequestsOfProperty = (propertyId: string) => {
   });
 };
 
-export const useAcceptedRequests = () => {
+export const useBookingRequests = () => {
   return useQuery({
     initialData: [],
     queryKey: ["owner", "acceptedRequests"],
     queryFn: async () => {
-      const acceptedRequests: any[] = await getAcceptedRequest();
+      const acceptedRequests: any[] = await getBookingRequest();
       return acceptedRequests;
     },
   });
@@ -49,11 +49,11 @@ export const useAcceptRentalRequestForProperty = (propertyId: string) => {
       return acceptRentalRequestForProperty(propertyId, requestId).catch(
         (e) => {
           console.log(e);
-          return { success: false, request: null };
+          return { success: false, request: null, message: "Unknown error" };
         },
       );
     },
-    onSuccess: async ({ success, request }, variables, context) => {
+    onSuccess: async ({ success, request, message }, variables, context) => {
       if (success) {
         queryClient.setQueryData(
           ["property", propertyId, "requests"],
@@ -61,11 +61,9 @@ export const useAcceptRentalRequestForProperty = (propertyId: string) => {
             return requests.map((t) => (t.id === request.id ? request : t));
           },
         );
-        toast.success(
-          `You accpeted a request. Renter will get notification soon.`,
-        );
+        toast.success(message);
       } else {
-        toast.error(request || "Request failed");
+        toast.error(message || "Request failed");
       }
     },
     onError: (error, variables, context) => {
@@ -82,11 +80,11 @@ export const useCancelRentalRequestForProperty = (propertyId: string) => {
       return cancelRentalRequestForProperty(propertyId, requestId).catch(
         (e) => {
           console.log(e);
-          return { success: false, request: null };
+          return { success: false, request: null, message: "Unknown error" };
         },
       );
     },
-    onSuccess: async ({ success, request }, variables, context) => {
+    onSuccess: async ({ success, request, message }, variables, context) => {
       if (success) {
         queryClient.setQueryData(
           ["property", propertyId, "requests"],
@@ -98,7 +96,7 @@ export const useCancelRentalRequestForProperty = (propertyId: string) => {
           `You accpeted a request. Renter will get notification soon.`,
         );
       } else {
-        toast.error("Request failed");
+        toast.error(message || "Request failed");
       }
     },
     onError: (error, variables, context) => {
