@@ -84,6 +84,11 @@ export async function getMatchedRequests(propertyId: string) {
           category_id: property.category_id,
         },
       ],
+      AND: [
+        {
+          status: "pending",
+        },
+      ],
     },
     include: {
       category: true,
@@ -123,35 +128,42 @@ export async function acceptRentalRequestForProperty(
         profile: true,
       },
     });
-    await upsertOffer(propertyId, requestId, "accepted");
-    await prisma.notifications.create({
-      data: {
-        from: profile.id,
-        to: request.profile_id,
-        collection: "offers",
-        type: "accept",
-        message: `Your request has been accepted by ${profile.full_name}`,
-        data: request,
-        link: "",
-        viewed: false,
-      },
-    });
-    const updatedRequest = await prisma.requests.findFirst({
-      where: {
-        id: requestId,
-      },
-      include: {
-        category: true,
-        currency: true,
-        profile: true,
-        offers: {
-          where: {
-            property_id: propertyId,
+    if (request.status === "accepted") {
+      return {
+        success: false,
+        request: "This request is no longer available!",
+      };
+    } else {
+      await upsertOffer(propertyId, requestId, "accepted");
+      await prisma.notifications.create({
+        data: {
+          from: profile.id,
+          to: request.profile_id,
+          collection: "offers",
+          type: "accept",
+          message: `Your request has been accepted by ${profile.full_name}`,
+          data: request,
+          link: "",
+          viewed: false,
+        },
+      });
+      const updatedRequest = await prisma.requests.findFirst({
+        where: {
+          id: requestId,
+        },
+        include: {
+          category: true,
+          currency: true,
+          profile: true,
+          offers: {
+            where: {
+              property_id: propertyId,
+            },
           },
         },
-      },
-    });
-    return { success: true, request: updatedRequest };
+      });
+      return { success: true, request: updatedRequest };
+    }
   } catch (error) {
     return { success: false, message: (error as Error).message };
   }

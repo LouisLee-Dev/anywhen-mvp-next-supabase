@@ -65,7 +65,7 @@ export const useAcceptRentalRequestForProperty = (propertyId: string) => {
           `You accpeted a request. Renter will get notification soon.`,
         );
       } else {
-        toast.error("Request failed");
+        toast.error(request || "Request failed");
       }
     },
     onError: (error, variables, context) => {

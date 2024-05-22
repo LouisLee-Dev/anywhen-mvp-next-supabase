@@ -25,12 +25,23 @@ const RentalRequestCard = ({ request }: { request: RentalRequest }) => {
           "bg-green-50": request.offers.length > 0,
         })}
       >
-        <Link
-          className="absolute right-[-8px] top-2 rounded bg-primary px-3 py-1 text-white transition-all duration-300 hover:bg-primary/75"
-          href={`/renter/requests/${request.id}/offers`}
-        >
-          {request.offers.length ? request.offers.length : "No"} Offers
-        </Link>
+        {request.status === "pending" ? (
+          <Link
+            className="absolute right-[-8px] top-2 rounded bg-primary px-3 py-1 text-white transition-all duration-300 hover:bg-primary/75"
+            href={`/renter/requests/${request.id}/offers`}
+          >
+            {request.offers.length ? request.offers.length : "No"} Offers
+          </Link>
+        ) : (
+          request.status === "accepted" && (
+            <Link
+              className="absolute right-[-8px] top-2 rounded bg-primary px-3 py-1 text-white transition-all duration-300 hover:bg-primary/75"
+              href={`/renter/requests/${request.id}/offers`}
+            >
+              Accepted
+            </Link>
+          )
+        )}
         <div className="flex items-center space-x-2">
           <BuildingIcon size={20}></BuildingIcon>
           <div className="text-lg font-semibold">{request.category.title}</div>

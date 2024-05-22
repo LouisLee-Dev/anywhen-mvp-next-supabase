@@ -10,6 +10,7 @@ import { acceptOffer, declineOffer } from "@/features/offers/actions";
 import { toast } from "sonner";
 import { RentalRequest } from "@/features/requests/schema";
 import { useRouter } from "next/navigation";
+import { acceptedRequest } from "../actions";
 
 interface IOffersOfRequestSectionProps {
   request: RentalRequest;
@@ -25,9 +26,13 @@ export default function OffersOfRequestSection({
 
   const handleAcceptOffer = async (id: string) => {
     await acceptOffer(id)
-      .then((offer) => {
+      .then(async (offer) => {
         console.log("Offer Accepted", offer);
         toast.success("Offer Accepted");
+        await acceptedRequest(request.id).then((request) => {
+          console.log("Request Accepted", request);
+          toast.success("request Accepted");
+        });
         router.push(`/renter/requests/${request.id}/payment`);
       })
       .catch((error) => {
@@ -88,9 +93,14 @@ export default function OffersOfRequestSection({
 
             return (
               <div
-                className="rounded border p-3 hover:bg-gray-50"
+                className="relative rounded border p-3 hover:bg-gray-50"
                 key={offer.id}
               >
+                {offer.status === "booking" && (
+                  <div className="absolute right-[-8px] top-2 rounded-md bg-primary px-3 py-2 text-white">
+                    Accepted
+                  </div>
+                )}
                 <div className="grid grid-cols-4">
                   <div className="space-y-2">
                     <div className="text-lg font-semibold">
@@ -132,38 +142,40 @@ export default function OffersOfRequestSection({
                   <div className="">
                     Sent {getHumanizedDate(offer.created_at)}
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="default"
-                      onClick={() => {
-                        confirm({
-                          title: "Accept Offer",
-                          description:
-                            "Are you sure you want to accept this offer?",
-                        }).then(() => {
-                          handleAcceptOffer(offer?.id);
-                        });
-                      }}
-                    >
-                      Accept Offer
-                    </Button>
+                  {request.status === "pending" && (
+                    <div className="flex gap-2">
+                      <Button
+                        variant="default"
+                        onClick={() => {
+                          confirm({
+                            title: "Accept Offer",
+                            description:
+                              "Are you sure you want to accept this offer?",
+                          }).then(() => {
+                            handleAcceptOffer(offer?.id);
+                          });
+                        }}
+                      >
+                        Accept Offer
+                      </Button>
 
-                    <Button
-                      variant="default"
-                      className="bg-red-500 hover:bg-red-400"
-                      onClick={() => {
-                        confirm({
-                          title: "Decline Offer",
-                          description:
-                            "Are you sure you want to decline this offer?",
-                        }).then(() => {
-                          handleDeclineOffer(offer?.id);
-                        });
-                      }}
-                    >
-                      Decline Offer
-                    </Button>
-                  </div>
+                      <Button
+                        variant="default"
+                        className="bg-red-500 hover:bg-red-400"
+                        onClick={() => {
+                          confirm({
+                            title: "Decline Offer",
+                            description:
+                              "Are you sure you want to decline this offer?",
+                          }).then(() => {
+                            handleDeclineOffer(offer?.id);
+                          });
+                        }}
+                      >
+                        Decline Offer
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             );

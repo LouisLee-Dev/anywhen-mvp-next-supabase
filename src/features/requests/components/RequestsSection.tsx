@@ -61,6 +61,8 @@ export default function RequestsSection({
       .catch((error) => console.log(error));
   }
 
+  console.log(requests);
+
   return (
     <div className="w-full space-y-2">
       <ProfileDialog
@@ -124,7 +126,7 @@ export default function RequestsSection({
                     </div>
                     <div className="flex items-center space-x-1 font-medium text-gray-500">
                       <MapPinIcon size={20}></MapPinIcon>
-                      <span>{t.location}</span>
+                      <span>{t.location ? t.location : "Anywhere"}</span>
                     </div>
                     <div className="flex items-center space-x-1  text-gray-500">
                       <CircleDollarSignIcon size={20}></CircleDollarSignIcon>

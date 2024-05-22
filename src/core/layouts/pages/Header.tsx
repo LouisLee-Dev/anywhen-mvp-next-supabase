@@ -61,7 +61,7 @@ export default function Header() {
                   Trips
                 </NextLink>
                 <NextLink
-                  href="/renter/pricing"
+                  href="/pm/pricing"
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
                   Pricing

@@ -51,8 +51,10 @@ export default function PropertyCard({ property }: IPropertyCardProps) {
         )}
       </div>
       <div className="mt-2 space-y-2">
-        <span className="font-semibold">{property.title}</span>
-        <span className="font-semibold text-gray-500">{property.location}</span>
+        <span className="font-semibold">{property.title} </span>
+        <span className="font-semibold text-gray-500">
+          ({property.location})
+        </span>
         <div className="text-sm font-medium text-gray-600">
           {property.price_min} ~ {property.price_max} CAD
         </div>

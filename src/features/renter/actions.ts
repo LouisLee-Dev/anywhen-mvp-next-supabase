@@ -29,7 +29,11 @@ export async function getMyRequests() {
     include: {
       category: true,
       currency: true,
-      offers: true,
+      offers: {
+        where: {
+          status: "accepted",
+        },
+      },
     },
   });
 
@@ -67,4 +71,21 @@ export async function createRequestAction(data: RentalRequest) {
     console.log(e);
     return null;
   }
+}
+
+export async function acceptedRequest(requestId: string) {
+  const request = await prisma.requests.update({
+    where: {
+      id: requestId,
+    },
+    data: {
+      status: "accepted",
+    },
+    include: {
+      category: true,
+      currency: true,
+    },
+  });
+
+  return request;
 }

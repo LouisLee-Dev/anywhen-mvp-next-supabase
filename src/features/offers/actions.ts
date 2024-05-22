@@ -4,7 +4,7 @@ import { prisma } from "@/db";
 export const getOffersOfRequest = async (requestId: string) => {
   const offers = await prisma.offers.findMany({
     where: {
-      AND: [{ request_id: requestId }, { status: "accepted" }],
+      AND: [{ request_id: requestId }],
     },
     include: {
       request: {

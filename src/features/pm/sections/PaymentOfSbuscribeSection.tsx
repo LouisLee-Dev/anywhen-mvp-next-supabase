@@ -11,13 +11,11 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 );
 
-interface IPaymentOfRequestSectionProps {
-  request: RentalRequest;
-}
+// interface IPaymentOfSbuscribeSectionProps {
+//   request: RentalRequest;
+// }
 
-export default function PaymentOfRequestSection({
-  request,
-}: IPaymentOfRequestSectionProps) {
+export default function PaymentOfSbuscribeSection() {
   console.log(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
   const fetchClientSecret = useCallback(() => {
     // Create a Checkout Session

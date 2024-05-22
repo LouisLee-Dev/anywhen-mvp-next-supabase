@@ -17,17 +17,13 @@ import PaymentCard from "../components/PaymentCard";
 // }
 
 export default function PricingSection() {
-  const { data: categories, isLoading: isCategoriesLoading } = useCategories();
-  const { data: properties, isLoading: isPropertiesLoading } =
-    useMyProperties();
-
   return (
-    <div className="w-full">
+    <div className="w-full px-[8rem]">
       <h1 className="mb-4">Pricing</h1>
       <div className="flex justify-between gap-3">
-        <PaymentCard />
-        <PaymentCard />
-        <PaymentCard />
+        <PaymentCard periodTime="1 Month" price="$100 / Month" />
+        <PaymentCard periodTime="6 Month" price="$500 / 6 Month" />
+        <PaymentCard periodTime="1 Year" price="$1000 / Year" />
       </div>
     </div>
   );

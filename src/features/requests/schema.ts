@@ -20,6 +20,7 @@ export const requestInputSchema = z.object({
     bedroom: z.number().optional(),
   }),
   message: z.string(),
+  status: z.string().optional(),
 });
 
 export const requestSchema = requestInputSchema.extend({
