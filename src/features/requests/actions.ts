@@ -62,6 +62,11 @@ export async function getMatchedRequestsOfProperty(property: Property) {
           category_id: property.category_id,
         },
       ],
+      AND: [
+        {
+          status: "pending",
+        },
+      ],
     },
   });
 

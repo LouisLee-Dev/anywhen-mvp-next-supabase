@@ -16,21 +16,17 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link href="/">
             <span className="sr-only">Home</span>
-            <img
-              className="h-10 w-auto"
-              src="/assets/images/header-logo.png"
-              alt="header-logo"
-            />
+            <div className="text-2xl font-bold text-gray-600">anywhen</div>
           </Link>
         </div>
         <div className="flex"></div>
         {isSignIn && (
-          <div className="flex space-x-2">
-            <div className=""> Don{"'"}t have an account? </div>
+          <div className="flex lg:space-x-2">
+            <div className="hidden lg:block"> Don{"'"}t have an account? </div>
             <div className="">
               <Link
                 href="/auth/signup"
-                className="rounded-md border bg-primary px-5 py-3 font-semibold text-white"
+                className="rounded-md border bg-primary lg:px-5 lg:py-3 px-3 py-2 font-semibold text-white"
               >
                 Sign Up
               </Link>
@@ -39,11 +35,11 @@ export default function Header() {
         )}
         {!isSignIn && (
           <div className="flex space-x-2">
-            <div className=""> Already have an account? </div>
+            <div className="hidden lg:block"> Already have an account? </div>
             <div className="">
               <Link
                 href="/auth/signin"
-                className="rounded-md border bg-primary px-5 py-3 font-semibold text-white"
+                className="rounded-md border bg-primary lg:px-5 lg:py-3 px-3 py-2 font-semibold text-white"
               >
                 Sign In
               </Link>

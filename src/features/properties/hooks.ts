@@ -7,6 +7,7 @@ import {
   updateProperty,
   uploadPropertyImage,
   getMyProperties,
+  deletePropertyImage,
 } from "./actions";
 import { Property, PropertyInput } from "./schema";
 import { toast } from "sonner";
@@ -149,24 +150,71 @@ export const useDeleteProperty = () => {
       return deleteProperty(property.id);
     },
     onMutate: async (property: PropertyInput) => {
-      await queryClient.cancelQueries({ queryKey: ["properties"] });
-      const previousProperties = queryClient.getQueryData(["properties"]);
-      queryClient.setQueryData(["properties"], (properties: Property[]) => {
-        return properties?.filter((t) => t.id !== property.id);
-      });
+      await queryClient.cancelQueries({ queryKey: ["properties", "me"] });
+      const previousProperties = queryClient.getQueryData(["properties", "me"]);
+      queryClient.setQueryData(
+        ["properties", "me"],
+        (properties: Property[]) => {
+          return properties?.filter((t) => t.id !== property.id);
+        },
+      );
       return { previousProperties };
     },
     onSuccess: async ({ success, property }, variables, context) => {
       if (success) {
-        toast.success(`${property.title} updated successfully`);
+        toast.success(`${property.title} deleted successfully`);
+        queryClient.setQueryData(
+          ["properties", "me"],
+          (properties: Property[]) => {
+            return properties?.filter((t) => t.id !== property.id);
+          },
+        );
       } else {
-        queryClient.setQueryData(["properties"], context.previousProperties);
+        queryClient.setQueryData(
+          ["properties", "me"],
+          context.previousProperties,
+        );
         toast.error("Request failed");
       }
     },
     onError: (error, variables, context) => {
       console.log(error);
-      queryClient.setQueryData(["properties"], context.previousProperties);
+      queryClient.setQueryData(
+        ["properties", "me"],
+        context.previousProperties,
+      );
+      toast.error("Request failed");
+    },
+  });
+};
+
+export const useDeletePropertyImage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      propertyId,
+      imageId,
+    }: {
+      propertyId: string;
+      imageId: string;
+    }) => {
+      return deletePropertyImage({ propertyId, imageId });
+    },
+    onMutate: async (variables: { propertyId: string; imageId: string }) => {
+      queryClient.cancelQueries({
+        queryKey: ["property", variables.propertyId],
+      });
+    },
+    onSuccess: async ({ success, property }, variables, context) => {
+      if (success) {
+        toast.success(`Image deleted successfully`);
+        queryClient.setQueryData(["property", property.id], property);
+      } else {
+        toast.error("Request failed");
+      }
+    },
+    onError: (error, variables, context) => {
+      console.log(error);
       toast.error("Request failed");
     },
   });

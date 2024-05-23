@@ -33,12 +33,12 @@ export default function ProfileDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[560px]">
         <DialogHeader>
-          <DialogTitle className="text-center">Renter Profile</DialogTitle>
+          <DialogTitle className="text-center">Profile Detail</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-4 gap-4 py-4">
           <div className="col-span-2">
             <div className="flex items-center">
-              <Avatar className="h-12 w-12 cursor-pointer rounded-full">
+              <Avatar className="mr-2 h-12 w-12 cursor-pointer rounded-full">
                 <AvatarImage src="/assets/avatars/01.png" alt="@shadcn" />
                 <AvatarFallback>SC</AvatarFallback>
               </Avatar>
@@ -59,7 +59,7 @@ export default function ProfileDialog({
           <div className="col-span-2 flex items-center">
             <div>
               <span className="font-semibod">Phone Number:</span>{" "}
-              {profile?.phone_number}
+              {profile?.phone_number ? profile?.phone_number : "N/A"}
             </div>
             <p></p>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCategories } from "@/features/categories/hooks";
-import { NewPropertyForm } from "../components/NewPropertyForm";
+import { NewPropertyForm } from "../../properties/components/PropertyFormDialog";
 import {
   Card,
   CardContent,

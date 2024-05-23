@@ -61,8 +61,6 @@ export default function RequestsSection({
       .catch((error) => console.log(error));
   }
 
-  console.log(requests);
-
   return (
     <div className="w-full space-y-2">
       <ProfileDialog
@@ -72,14 +70,12 @@ export default function RequestsSection({
         onOpenChange={setOpen}
       />
       {requests.map((t: any) => {
-        const isBooking =
-          t.offers.filter((t: any) => t.status !== "cancelled").length > 0
-            ? true
-            : false;
+        const isSentOffer = t.offers.some((o: any) => o.status === "sent");
+
         return (
           <Card className="w-full" key={t.id}>
             <CardContent className="relative p-3">
-              {isBooking && (
+              {isSentOffer && (
                 <div className="absolute right-[-8px] top-2 rounded bg-blue-500 px-2 py-1 text-white">
                   Offer Sent
                 </div>
@@ -149,7 +145,7 @@ export default function RequestsSection({
                 </div>
               </div>
               <div className="flex items-center justify-end">
-                {!isBooking ? (
+                {!isSentOffer ? (
                   <Button
                     type="button"
                     size="sm"

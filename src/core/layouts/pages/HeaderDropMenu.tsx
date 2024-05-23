@@ -63,15 +63,6 @@ export default function HeaderDropDownMenu() {
                 <DropdownMenuItem>Setting</DropdownMenuItem>
               </NextLink>
             </DropdownMenuGroup>
-            {profile?.role === "renter" ? (
-              <DropdownMenuGroup>
-                <NextLink href="/order-history">
-                  <DropdownMenuItem>Order History</DropdownMenuItem>
-                </NextLink>
-              </DropdownMenuGroup>
-            ) : (
-              ""
-            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {

@@ -33,9 +33,9 @@ const RentalRequestCard = ({ request }: { request: RentalRequest }) => {
             {request.offers.length ? request.offers.length : "No"} Offers
           </Link>
         ) : (
-          request.status === "accepted" && (
+          request.status === "booking" && (
             <Link
-              className="absolute right-[-8px] top-2 rounded bg-primary px-3 py-1 text-white transition-all duration-300 hover:bg-primary/75"
+              className="absolute right-[-8px] top-2 rounded bg-blue-600 px-3 py-1 text-white transition-all duration-300 hover:bg-blue-400"
               href={`/renter/requests/${request.id}/offers`}
             >
               Booking
@@ -64,7 +64,9 @@ const RentalRequestCard = ({ request }: { request: RentalRequest }) => {
           </span>
         </div>
         <div
-          dangerouslySetInnerHTML={{ __html: `${request.message}` }}
+          dangerouslySetInnerHTML={{
+            __html: `${request.message || "No message here!"}`,
+          }}
           className="w-full rounded-md border p-2"
         />
         <div className="flex items-center justify-end">
@@ -91,9 +93,15 @@ export default function DashboardSection({ requests }: IDashboardSectionProps) {
       <h1>Your Requests</h1>
       <div className="grid w-full grid-cols-3">
         <div className="col-span-3 ">
-          {requests.map((t: RentalRequest) => (
-            <RentalRequestCard key={t.id} request={t} />
-          ))}
+          {requests.length > 0 ? (
+            requests.map((t: RentalRequest) => (
+              <RentalRequestCard key={t.id} request={t} />
+            ))
+          ) : (
+            <div className="pt-5 text-center text-gray-500">
+              No requests found!
+            </div>
+          )}
         </div>
         <div className="col-span-2"></div>
       </div>

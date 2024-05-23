@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Offer } from "../schema";
+import { Offer } from "../../offers/schema";
 import { useMemo } from "react";
 import dayjs from "dayjs";
 import { formatDate } from "@/lib/utils";
@@ -18,14 +18,15 @@ import {
   MapPinIcon,
   NavigationIcon,
 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
-interface IOffersSectionProps {
+interface IRenterOffersSectionProps {
   offers: Offer[];
 }
 
 const OfferCard = ({ offer }: { offer: Offer }) => {
   return (
-    <div className="flex items-center justify-between space-x-8 border-b border-gray-200 p-4">
+    <div className="space-x-8p-4 flex items-center justify-between">
       <div className="space-y-1">
         <div className="text-lg font-semibold">
           {offer.request.profile.full_name}
@@ -87,24 +88,21 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
           </p>
         </div>
       </div>
-      <div className="">
-        <Button variant="default"> View Offer </Button>
-      </div>
     </div>
   );
 };
 
-export default function OffersSection({ offers }: IOffersSectionProps) {
+export default function OffersSection({ offers }: IRenterOffersSectionProps) {
   const activeOffers = useMemo(
     () => offers.filter((offer) => offer.status === "booking"),
     [offers],
   );
   const sentOffers = useMemo(
-    () => offers.filter((offer) => offer.status === "accepted"),
+    () => offers.filter((offer) => offer.status === "sent"),
     [offers],
   );
   const decliendOffers = useMemo(
-    () => offers.filter((offer) => offer.status === "cancelled"),
+    () => offers.filter((offer) => offer.status === "declined"),
     [offers],
   );
 
@@ -121,8 +119,13 @@ export default function OffersSection({ offers }: IOffersSectionProps) {
             Active Offers
           </AccordionTrigger>
           <AccordionContent>
-            {activeOffers.map((offer) => (
-              <OfferCard key={offer.id} offer={offer} />
+            {activeOffers.map((offer, i) => (
+              <div className="px-4">
+                <OfferCard key={offer.id} offer={offer} />
+                {activeOffers.length - 1 !== i && (
+                  <Separator className="my-4" />
+                )}
+              </div>
             ))}
           </AccordionContent>
         </AccordionItem>
@@ -131,8 +134,11 @@ export default function OffersSection({ offers }: IOffersSectionProps) {
             Sent Offers
           </AccordionTrigger>
           <AccordionContent>
-            {sentOffers.map((offer) => (
-              <OfferCard key={offer.id} offer={offer} />
+            {sentOffers.map((offer, i) => (
+              <div className="px-4">
+                <OfferCard key={offer.id} offer={offer} />
+                {sentOffers.length !== i && <Separator className="my-4" />}
+              </div>
             ))}
           </AccordionContent>
         </AccordionItem>
@@ -141,8 +147,11 @@ export default function OffersSection({ offers }: IOffersSectionProps) {
             Declined Offers
           </AccordionTrigger>
           <AccordionContent>
-            {decliendOffers.map((offer) => (
-              <OfferCard key={offer.id} offer={offer} />
+            {decliendOffers.map((offer, i) => (
+              <div className="px-4">
+                <OfferCard key={offer.id} offer={offer} />
+                {decliendOffers.length !== i && <Separator className="my-4" />}
+              </div>
             ))}
           </AccordionContent>
         </AccordionItem>

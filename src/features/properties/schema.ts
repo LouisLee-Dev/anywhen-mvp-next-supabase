@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { categorySchema } from "../categories/schema";
 import { requestSchema } from "../requests/schema";
+import { status } from "nprogress";
 
 export const propertyInputSchema = z.object({
   id: z.string().uuid().optional().nullable(),
@@ -12,6 +13,7 @@ export const propertyInputSchema = z.object({
   price_max: z.number().optional().nullable(),
   currency_id: z.string().uuid().optional().nullable(),
   location: z.string(),
+  status: z.string().optional(),
   available_begin: z.date().optional().nullable(),
   available_end: z.date().optional().nullable(),
 });

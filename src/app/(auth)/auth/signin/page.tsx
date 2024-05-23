@@ -64,7 +64,7 @@ export default function SignInPage() {
 
   return (
     <div className="auth-content-wrapper flex h-full flex-col items-center justify-center">
-      <div className="mx-auto w-[480px] rounded-md border p-6 shadow-md">
+      <div className="mx-auto lg:w-[480px] w-full rounded-md border p-6 shadow-md">
         <h1 className="mb-6 w-full text-center"> Welcome back! </h1>
         <Form {...form}>
           <form
@@ -107,8 +107,8 @@ export default function SignInPage() {
           </form>
         </Form>
         <Separator className="my-4" />
-        <div className="flex items-center space-x-4">
-          <Button type="submit" variant="outline" className="flex-1">
+        <div className="flex items-center lg:space-x-4 flex-col lg:flex-row gap-2">
+          <Button type="submit" variant="outline" className="flex-1 w-full">
             Continue with{" "}
             <svg
               className="block h-5 w-5"
@@ -136,7 +136,7 @@ export default function SignInPage() {
             </svg>{" "}
             oogle
           </Button>
-          <Button type="submit" variant="outline" className="flex-1">
+          <Button type="submit" variant="outline" className="flex-1 w-full">
             Continue with
             <svg
               className="block h-5 w-5 text-current"

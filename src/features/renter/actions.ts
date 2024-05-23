@@ -31,7 +31,7 @@ export async function getMyRequests() {
       currency: true,
       offers: {
         where: {
-          status: "accepted",
+          status: "sent",
         },
       },
     },

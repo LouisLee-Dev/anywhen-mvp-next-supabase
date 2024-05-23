@@ -1,11 +1,10 @@
 "use client";
 import { useMemo, useState } from "react";
 import { Dialog, Popover } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import HeaderDropDownMenu from "@/core/layouts/pages/HeaderDropMenu";
 import { useAuth } from "@/core/auth/AuthProvider";
 import NextLink from "@/components/common/NextLink"; // Import NextLink from Next.js
-import { BellDotIcon } from "lucide-react";
+import { BellDotIcon, X, AlignJustify } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,13 +17,12 @@ import { useRouter } from "next/navigation";
 export default function Header() {
   const router = useRouter();
   const [{ authenticated, user, profile, notifications }] = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const unreadNotifications = useMemo(
     () => notifications?.filter((notification) => !notification.viewed),
     [notifications],
   );
-  const unreadNotificationCount = unreadNotifications.length;
+  const unreadNotificationCount = unreadNotifications?.length;
 
   return (
     <header className="shadow-md">
@@ -35,22 +33,25 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <NextLink href="/">
             <span className="sr-only">Home</span>
-            <img
-              className="h-10 w-auto"
-              src="/assets/images/header-logo.png"
-              alt="header-logo"
-            />
+            <div className="text-2xl font-bold text-gray-600">anywhen</div>
           </NextLink>
         </div>
+        {/* mobie menu */}
         <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <AlignJustify />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="" align="end" forceMount>
+              <DropdownMenuItem>
+                <NextLink href="/auth/signin">Sign In</NextLink>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <NextLink href="/auth/signup">Sign up</NextLink>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
           {authenticated ? (
@@ -93,7 +94,7 @@ export default function Header() {
                   href="/renter/request"
                   className="text-lg font-semibold text-gray-600 hover:text-primary"
                 >
-                  Requests
+                  New Request
                 </NextLink>
                 <NextLink
                   href="/renter/offers"
@@ -118,24 +119,35 @@ export default function Header() {
         <div className="hidden space-x-8 lg:flex lg:flex-1 lg:items-center lg:justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="relative cursor-pointer text-gray-600 hover:text-gray-900">
-                <BellDotIcon className="h-8 w-8 " />
-                {unreadNotificationCount > 0 && (
-                  <div className="absolute right-[-8px] top-[-8px] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white">
-                    {unreadNotificationCount}
-                  </div>
-                )}
-              </div>
+              {authenticated && (
+                <div className="relative cursor-pointer text-gray-600 hover:text-gray-900">
+                  <BellDotIcon className="h-8 w-8 " />
+                  {unreadNotificationCount > 0 && (
+                    <div className="absolute right-[-8px] top-[-8px] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white">
+                      {unreadNotificationCount}
+                    </div>
+                  )}
+                </div>
+              )}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[320px]" align="end" forceMount>
-              {unreadNotifications.slice(0, 5).map((notification) => (
-                <DropdownMenuItem key={notification.id}>
-                  <div className="space-y-1">
-                    <div className="font-semibold">{notification.title}</div>
-                    <div className="pl-2">{notification.message}</div>
-                  </div>
-                </DropdownMenuItem>
-              ))}
+              {unreadNotificationCount > 0 ? (
+                unreadNotifications?.slice(0, 5).map((notification) => (
+                  <DropdownMenuItem
+                    key={notification.id}
+                    onClick={() => {
+                      router.push("/setting/notifications");
+                    }}
+                  >
+                    <div className="space-y-1">
+                      <div className="font-semibold">{notification.title}</div>
+                      <div className="pl-2">{notification.message}</div>
+                    </div>
+                  </DropdownMenuItem>
+                ))
+              ) : (
+                <div className="text-center">No new notifications</div>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
@@ -146,58 +158,9 @@ export default function Header() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <HeaderDropDownMenu></HeaderDropDownMenu>
+          <HeaderDropDownMenu />
         </div>
       </nav>
-      <Dialog
-        as="div"
-        className="lg:hidden"
-        open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
-      >
-        <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <NextLink href="/">
-              <span className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className="h-12 w-auto"
-                  src="/assets/images/header-logo.png"
-                  alt="header-logo"
-                />
-              </span>
-            </NextLink>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
-                {/* <NextLink href="/">
-                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
-                    Renters
-                  </span>
-                </NextLink>
-                <NextLink href="/company">
-                  <span className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-600 hover:bg-gray-50">
-                    Property Managers
-                  </span>
-                </NextLink> */}
-              </div>
-              <div className="py-6">
-                <HeaderDropDownMenu></HeaderDropDownMenu>
-              </div>
-            </div>
-          </div>
-        </Dialog.Panel>
-      </Dialog>
     </header>
   );
 }

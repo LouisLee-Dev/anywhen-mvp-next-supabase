@@ -121,3 +121,26 @@ export const deleteProperty = async (propertyId: string) => {
     return { success: false, message: (error as Error).message };
   }
 };
+
+export const deletePropertyImage = async ({
+  propertyId,
+  imageId,
+}: {
+  propertyId: string;
+  imageId: string;
+}) => {
+  try {
+    const propertyImage = await prisma.property_images.delete({
+      where: {
+        id: imageId,
+      },
+    });
+    const property: Property = await prisma.property.findFirst({
+      where: { id: propertyId },
+      include: { images: true },
+    });
+    return { success: true, property };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+};
