@@ -6,7 +6,7 @@ export default async function SettingNotifications() {
   const profile = await getCurrentProfile();
   await prisma.notifications.updateMany({
     where: {
-      to: profile.id,
+      to: profile?.id,
       viewed: false,
     },
     data: {

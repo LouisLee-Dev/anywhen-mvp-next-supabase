@@ -149,7 +149,7 @@ export async function acceptRentalRequestForProperty(
         await upsertOffer(propertyId, requestId, "sent");
         await prisma.notifications.create({
           data: {
-            from: profile.id,
+            from: profile?.id,
             to: request.profile_id,
             collection: "requests",
             type: "accepted",
@@ -224,7 +224,7 @@ export async function cancelRentalRequestForProperty(
     await upsertOffer(propertyId, requestId, "cancelled");
     await prisma.notifications.create({
       data: {
-        from: profile.id,
+        from: profile?.id,
         to: request.profile_id,
         collection: "offers",
         type: "cancelled",

@@ -39,7 +39,7 @@ export const acceptOffer = async (offer: Offer) => {
   if (previousOffer.status === "cancelled") {
     // await prisma.notifications.create({
     //   data: {
-    //     from: profile.id,
+    //     from: profile?.id,
     //     to: offer.property.owner_id,
     //     collection: "requests",
     //     type: "accepted",
@@ -78,7 +78,7 @@ export const acceptOffer = async (offer: Offer) => {
   });
   await prisma.notifications.create({
     data: {
-      from: profile.id,
+      from: profile?.id,
       to: offer.property.owner_id,
       collection: "offer",
       type: "accepted",
@@ -115,7 +115,7 @@ export const declineOffer = async (offer: Offer) => {
 
   await prisma.notifications.create({
     data: {
-      from: profile.id,
+      from: profile?.id,
       to: offer.property.owner_id,
       collection: "offer",
       type: "declined",

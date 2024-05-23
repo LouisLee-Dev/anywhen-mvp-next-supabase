@@ -77,31 +77,43 @@ export const useUpdateProperty = () => {
       return updateProperty(property);
     },
     onMutate: async (property: PropertyInput) => {
-      await queryClient.cancelQueries({ queryKey: ["properties"] });
-      const previousProperties = queryClient.getQueryData(["properties"]);
-      queryClient.setQueryData(["properties"], (properties: Property[]) => {
-        return properties?.map((t) => (t.id === property.id ? property : t));
-      });
+      await queryClient.cancelQueries({ queryKey: ["properties", "me"] });
+      const previousProperties = queryClient.getQueryData(["properties", "me"]);
+      queryClient.setQueryData(
+        ["properties", "me"],
+        (properties: Property[]) => {
+          return properties?.map((t) => (t.id === property.id ? property : t));
+        },
+      );
       return { previousProperties };
     },
     onSuccess: async ({ data: { success, property } }, variables, context) => {
       if (success) {
-        queryClient.setQueryData(["properties"], (properties: Property[]) => {
-          return properties?.map((t) => {
-            if (property.id === t.id) return property;
-            else return t;
-          });
-        });
+        queryClient.setQueryData(
+          ["properties", "me"],
+          (properties: Property[]) => {
+            return properties?.map((t) => {
+              if (property.id === t.id) return property;
+              else return t;
+            });
+          },
+        );
         queryClient.setQueryData(["property", property.id], property);
         toast.success(`${property.title} updated successfully`);
       } else {
-        queryClient.setQueryData(["properties"], context.previousProperties);
+        queryClient.setQueryData(
+          ["properties", "me"],
+          context.previousProperties,
+        );
         toast.error("Request failed");
       }
     },
     onError: (error, variables, context) => {
       console.log(error);
-      queryClient.setQueryData(["properties"], context.previousProperties);
+      queryClient.setQueryData(
+        ["properties", "me"],
+        context.previousProperties,
+      );
       toast.error("Request failed");
     },
   });

@@ -7,7 +7,7 @@ export default async function PageOffers() {
   const offers: any[] = await prisma.offers.findMany({
     where: {
       request: {
-        profile_id: profile.id,
+        profile_id: profile?.id,
       },
     },
     include: {
@@ -29,7 +29,7 @@ export default async function PageOffers() {
 
   return (
     <div className="page-content-wrapper">
-      <RenterOffersSection offers={offers}></RenterOffersSection>
+      <RenterOffersSection offers={offers} />
     </div>
   );
 }

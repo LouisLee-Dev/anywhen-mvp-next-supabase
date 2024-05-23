@@ -49,8 +49,8 @@ export default function PropertyCard({
           className="z-10 flex cursor-pointer items-center rounded bg-red-600 px-1.5 py-1 text-white transition-all duration-500 hover:bg-red-500"
           onClick={() => {
             confirm({
-              title: "Accept Offer",
-              description: "Are you sure you want to accept this offer?",
+              title: "Delete Property",
+              description: "Are you sure you want to delete this property?",
             }).then(() => {
               handleDeleteProperty(property);
             });
@@ -61,7 +61,7 @@ export default function PropertyCard({
       </div>
 
       <div className="absolute left-2 top-2 z-10 cursor-pointer rounded px-2 py-1 font-semibold text-white transition-all duration-500">
-        {property.category.title}
+        {property?.category?.title}
       </div>
       <div className="relative aspect-square w-full cursor-pointer rounded-md transition-all duration-500 hover:opacity-75">
         <div className="absolute bottom-[-7px] right-[-2px] flex gap-1">
@@ -69,7 +69,7 @@ export default function PropertyCard({
             className="z-10 flex cursor-pointer items-center rounded bg-blue-600 px-1.5 py-1 text-white transition-all duration-500 hover:bg-blue-500"
             onClick={() => {
               setIsDialogOpen(true);
-              setPropertyId(property.id);
+              setPropertyId(property?.id);
               setProperty(property);
             }}
           >
@@ -89,7 +89,7 @@ export default function PropertyCard({
             No Preview Image Available
           </div>
         )}
-        {property.status === "pending" ? (
+        {property?.status === "pending" ? (
           property?.matchedRequests?.length > 0 && (
             <div className="absolute bottom-2 left-[-8px]">
               <Link
@@ -112,12 +112,12 @@ export default function PropertyCard({
         )}
       </div>
       <div className="mt-2 space-y-2">
-        <span className="font-semibold">{property.title} </span>
+        <span className="font-semibold">{property?.title} </span>
         <span className="font-semibold text-gray-500">
-          ({property.location})
+          ({property?.location})
         </span>
         <div className="text-sm font-medium text-gray-600">
-          {property.price_min} ~ {property.price_max} CAD
+          {property?.price_min} ~ {property?.price_max} CAD
         </div>
       </div>
     </div>

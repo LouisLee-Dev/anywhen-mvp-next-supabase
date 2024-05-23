@@ -19,10 +19,12 @@ import { toast } from "sonner";
 import Toggle from "@/components/ui/toggle";
 import { useState } from "react";
 import Request from "@/lib/request";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [isOwner, setIsOwner] = useState(false);
+
+  const router = useRouter();
 
   const form = useForm<ProfileInput>({
     resolver: zodResolver(profileInputSchema),
@@ -35,14 +37,13 @@ export default function Page() {
   });
 
   async function onSignUp(formData: ProfileInput) {
-    console.log(formData);
     Request.Post("/api/auth/signup", {
       ...formData,
       role: isOwner ? "owner" : "renter",
     })
       .then((data) => {
         toast.success(data.message);
-        redirect("/auth/login");
+        router.push("/auth/signin");
       })
       .catch((err) => {
         if (err?.response) {

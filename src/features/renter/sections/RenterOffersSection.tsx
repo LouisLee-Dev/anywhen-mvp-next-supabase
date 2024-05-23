@@ -26,7 +26,7 @@ interface IRenterOffersSectionProps {
 
 const OfferCard = ({ offer }: { offer: Offer }) => {
   return (
-    <div className="space-x-8p-4 flex items-center justify-between">
+    <div className="space-x-8 p-4 flex items-center justify-between">
       <div className="space-y-1">
         <div className="text-lg font-semibold">
           {offer.request.profile.full_name}
@@ -109,7 +109,7 @@ export default function RenterOffersSection({
   );
 
   return (
-    <div className="px-[8rem]">
+    <div className="lg:px-[8rem] px-2">
       <Accordion
         type="single"
         collapsible

@@ -8,7 +8,7 @@ export default async function Renters() {
   const offers: any[] = await prisma.offers.findMany({
     where: {
       property: {
-        owner_id: profile.id,
+        owner_id: profile?.id,
       },
     },
     include: {

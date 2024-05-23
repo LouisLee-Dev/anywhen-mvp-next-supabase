@@ -46,6 +46,15 @@ class HTTPResponse {
     });
   };
 
+  METHOD_NOT_ALLOWED = (message: any) => {
+    return new NextResponse(this.buildMessage(message), {
+      status: 405,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   INTERNAL_SERVER_ERROR = (message: any) => {
     return new NextResponse(this.buildMessage(message), {
       status: 500,

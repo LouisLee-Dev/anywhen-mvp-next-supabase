@@ -107,7 +107,7 @@ export default function OffersSection({ offers }: IRenterOffersSectionProps) {
   );
 
   return (
-    <div className="px-[8rem]">
+    <div className="lg:px-[8rem] px-2">
       <Accordion
         type="single"
         collapsible
@@ -120,10 +120,10 @@ export default function OffersSection({ offers }: IRenterOffersSectionProps) {
           </AccordionTrigger>
           <AccordionContent>
             {activeOffers.map((offer, i) => (
-              <div className="px-4" key={offer.id}>
+              <div className="lg:px-4 px-1" key={offer.id}>
                 <OfferCard offer={offer} />
                 {activeOffers.length - 1 !== i && (
-                  <Separator className="my-4" />
+                  <Separator className="lg:my-4 my-2" />
                 )}
               </div>
             ))}
@@ -135,9 +135,9 @@ export default function OffersSection({ offers }: IRenterOffersSectionProps) {
           </AccordionTrigger>
           <AccordionContent>
             {sentOffers.map((offer, i) => (
-              <div className="px-4" key={offer.id}>
+              <div className="lg:px-4 px-1" key={offer.id}>
                 <OfferCard offer={offer} />
-                {sentOffers.length !== i && <Separator className="my-4" />}
+                {sentOffers.length !== i && <Separator className="lg:my-4 my-2" />}
               </div>
             ))}
           </AccordionContent>
@@ -148,9 +148,9 @@ export default function OffersSection({ offers }: IRenterOffersSectionProps) {
           </AccordionTrigger>
           <AccordionContent>
             {decliendOffers.map((offer, i) => (
-              <div className="px-4" key={offer.id}>
+              <div className="lg:px-4 px-1" key={offer.id}>
                 <OfferCard offer={offer} />
-                {decliendOffers.length !== i && <Separator className="my-4" />}
+                {decliendOffers.length !== i && <Separator className="lg:my-4 my-2" />}
               </div>
             ))}
           </AccordionContent>

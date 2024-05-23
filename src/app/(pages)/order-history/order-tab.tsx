@@ -8,7 +8,7 @@ export async function OrderTab() {
 
   const allRequests: any[] = await prisma.requests.findMany({
     where: {
-      profile_id: profile.id,
+      profile_id: profile?.id,
     },
     orderBy: {
       created_at: "desc",

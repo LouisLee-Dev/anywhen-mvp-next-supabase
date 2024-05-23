@@ -9,7 +9,7 @@ export async function getMatchedRequests() {
 
   const requests = await prisma.requests.findMany({
     where: {
-      profile_id: profile.id,
+      profile_id: profile?.id,
     },
   });
 
@@ -21,7 +21,7 @@ export async function getMyRequests() {
 
   const requests = await prisma.requests.findMany({
     where: {
-      profile_id: profile.id,
+      profile_id: profile?.id,
     },
     orderBy: {
       created_at: "desc",
@@ -46,7 +46,7 @@ export async function createRequestAction(data: RentalRequest) {
   try {
     const request = await prisma.requests.create({
       data: {
-        profile_id: profile.id,
+        profile_id: profile?.id,
         location: data.location,
         category_id: data.category_id,
         price_min: data.price_min,

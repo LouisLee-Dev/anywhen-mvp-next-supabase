@@ -74,9 +74,9 @@ export default function NewRequestSection() {
   }, [errors]);
 
   return (
-    <div className="px-[8rem]">
+    <div className="lg:px-[8rem]">
       <h1 className="w-full text-center">Find your favoirte place!</h1>
-      <div className="mx-auto w-[640px] p-2">
+      <div className="mx-auto lg:w-[640px] w-full p-2">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onFormSubmit)}

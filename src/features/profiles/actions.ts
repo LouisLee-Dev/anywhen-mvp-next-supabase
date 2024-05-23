@@ -10,11 +10,11 @@ export async function updateProfileAction(data: ProfileInput) {
   try {
     const request = await prisma.profiles.update({
       where: {
-        id: profile.id,
+        id: profile?.id,
       },
       data: {
         full_name: data.full_name,
-        email:data.email
+        email: data.email,
       },
     });
     return request;

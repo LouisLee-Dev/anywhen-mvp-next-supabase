@@ -89,7 +89,7 @@ interface IDashboardSectionProps {
 
 export default function DashboardSection({ requests }: IDashboardSectionProps) {
   return (
-    <div className="px-[8rem]">
+    <div className="lg:px-[8rem] px-2">
       <h1>Your Requests</h1>
       <div className="grid w-full grid-cols-3">
         <div className="col-span-3 ">
