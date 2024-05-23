@@ -64,7 +64,7 @@ export default function PropertyCard({
         {property.category.title}
       </div>
       <div className="relative aspect-square w-full cursor-pointer rounded-md transition-all duration-500 hover:opacity-75">
-        <div className="absolute bottom-[-7px] right-0 flex gap-1">
+        <div className="absolute bottom-[-7px] right-[-2px] flex gap-1">
           <div
             className="z-10 flex cursor-pointer items-center rounded bg-blue-600 px-1.5 py-1 text-white transition-all duration-500 hover:bg-blue-500"
             onClick={() => {
