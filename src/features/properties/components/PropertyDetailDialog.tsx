@@ -15,7 +15,7 @@ import { ProfileInput } from "@/features/auth/schema";
 import { ClockIcon, HeartHandshakeIcon, StarIcon } from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
 
-interface IProfileDialogProps {
+interface IPropertyDetailDialogProps {
   profile: ProfileInput;
   create_at: string;
   open: boolean;
@@ -23,13 +23,13 @@ interface IProfileDialogProps {
   headerTitle?: string;
 }
 
-export default function ProfileDialog({
+export default function PropertyDetailDialog({
   profile,
   create_at,
   open,
   onOpenChange,
   headerTitle,
-}: IProfileDialogProps) {
+}: IPropertyDetailDialogProps) {
   const router = useRouter();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

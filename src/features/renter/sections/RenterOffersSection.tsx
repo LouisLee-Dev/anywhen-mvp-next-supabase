@@ -6,11 +6,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Offer } from "../../offers/schema";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { formatDate } from "@/lib/utils";
 import { getHumanizedDate } from "@/lib/client";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CalendarIcon,
   CircleDollarSignIcon,
@@ -19,26 +19,45 @@ import {
   NavigationIcon,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import ProfileDialog from "@/features/requests/components/ProfileDialog";
 
 interface IRenterOffersSectionProps {
   offers: Offer[];
 }
 
 const OfferCard = ({ offer }: { offer: Offer }) => {
+  const [open, setOpen] = useState(false);
+  const profile = offer.property.owner;
+  const [create_at, setCreateAt] = useState<string>("");
+
   return (
-    <div className="space-x-8 p-4 flex items-center justify-between">
-      <div className="space-y-1">
-        <div className="text-lg font-semibold">
-          {offer.request.profile.full_name}
+    <div className="flex items-center justify-between space-x-8 p-4">
+      <ProfileDialog
+        profile={profile}
+        create_at={create_at}
+        open={open}
+        onOpenChange={setOpen}
+        headerTitle="Property Manager"
+      />
+      <div className="flex-1 space-y-1">
+        <div className="flex items-center text-lg font-semibold">
+          <Avatar
+            className="mr-1 h-12 w-12 cursor-pointer rounded-full"
+            onClick={() => {
+              setOpen(true);
+              setCreateAt(profile?.created_at.toString());
+            }}
+          >
+            <AvatarImage src="/assets/avatars/01.png" alt="@shadcn" />
+            <AvatarFallback>SC</AvatarFallback>
+          </Avatar>
+          {offer.property.owner.full_name}
         </div>
-        <div className="text-base font-medium">
-          Requested {formatDate(offer.request.created_at)}
-        </div>
-        <div className="text-sm">
-          {getHumanizedDate(offer.request.created_at)}
+        <div className="ml-5 text-sm">
+          Joined {getHumanizedDate(offer.property.owner.created_at)}
         </div>
       </div>
-      <div className="flex-1 space-y-2">
+      <div className="flex-1 space-y-3">
         <h2 className="text-base font-semibold text-gray-800">Property</h2>
         <div className="space-y-2 pl-2">
           <h2 className="flex items-center space-x-2 text-base font-semibold text-gray-800">
@@ -86,6 +105,13 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
               {offer.request.start_date} ~ {offer.request.end_date}
             </span>
           </p>
+          <p className="flex items-center space-x-2 text-gray-600">
+            <CalendarIcon size={20} className="mr-2"></CalendarIcon>
+            Requested {formatDate(offer.request.created_at)}
+            {/* <div className="text-sm">
+              {getHumanizedDate(offer.request.created_at)}
+            </div> */}
+          </p>
         </div>
       </div>
     </div>
@@ -109,7 +135,7 @@ export default function RenterOffersSection({
   );
 
   return (
-    <div className="lg:px-[8rem] px-2">
+    <div className="px-2 lg:px-[8rem]">
       <Accordion
         type="single"
         collapsible

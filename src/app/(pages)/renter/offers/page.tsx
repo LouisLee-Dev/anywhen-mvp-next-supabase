@@ -15,6 +15,7 @@ export default async function PageOffers() {
         include: {
           category: true,
           currency: true,
+          owner: true,
         },
       },
       request: {

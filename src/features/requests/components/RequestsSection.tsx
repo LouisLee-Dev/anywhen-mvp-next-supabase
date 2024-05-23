@@ -68,6 +68,7 @@ export default function RequestsSection({
         open={open}
         create_at={create_at}
         onOpenChange={setOpen}
+        headerTitle="Renter Profile"
       />
       {requests.map((t: any) => {
         const isSentOffer = t.offers.some((o: any) => o.status === "sent");

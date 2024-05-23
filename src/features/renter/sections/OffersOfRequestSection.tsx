@@ -107,6 +107,7 @@ export default function OffersOfRequestSection({
                     create_at={create_at}
                     open={open}
                     onOpenChange={setOpen}
+                    headerTitle="Property Manager"
                   />
                   {offer.status === "booking" ? (
                     <div className="absolute right-[-8px] top-2 rounded-md bg-blue-500 px-3 py-2 text-white">
