@@ -83,7 +83,7 @@ export const acceptOffer = async (offer: Offer) => {
       collection: "offer",
       type: "accepted",
       title: "Offer accepted",
-      message: `Your offer for ${offer.request.category.title} request has been accepted.`,
+      message: `Your offer for ${offer.request.category.title} request has been accepted by ${profile.full_name}.`,
       data: offer,
       link: "",
       viewed: false,
