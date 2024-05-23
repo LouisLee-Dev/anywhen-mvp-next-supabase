@@ -81,7 +81,7 @@ export function PropertyFormDialog({
     if (property) {
       form.reset(property);
     }
-  }, [property]);
+  }, [property, form]);
 
   async function onSubmit(values: Property) {
     try {

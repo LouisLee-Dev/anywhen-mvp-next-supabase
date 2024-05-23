@@ -81,6 +81,7 @@ export default function PropertyCard({
           <img
             src={getPublicUrl("properties", property.images[0].path)}
             className="h-full w-full rounded-xl object-cover"
+            alt="Property Image"
           ></img>
         )}
         {property?.images?.length == 0 && (
