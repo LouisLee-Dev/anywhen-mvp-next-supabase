@@ -44,15 +44,15 @@ type State = {
   profile: ProfileInput;
   error: string;
   view: React.ReactNode;
-  notifications: Notification[];
+  notifications?: Notification[];
 };
 
 type Actions = {
   setError: (x: string) => void;
   setProfile: (x: ProfileInput) => void;
   setView: (x: React.ReactNode) => void;
-  setNotifications: (x: Notification[]) => void;
   actionSignOut: () => void;
+  setNotifications?: (x: Notification[]) => void;
 };
 
 export const AuthContext = createContext<[State, Actions]>([null, null]);
@@ -62,7 +62,7 @@ interface AuthProviderProps {
   defaultUser: User;
   defaultProfile: ProfileInput;
   children: ReactNode;
-  notifications: Notification[];
+  defaultNotifications: Notification[];
 }
 
 function reducer(
@@ -79,10 +79,12 @@ export const AuthProvider = ({
   defaultUser,
   defaultProfile,
   children,
-  notifications,
+  defaultNotifications,
 }: AuthProviderProps) => {
   const router = useRouter();
   const pathName = usePathname();
+
+  const [notifications, setNotifications] = useState(defaultNotifications);
 
   const [state, dispatch] = useReducer(reducer, {
     loading: true,
@@ -91,7 +93,6 @@ export const AuthProvider = ({
     profile: defaultProfile,
     error: "",
     view: "",
-    notifications,
   });
 
   const setUser = (value: User) => {
@@ -104,8 +105,6 @@ export const AuthProvider = ({
     dispatch({ type: "error", payload: value });
   const setView = (value: React.ReactNode) =>
     dispatch({ type: "view", payload: value });
-  const setNotifications = (value: Notification[]) =>
-    dispatch({ type: "notifications", payload: value });
 
   const actionSignOut = useCallback(async () => {
     const redirectUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL);
@@ -158,10 +157,13 @@ export const AuthProvider = ({
           (payload: any) => {
             console.log(payload);
             if (payload.eventType === "INSERT") {
-              setNotifications([payload.new, ...notifications]);
+              setNotifications((notifications) => [
+                payload.new,
+                ...notifications,
+              ]);
               toast.success(payload.new.message);
             } else if (payload.eventType === "UPDATE") {
-              setNotifications(
+              setNotifications((notifications) =>
                 notifications.map((notification) =>
                   notification.id === payload.new.id
                     ? payload.new
@@ -177,20 +179,24 @@ export const AuthProvider = ({
         supabase.removeChannel(channel);
       };
     }
-  }, [state.user?.id, notifications]);
+  }, [state.user?.id]);
+
+  useEffect(() => {
+    console.log(notifications);
+  }, [notifications]);
 
   const value = useMemo((): [State, Actions] => {
     return [
-      state as State,
+      { ...state, notifications } as State,
       {
         setError,
         setView,
         setProfile,
-        setNotifications,
         actionSignOut,
+        setNotifications,
       },
     ];
-  }, [state]); //eslint-disable-line
+  }, [state, notifications]); //eslint-disable-line
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -73,14 +73,14 @@ export default function PropertyDetailDialog({
               <Pill size={20}></Pill>
               <span>Description</span>
             </p>
-            <p className="mx-4 my-1 flex items-center space-x-2 text-base text-gray-600">
+            <div className="mx-4 my-1 flex items-center space-x-2 text-base text-gray-600">
               <div
                 dangerouslySetInnerHTML={{
                   __html: `${property?.description || "No description here!"}`,
                 }}
                 className="w-full rounded-md border p-2"
               />
-            </p>
+            </div>
             <p className="mx-4 flex items-center space-x-2 text-base text-gray-600">
               <CircleDollarSignIcon size={20}></CircleDollarSignIcon>
               <span>

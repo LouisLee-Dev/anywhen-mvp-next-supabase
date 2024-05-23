@@ -6,6 +6,8 @@ import { useAuth } from "@/core/auth/AuthProvider";
 export default function NotificationsSection() {
   const [{ notifications }] = useAuth();
 
+  console.log(notifications);
+
   return (
     <div className="space-y-4">
       <div>

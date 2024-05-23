@@ -26,7 +26,7 @@ export default async function PagesLayout({
     <AuthProvider
       defaultUser={user}
       defaultProfile={profile}
-      notifications={notifications}
+      defaultNotifications={notifications}
     >
       <div className="h-full w-full">
         <Header></Header>

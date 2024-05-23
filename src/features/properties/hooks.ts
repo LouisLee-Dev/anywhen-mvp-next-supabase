@@ -164,15 +164,9 @@ export const useDeleteProperty = () => {
     onMutate: async (property: PropertyInput) => {
       await queryClient.cancelQueries({ queryKey: ["properties", "me"] });
       const previousProperties = queryClient.getQueryData(["properties", "me"]);
-      queryClient.setQueryData(
-        ["properties", "me"],
-        (properties: Property[]) => {
-          return properties?.filter((t) => t.id !== property.id);
-        },
-      );
       return { previousProperties };
     },
-    onSuccess: async ({ success, property }, variables, context) => {
+    onSuccess: async ({ success, property, message }, variables, context) => {
       if (success) {
         toast.success(`${property.title} deleted successfully`);
         queryClient.setQueryData(
@@ -186,7 +180,7 @@ export const useDeleteProperty = () => {
           ["properties", "me"],
           context.previousProperties,
         );
-        toast.error("Request failed");
+        toast.error(message);
       }
     },
     onError: (error, variables, context) => {

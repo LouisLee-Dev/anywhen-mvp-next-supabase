@@ -111,12 +111,22 @@ export const uploadPropertyImage = async (
 
 export const deleteProperty = async (propertyId: string) => {
   try {
-    const property: Property = await prisma.property.delete({
+    const previousPropertie = await prisma.property.findFirst({
       where: {
         id: propertyId,
       },
     });
-    return { success: true, property: property };
+
+    if (previousPropertie.status === "booking") {
+      return { success: false, message: "Property is already booked" };
+    } else {
+      const property: Property = await prisma.property.delete({
+        where: {
+          id: propertyId,
+        },
+      });
+      return { success: true, property: property };
+    }
   } catch (error) {
     return { success: false, message: (error as Error).message };
   }
