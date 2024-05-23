@@ -30,6 +30,11 @@ export const propertySchema = propertyInputSchema.extend({
       path: z.string(),
     }),
   ),
+  currency: z.object({
+    id: z.string().uuid(),
+    title: z.string(),
+    symbol: z.string(),
+  }),
 });
 
 export type Property = z.infer<typeof propertySchema>;

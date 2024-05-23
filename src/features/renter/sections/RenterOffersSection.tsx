@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import ProfileDialog from "@/features/requests/components/ProfileDialog";
+import PropertyDetailDialog from "@/features/properties/components/PropertyDetailDialog";
 
 interface IRenterOffersSectionProps {
   offers: Offer[];
@@ -27,6 +28,7 @@ interface IRenterOffersSectionProps {
 
 const OfferCard = ({ offer }: { offer: Offer }) => {
   const [open, setOpen] = useState(false);
+  const [openProperty, setOpenProperty] = useState(false);
   const profile = offer.property.owner;
   const [create_at, setCreateAt] = useState<string>("");
 
@@ -38,6 +40,11 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
         open={open}
         onOpenChange={setOpen}
         headerTitle="Property Manager"
+      />
+      <PropertyDetailDialog
+        property={offer.property}
+        open={openProperty}
+        onOpenChange={setOpenProperty}
       />
       <div className="flex-1 space-y-1">
         <div className="flex items-center text-lg font-semibold">
@@ -58,7 +65,12 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
         </div>
       </div>
       <div className="flex-1 space-y-3">
-        <h2 className="text-base font-semibold text-gray-800">Property</h2>
+        <h2
+          className="cursor-pointer text-base font-semibold text-gray-800"
+          onClick={() => setOpenProperty(true)}
+        >
+          Property
+        </h2>
         <div className="space-y-2 pl-2">
           <h2 className="flex items-center space-x-2 text-base font-semibold text-gray-800">
             <HotelIcon></HotelIcon>

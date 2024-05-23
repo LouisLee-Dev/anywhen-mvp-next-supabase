@@ -1,6 +1,12 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ClockIcon } from "lucide-react";
+import {
+  CircleDollarSignIcon,
+  ClockIcon,
+  HotelIcon,
+  MapPinIcon,
+  NavigationIcon,
+} from "lucide-react";
 import dayjs from "@/lib/utils/dayjs";
 import { useDeclineOffer, useOffersOfRequest } from "../hooks";
 import { getHumanizedDate } from "@/lib/client";
@@ -15,6 +21,7 @@ import ProfileDialog from "@/features/requests/components/ProfileDialog";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Offer } from "@/features/offers/schema";
+import PropertyDetailDialog from "@/features/properties/components/PropertyDetailDialog";
 
 interface IOffersOfRequestSectionProps {
   request: RentalRequest;
@@ -30,6 +37,7 @@ export default function OffersOfRequestSection({
   const declineOffer = useDeclineOffer();
 
   const [open, setOpen] = useState(false);
+  const [openProperty, setOpenProperty] = useState(false);
   const [profile, setProfile] = useState<any>({});
   const [create_at, setCreateAt] = useState<string>("");
 
@@ -109,6 +117,11 @@ export default function OffersOfRequestSection({
                     onOpenChange={setOpen}
                     headerTitle="Property Manager"
                   />
+                  <PropertyDetailDialog
+                    property={property}
+                    open={openProperty}
+                    onOpenChange={setOpenProperty}
+                  />
                   {offer.status === "booking" ? (
                     <div className="absolute right-[-8px] top-2 rounded-md bg-blue-500 px-3 py-2 text-white">
                       Booking
@@ -150,21 +163,33 @@ export default function OffersOfRequestSection({
                       </div>
                     </div>
                     <div className="grid-cols-3 space-y-2">
-                      <div className="text-lg font-semibold">
+                      <div
+                        className="cursor-pointer text-lg font-semibold"
+                        onClick={() => setOpenProperty(true)}
+                      >
                         Property Detail
                       </div>
-                      <div className="text-base font-semibold">
+                      <div className="flex items-center gap-1 text-base font-semibold">
+                        <NavigationIcon size={20}></NavigationIcon>
+                        {property.title}
+                      </div>
+                      <div className="flex items-center gap-1 text-base font-semibold">
+                        <HotelIcon size={20}></HotelIcon>
                         {property.category.title}
                       </div>
-                      <div className="text-base font-semibold">
+
+                      <div className="flex items-center gap-1 text-base font-semibold">
+                        <MapPinIcon size={20}></MapPinIcon>
                         {property.location}
                       </div>
-                      <div className="flex items-center font-medium text-gray-500">
-                        <div>
+
+                      <p className="flex items-center space-x-1 text-base text-gray-600">
+                        <CircleDollarSignIcon size={20}></CircleDollarSignIcon>
+                        <span>
                           {property.price_min} {property.currency.title} ~{" "}
                           {property.price_max} {property.currency.title}
-                        </div>
-                      </div>
+                        </span>
+                      </p>
                       <div className="text-sm">
                         Created{" "}
                         {dayjs
