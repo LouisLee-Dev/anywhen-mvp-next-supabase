@@ -11,13 +11,17 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
+import { ROLE_OPTIONS } from "@/features/profiles/types";
 
 export default function Header() {
   const router = useRouter();
   const [{ authenticated, user, profile, notifications }] = useAuth();
-
+  const [, { actionSignOut }] = useAuth();
   const unreadNotifications = useMemo(
     () => notifications?.filter((notification) => !notification.viewed),
     [notifications],
@@ -36,19 +40,46 @@ export default function Header() {
             <div className="text-2xl font-bold text-gray-600">anywhen</div>
           </NextLink>
         </div>
-        {/* mobie menu */}
-        <div className="flex lg:hidden">
+        {/* mobie header menu */}
+        <div className="flex gap-2 lg:hidden items-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <AlignJustify />
+              {authenticated && (
+                <div className="relative cursor-pointer text-gray-600 hover:text-gray-900">
+                  <BellDotIcon className="h-8 w-8 " />
+                  {unreadNotificationCount > 0 && (
+                    <div className="absolute right-[-8px] top-[-8px] flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white">
+                      {unreadNotificationCount}
+                    </div>
+                  )}
+                </div>
+              )}
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="" align="end" forceMount>
-              <DropdownMenuItem>
-                <NextLink href="/auth/signin">Sign In</NextLink>
-              </DropdownMenuItem>
+            <DropdownMenuContent className="w-[320px]" align="end" forceMount>
+              {unreadNotificationCount > 0 ? (
+                unreadNotifications?.slice(0, 5).map((notification) => (
+                  <DropdownMenuItem
+                    key={notification.id}
+                    onClick={() => {
+                      router.push("/setting/notifications");
+                    }}
+                  >
+                    <div className="space-y-1">
+                      <div className="font-semibold">{notification.title}</div>
+                      <div className="pl-2">{notification.message}</div>
+                    </div>
+                  </DropdownMenuItem>
+                ))
+              ) : (
+                <div className="text-center">No new notifications</div>
+              )}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <NextLink href="/auth/signup">Sign up</NextLink>
+              <DropdownMenuItem
+                onClick={() => {
+                  router.push("/setting/notifications");
+                }}
+              >
+                See all notifications
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -77,6 +108,7 @@ export default function Header() {
                         Offers
                       </NextLink>
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <NextLink
                         href="/pm/trips"
@@ -85,6 +117,7 @@ export default function Header() {
                         Trips
                       </NextLink>
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <NextLink
                         href="/pm/pricing"
@@ -120,6 +153,7 @@ export default function Header() {
                         New Request
                       </NextLink>
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <NextLink
                         href="/renter/offers"
@@ -128,6 +162,7 @@ export default function Header() {
                         Offers
                       </NextLink>
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <NextLink
                         href="/renter/trips"
@@ -154,6 +189,45 @@ export default function Header() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <NextLink href="/auth/signup">Sign up</NextLink>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          {authenticated && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="h-12 w-12 cursor-pointer rounded-full">
+                  <AvatarImage src="/assets/avatars/01.png" alt="@shadcn" />
+                  <AvatarFallback>SC</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-2">
+                    <p className="text-lg font-medium leading-none">
+                      {profile?.full_name}
+                    </p>
+                    <p className="text-base font-medium leading-none">
+                      {ROLE_OPTIONS[profile?.role]}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <NextLink href="/setting">
+                    <DropdownMenuItem>Setting</DropdownMenuItem>
+                  </NextLink>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    actionSignOut();
+                  }}
+                >
+                  Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
