@@ -17,11 +17,11 @@ import PaymentCard from "../components/PaymentCard";
 
 export default function PricingSection() {
   return (
-    <div className="w-full px-[8rem]">
+    <div className="w-full lg:px-[8rem] px-2">
       <h1 className="mb-4">Pricing</h1>
-      <div className="flex justify-between gap-3">
+      <div className="flex lg:flex-row flex-col justify-between gap-3">
         <PaymentCard periodTime="1 Month" price="$100 / Month" />
-        <PaymentCard periodTime="6 Month" price="$500 / 6 Month" />
+        <PaymentCard periodTime="6 Months" price="$500 / 6 Months" />
         <PaymentCard periodTime="1 Year" price="$1000 / Year" />
       </div>
     </div>

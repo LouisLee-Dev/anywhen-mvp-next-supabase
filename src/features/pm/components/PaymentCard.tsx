@@ -20,7 +20,7 @@ export default function PaymentCard({ periodTime, price }: IPaymentCardProps) {
   const router = useRouter();
 
   return (
-    <Card className="w-[350px]">
+    <Card className="lg:w-[350px] w-full">
       <CardHeader>
         <CardTitle className="text-center">{periodTime}</CardTitle>
       </CardHeader>
@@ -35,14 +35,6 @@ export default function PaymentCard({ periodTime, price }: IPaymentCardProps) {
           </Button>
         </div>
         <div className="pt-5">
-          <div className="flex items-center">
-            <Check size={20} className="mr-2 text-primary" />
-            <p>Subscribe description here...............</p>
-          </div>
-          <div className="flex items-center">
-            <Check size={20} className="mr-2 text-primary" />
-            <p>Subscribe description here...............</p>
-          </div>
           <div className="flex items-center">
             <Check size={20} className="mr-2 text-primary" />
             <p>Subscribe description here...............</p>

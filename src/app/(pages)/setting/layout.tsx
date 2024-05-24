@@ -38,12 +38,12 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
             Manage your account settings and set e-mail preferences.
           </p>
         </div>
-        <Separator className="my-4" />
-        <div className="grid grid-cols-5 gap-4">
-          <aside className="col-span-1">
+        <Separator className="lg:my-4 my-2" />
+        <div className="grid grid-cols-5 lg:gap-4 gap-1">
+          <aside className="lg:col-span-1 col-span-5">
             <SettingLeftNavigation items={sidebarNavItems} />
           </aside>
-          <div className="col-span-4">{children}</div>
+          <div className="lg:col-span-4 col-span-5">{children}</div>
         </div>
       </div>
     </div>

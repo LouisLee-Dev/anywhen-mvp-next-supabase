@@ -1,6 +1,5 @@
 import { getCurrentProfile } from "@/core/auth/server";
 import { prisma } from "@/db";
-import { Offer } from "@/features/offers/schema";
 import OffersSection from "@/features/offers/sections/OffersSection";
 
 export default async function Renters() {
@@ -16,6 +15,7 @@ export default async function Renters() {
         include: {
           category: true,
           currency: true,
+          images: true,
         },
       },
       request: {

@@ -49,7 +49,7 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
       <div className="space-y-3">
         <h2
           className="cursor-pointer text-base font-semibold text-gray-800"
-          onClick={() => setOpenProperty(true)}
+          onClick={() => setOpen(true)}
         >
           Property Manager
         </h2>
