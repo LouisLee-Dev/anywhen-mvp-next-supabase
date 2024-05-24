@@ -181,10 +181,6 @@ export const AuthProvider = ({
     }
   }, [state.user?.id]);
 
-  useEffect(() => {
-    console.log(notifications);
-  }, [notifications]);
-
   const value = useMemo((): [State, Actions] => {
     return [
       { ...state, notifications } as State,

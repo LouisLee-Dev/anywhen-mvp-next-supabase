@@ -39,18 +39,19 @@ export default function PropertyDetailDialog({
   const router = useRouter();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[1000px]">
+      <DialogContent
+        className={"max-h-screen overflow-y-scroll lg:max-w-screen-lg"}
+      >
         <DialogHeader>
           <DialogTitle className="text-center">Property Detail</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-4 gap-4 space-y-2  py-4">
+        <div className="grid grid-cols-4 gap-4  space-y-2 py-4">
           <div className="col-span-4">
             <div className="flex items-center text-lg font-semibold">
               <NavigationIcon size={20} className="mr-1"></NavigationIcon>
-
               {property.title}
             </div>
-            <div className="m-4 grid grid-cols-2 gap-2">
+            <div className="m-4 grid grid-cols-1 gap-2 lg:grid-cols-2">
               {property.images.map((t) => (
                 <div key={t.id} className="relative aspect-video w-full">
                   <img

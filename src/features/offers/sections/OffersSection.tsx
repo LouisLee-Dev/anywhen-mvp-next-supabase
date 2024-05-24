@@ -26,7 +26,7 @@ interface IRenterOffersSectionProps {
 
 const OfferCard = ({ offer }: { offer: Offer }) => {
   return (
-    <div className="space-x-8p-4 flex items-center justify-between">
+    <div className="lg:space-x-8 lg:p-4 space-x-2 p-2 flex flex-col gap-2 lg:flex-row lg:items-center justify-between">
       <div className="space-y-1">
         <div className="text-lg font-semibold">
           {offer.request.profile.full_name}
@@ -39,7 +39,7 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
         </div>
       </div>
       <div className="flex-1 space-y-2">
-        <h2 className="text-base font-semibold text-gray-800">Property</h2>
+        <h2 className="text-base font-semibold text-gray-800">My Property</h2>
         <div className="space-y-2 pl-2">
           <h2 className="flex items-center space-x-2 text-base font-semibold text-gray-800">
             <HotelIcon></HotelIcon>
@@ -63,7 +63,7 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
         </div>
       </div>
       <div className="flex-1 space-y-2">
-        <h2 className="text-base font-semibold text-gray-800">Request</h2>
+        <h2 className="text-base font-semibold text-gray-800">Renter Request</h2>
         <div className="space-y-2 pl-2">
           <h2 className="flex items-center space-x-2 text-base font-semibold text-gray-800">
             <HotelIcon></HotelIcon>
@@ -116,7 +116,7 @@ export default function OffersSection({ offers }: IRenterOffersSectionProps) {
       >
         <AccordionItem value="booking">
           <AccordionTrigger className="hover:no-underline">
-            Active Offers
+            Active Offer
           </AccordionTrigger>
           <AccordionContent>
             {activeOffers.map((offer, i) => (

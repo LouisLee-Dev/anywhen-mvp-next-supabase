@@ -31,9 +31,9 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <div className="page-content-wrapper">
-      <div className="px-[8rem] py-3">
+      <div className="lg:px-[8rem] lg:py-3 p-2">
         <div className="space-y-0.5">
-          <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
+          <h2 className="lg:text-2xl text-xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground">
             Manage your account settings and set e-mail preferences.
           </p>

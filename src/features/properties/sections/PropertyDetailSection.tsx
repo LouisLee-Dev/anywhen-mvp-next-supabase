@@ -92,7 +92,7 @@ export default function PropertyDetailSection({
   if (isPropertyLoading) return <Loading></Loading>;
 
   return (
-    <div className="lg:px-[8rem]">
+    <div className="px-2 lg:px-[8rem]">
       <PropertyFormDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -107,34 +107,16 @@ export default function PropertyDetailSection({
         >
           <ArrowLeftIcon size={24}></ArrowLeftIcon>
         </Link>
-        <span>{property.title}</span>
+        <span className="text-lg lg:text-2xl">{property.title}</span>
       </h1>
-      <div className="grid grid-cols-5 items-stretch gap-2">
-        <div className="relative col-span-2 space-y-3 rounded-md  border p-3">
-          <div className="flex items-center text-lg font-semibold text-gray-800">
-            <MapPinIcon size={24} className="mr-1" />
-            {property.location}
-          </div>
-          <div className="flex items-center text-lg font-semibold text-gray-600">
-            <MessageSquareTextIcon size={24} className="mr-1" />
-            Description
-          </div>
-          <div
-            className="px-4 text-gray-600"
-            dangerouslySetInnerHTML={{ __html: property.description }}
-          ></div>
-          <div className="flex items-center font-medium text-gray-600">
-            <CircleDollarSign size={22} className="mr-1" />
-            {property.price_min} ~ {property.price_max} CAD
-          </div>
-        </div>
+      <div className="grid grid-cols-1 items-stretch gap-2 lg:grid-cols-5">
         <div className="col-span-3">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Photos</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                 {property.images.map((t) => (
                   <div key={t.id} className="relative aspect-video w-full">
                     <img
@@ -221,6 +203,24 @@ export default function PropertyDetailSection({
             </CardContent>
             <CardFooter className="flex justify-between"></CardFooter>
           </Card>
+        </div>
+        <div className="relative col-span-2 space-y-3 rounded-md  border p-3">
+          <div className="flex items-center text-lg font-semibold text-gray-800">
+            <MapPinIcon size={24} className="mr-1" />
+            {property.location}
+          </div>
+          <div className="flex items-center text-lg font-semibold text-gray-600">
+            <MessageSquareTextIcon size={24} className="mr-1" />
+            Description
+          </div>
+          <div
+            className="px-4 text-gray-600"
+            dangerouslySetInnerHTML={{ __html: property.description }}
+          ></div>
+          <div className="flex items-center font-medium text-gray-600">
+            <CircleDollarSign size={22} className="mr-1" />
+            {property.price_min} ~ {property.price_max} CAD
+          </div>
         </div>
       </div>
     </div>

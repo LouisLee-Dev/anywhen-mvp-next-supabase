@@ -50,7 +50,7 @@ export default function PropertiesSection() {
           {isPropertiesLoading ? (
             <p>Loading...</p>
           ) : (
-            <div className="grid auto-rows-auto grid-cols-4 gap-4">
+            <div className="grid auto-rows-auto lg:grid-cols-4 grid-cols-1 gap-4">
               {properties.map((property) => (
                 <PropertyCard
                   key={property.id}

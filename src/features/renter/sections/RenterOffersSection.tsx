@@ -9,7 +9,7 @@ import { Offer } from "../../offers/schema";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { formatDate } from "@/lib/utils";
-import { getHumanizedDate } from "@/lib/client";
+import { getHumanizedDate, getPublicUrl } from "@/lib/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CalendarIcon,
@@ -33,7 +33,7 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
   const [create_at, setCreateAt] = useState<string>("");
 
   return (
-    <div className="flex items-center justify-between space-x-8 p-4">
+    <div className="flex flex-col justify-between gap-2 space-x-2 p-2 lg:flex-row lg:space-x-8 lg:p-4">
       <ProfileDialog
         profile={profile}
         create_at={create_at}
@@ -46,7 +46,13 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
         open={openProperty}
         onOpenChange={setOpenProperty}
       />
-      <div className="flex-1 space-y-1">
+      <div className="space-y-3">
+        <h2
+          className="cursor-pointer text-base font-semibold text-gray-800"
+          onClick={() => setOpenProperty(true)}
+        >
+          Property Manager
+        </h2>
         <div className="flex items-center text-lg font-semibold">
           <Avatar
             className="mr-1 h-12 w-12 cursor-pointer rounded-full"
@@ -69,32 +75,53 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
           className="cursor-pointer text-base font-semibold text-gray-800"
           onClick={() => setOpenProperty(true)}
         >
-          Property
+          View Property Detail
         </h2>
-        <div className="space-y-2 pl-2">
-          <h2 className="flex items-center space-x-2 text-base font-semibold text-gray-800">
-            <HotelIcon></HotelIcon>
-            <span>{offer.property.category.title}</span>
-          </h2>
-          <h3 className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
-            <NavigationIcon size={20}></NavigationIcon>
-            <span>{offer.property.title}</span>
-          </h3>
-          <p className="flex items-center space-x-2 text-base text-gray-600">
-            <MapPinIcon size={20}></MapPinIcon>
-            <span>{offer.property.location}</span>
-          </p>
-          <div className="flex items-center space-x-2  text-gray-500">
-            <CircleDollarSignIcon size={20}></CircleDollarSignIcon>
-            <span>
-              {offer.property.price_min} {offer.property.currency.title} ~{" "}
-              {offer.property.price_max} {offer.property.currency.title}
-            </span>
+        <div className="flex space-x-2 space-y-2 pl-2">
+          <div
+            className="aspect-video cursor-pointer"
+            onClick={() => setOpenProperty(true)}
+          >
+            {offer?.property?.images?.length > 0 ? (
+              <img
+                src={getPublicUrl(
+                  "properties",
+                  offer.property?.images[0]?.path,
+                )}
+                className="h-full w-[150px] rounded-md object-cover"
+                alt="Property Image"
+              />
+            ) : (
+              <div className="text-md flex h-full w-[150px] items-center justify-center rounded-xl bg-gray-200 text-center">
+                No Preview Image Available
+              </div>
+            )}
+          </div>
+          <div>
+            <h2 className="flex items-center space-x-2 text-base font-semibold text-gray-800">
+              <HotelIcon></HotelIcon>
+              <span>{offer.property.category.title}</span>
+            </h2>
+            <h3 className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
+              <NavigationIcon size={20}></NavigationIcon>
+              <span>{offer.property.title}</span>
+            </h3>
+            <p className="flex items-center space-x-2 text-base text-gray-600">
+              <MapPinIcon size={20}></MapPinIcon>
+              <span>{offer.property.location}</span>
+            </p>
+            <div className="flex items-center space-x-2  text-gray-500">
+              <CircleDollarSignIcon size={20}></CircleDollarSignIcon>
+              <span>
+                {offer.property.price_min} {offer.property.currency.title} ~{" "}
+                {offer.property.price_max} {offer.property.currency.title}
+              </span>
+            </div>
           </div>
         </div>
       </div>
       <div className="flex-1 space-y-2">
-        <h2 className="text-base font-semibold text-gray-800">Request</h2>
+        <h2 className="text-base font-semibold text-gray-800">My Request</h2>
         <div className="space-y-2 pl-2">
           <h2 className="flex items-center space-x-2 text-base font-semibold text-gray-800">
             <HotelIcon></HotelIcon>
