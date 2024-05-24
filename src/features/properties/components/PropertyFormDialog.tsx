@@ -96,6 +96,7 @@ export function PropertyFormDialog({
           })
           .catch((err) => console.log(err))
           .finally(() => {
+            onOpenChange(false);
             setIsSubmitting(false);
           });
       } else {
@@ -108,6 +109,7 @@ export function PropertyFormDialog({
           })
           .catch((err) => console.log(err))
           .finally(() => {
+            onOpenChange(false);
             setIsSubmitting(false);
           });
       }

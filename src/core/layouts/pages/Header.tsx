@@ -52,6 +52,112 @@ export default function Header() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          {authenticated ? (
+            profile?.role === "owner" ? (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <AlignJustify />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="" align="end" forceMount>
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/pm/properties"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        My Properties
+                      </NextLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/pm/offers"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        Offers
+                      </NextLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/pm/trips"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        Trips
+                      </NextLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/pm/pricing"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        Pricing
+                      </NextLink>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            ) : profile?.role === "renter" ? (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <AlignJustify />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="" align="end" forceMount>
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/renter/dashboard"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        Renter Dashboard
+                      </NextLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/renter/request"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        New Request
+                      </NextLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/renter/offers"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        Offers
+                      </NextLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <NextLink
+                        href="/renter/trips"
+                        className="text-lg font-semibold text-gray-600 hover:text-primary"
+                      >
+                        Trips
+                      </NextLink>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            ) : (
+              ""
+            )
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <AlignJustify />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="" align="end" forceMount>
+                <DropdownMenuItem>
+                  <NextLink href="/auth/signin">Sign In</NextLink>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <NextLink href="/auth/signup">Sign up</NextLink>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
           {authenticated ? (

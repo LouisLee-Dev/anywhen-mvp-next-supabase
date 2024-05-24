@@ -31,7 +31,6 @@ const OfferCard = ({ offer }: { offer: Offer }) => {
   const [open, setOpen] = useState(false);
   const [openProperty, setOpenProperty] = useState(false);
   const profile = offer.request.profile;
-  console.log(offer);
   const [create_at, setCreateAt] = useState<string>("");
   return (
     <div className="flex flex-col justify-between gap-2 space-x-2 p-2 lg:flex-row lg:space-x-8 lg:p-4">

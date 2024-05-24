@@ -51,19 +51,32 @@ export const useCreateProperty = () => {
       return createProperty(property);
     },
     onMutate: async (property: PropertyInput) => {
-      await queryClient.cancelQueries({ queryKey: ["properties"] });
+      await queryClient.cancelQueries({ queryKey: ["properties", "me"] });
+      const previousProperties = queryClient.getQueryData(["properties", "me"]);
+      return { previousProperties };
     },
     onSuccess: async ({ data: { success, property } }, variables, context) => {
       if (success) {
-        queryClient.setQueryData(["properties"], (properties: Property[]) => {
-          return [property, ...(properties || [])];
-        });
+        queryClient.setQueryData(
+          ["properties", "me"],
+          (properties: Property[]) => {
+            return [property, ...(properties || [])];
+          },
+        );
         toast.success(`${property.title} created successfully`);
       } else {
+        queryClient.setQueryData(
+          ["properties", "me"],
+          context.previousProperties,
+        );
         toast.error("Request failed");
       }
     },
     onError: (error, variables, context) => {
+      queryClient.setQueryData(
+        ["properties", "me"],
+        context.previousProperties,
+      );
       console.log(error);
       toast.error("Request failed");
     },
